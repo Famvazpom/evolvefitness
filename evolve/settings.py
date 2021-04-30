@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mantto.apps.ManttoConfig',
+    'evolve_site.apps.EvolvesiteConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +81,7 @@ ROOT_URLCONF = 'evolve.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,6 +143,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL = '/static/'
 
 # Default primary key field type
@@ -148,4 +152,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/home'
 
+LOGOUT_REDIRECT_URL = '/'

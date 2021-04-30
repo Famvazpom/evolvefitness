@@ -1,0 +1,107 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+
+        <header class="masthead">
+            <div class="video-background ">
+                <div class="video-foreground embed-responsive-item">
+                    <iframe src="https://www.youtube.com/embed/ku98NDapX5Y?controls=0&showinfo=0&rel=0&autoplay=1&mute=1&loop=1&playlist=ku98NDapX5Y" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="container">
+                <div class="masthead-subheading"><img src="{% static 'evolve_logo.svg' %}" alt="" /></div>
+                <div class="masthead-heading text-uppercase">SEE YOURSELF EVOLVE…</div>
+            </div>
+        </header>
+
+        <section class="page-section bg-black" id="sucursales">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">BRANCHES</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/sucursales/evolve-5th.jpeg" %}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Fitness 5th Ave.</div>
+                                <div class="portfolio-caption-subheading text-muted">Playa del Carmen</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/portfolio/02-thumbnail.jpg"%}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Fitness Club Juarez</div>
+                                <div class="portfolio-caption-subheading text-muted">Playa del Carmen</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/sucursales/evolve-tulum.jpeg" %}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Fitness Club</div>
+                                <div class="portfolio-caption-subheading text-muted">Tulum</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/sucursales/evolve-constituyentes.jpeg" %}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Gym Constituyentes</div>
+                                <div class="portfolio-caption-subheading text-muted">Playa del Carmen</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/sucursales/evolve-villa.jpeg" %}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Santa Fe </div>
+                                <div class="portfolio-caption-subheading text-muted">Cancún</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-toggle="modal" >
+                                <img class="img-fluid" src='{% static "evolve_site/assets/img/sucursales/evolve-nader.jpeg" %}' alt="" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">Evolve Gym Nader</div>
+                                <div class="portfolio-caption-subheading text-muted">Cancún</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer bg-black py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-left">Copyright © Evolve Fitness Center 2020</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <a class="btn btn-dark btn-social mx-2" href="https://twitter.com/evolvefitnessp5"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="https://www.facebook.com/evolveplaya/"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="https://www.instagram.com/evolvefitnessgym/"><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="https://www.youtube.com/channel/UCe8x9saVXRF2Qf-4CEATfgQ"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+{% endblock content %}

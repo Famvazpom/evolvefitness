@@ -1,0 +1,30 @@
+@import '../../evolve_site/css/theme.css';
+
+body
+{
+    background-color: black;
+    color: white;
+}
+
+.bg-yellow
+{
+    background-color: yellow;
+}
+
+
+.login-image {
+    background: url('../../evolve_logo.svg') , black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-origin: content-box;
+}
+
+.color-black
+{
+    color: black;
+}
+
+.form-group {
+    color:black;
+  }

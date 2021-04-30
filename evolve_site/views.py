@@ -1,0 +1,23 @@
+from django.shortcuts import render
+from django.views.generic.base import TemplateView
+
+# Create your views here.
+
+
+class landingView(TemplateView):
+    template_name = "evolve_site/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["section"] = 'INICIO'
+        return context
+    
+class landingViewEn(TemplateView):
+    template_name = "evolve_site/index_en.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["section"] = 'HOME'
+        context['en'] = True
+        return context
+    

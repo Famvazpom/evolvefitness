@@ -3,5 +3,6 @@ from . import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    path('',views.indexView.as_view(),name="index"),
+    path('home/',login_required(views.homeView.as_view()),name='home'),
+    path('a/',views.indexView.as_view(),name="index"),
 ]
