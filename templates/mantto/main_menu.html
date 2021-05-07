@@ -4,62 +4,115 @@
 {% block content %}
 
     <div class='d-flex justify-content-center'>
-        <div class="col-md-auto mt-5 ml-0 ">
+        <div class="col-md-auto mt-5 ml-0 d-md-none">
             <div class="row">
-                <div class="col-md-auto">
+                <div class="col">
                     <a>
-                        <img src="{% static 'mantto/assets/images/mobile/recepcion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/recepcion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
                     </a>
                 </div>
-                <div class="col-md-auto">
+                <div class="col">
                     <a>
-                        <img src="{% static 'mantto/assets/images/mobile/administracion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/administracion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
                     </a>
                 </div>
-                <div class="col-md-auto ">
+                <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
                     </a>
                 </div>
             </div>
             
             <div class="row">
-                <div class="col-md-auto">
+                <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/inventarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/inventarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
                     </a>
                 </div>
-                <div class="col-md-auto">
+                <div class="col">
                     <a href="{% url 'mantenimiento' %}">
-                        <img src="{% static 'mantto/assets/images/mobile/mantenimiento.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/mantenimiento.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
                     </a>
                 </div>
-                <div class="col-md-auto ">
+                <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
                     </a>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-auto">
+                <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/instructores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/instructores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
                     </a>
                 </div>
-                <div class="col-md-auto">
+                <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/clases.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-auto mt-5 ml-0 d-none d-md-block">
+            <div class="row">
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/recepcion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                    </a>
+                </div>
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/administracion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
                     </a>
                 </div>
                 <div class="col-md-auto ">
                     <a >
-                        <img src="{% static 'mantto/assets/images/mobile/clases.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                        <img src="{% static 'mantto/assets/images/icons/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/inventarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'mantenimiento' %}">
+                        <img src="{% static 'mantto/assets/images/icons/mantenimiento.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
                     </a>
                 </div>
             </div>
 
-
+            <div class="row">
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/instructores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/clases.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                    </a>
+                </div>
+            </div>
         </div>
 
     </div>
