@@ -9,7 +9,7 @@ class EquipoForm(forms.ModelForm):
 
 
 class ReporteCreateForm(forms.ModelForm):
-    id_reporte = forms.IntegerField(required=True)
+    id_reporte = forms.IntegerField(required=False)
     class Meta:
         model = Reporte
         exclude = ["costo"]

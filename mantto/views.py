@@ -83,11 +83,9 @@ class ReporteAddView(BaseView):
         form.fields['equipo'].disabled = True
 
         if form.is_valid():
-            print('valid')
             form.save()
             return redirect(reverse('equipo_lista'))
         else:
-            print(form.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
