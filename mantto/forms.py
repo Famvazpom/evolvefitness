@@ -9,7 +9,7 @@ class EquipoForm(forms.ModelForm):
 
 
 class ReporteCreateForm(forms.ModelForm):
-    id_reporte = forms.IntegerField(required=True,initial=Reporte.objects.latest('id').pk+1)
+    id_reporte = forms.IntegerField(required=True)
     class Meta:
         model = Reporte
         exclude = ["costo"]
