@@ -3,84 +3,65 @@
 
 {% block content %}
 
-  <div class='container'>
-    <div class="col-md-auto mt-5 ml-0">
+    <div class='d-flex justify-content-center'>
+        <div class="col-md-auto mt-5 ml-0 ">
+            <div class="row">
+                <div class="col-md-auto">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/mobile/recepcion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                    </a>
+                </div>
+                <div class="col-md-auto">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/mobile/administracion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-auto">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/inventarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                    </a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{% url 'mantenimiento' %}">
+                        <img src="{% static 'mantto/assets/images/mobile/mantenimiento.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
+                    </a>
+                </div>
+            </div>
 
-        <div class="row">
-            <div class="col-md-auto">
-                <a href="/list/">
-                        <img src="{% static 'mantto/assets/images/recepcion.svg' %}" class="side-menu-btn flex-md-wrap" alt="Folios">
-                </a>
+            <div class="row">
+                <div class="col-md-auto">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/instructores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                    </a>
+                </div>
+                <div class="col-md-auto">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/mobile/clases.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                    </a>
+                </div>
             </div>
-            <div class="col-md-auto">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-            <div class="col-md-auto ">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-        </div>
-        
-       <div class="row">
-            <div class="col-md-auto">
-                <a href="/list/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_folios.svg" class="side-menu-btn flex-md-wrap" alt="Folios">
-                </a>
-            </div>
-            <div class="col-md-auto">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-            <div class="col-md-auto ">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-        </div>
 
 
-       <div class="row">
-            <div class="col-md-auto">
-                <a href="/list/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_folios.svg" class="side-menu-btn flex-md-wrap" alt="Folios">
-                </a>
-            </div>
-            <div class="col-md-auto">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-            <div class="col-md-auto ">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-        </div>
-
-       <div class="row">
-            <div class="col-md-auto">
-                <a href="/list/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_folios.svg" class="side-menu-btn flex-md-wrap" alt="Folios">
-                </a>
-            </div>
-            <div class="col-md-auto">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
-            <div class="col-md-auto ">
-                <a href="/punto/">
-                    <img src="/static/sist/assets/img/iconos_sist/icono_punto_venta.svg" class="side-menu-btn flex-md-wrap" alt="Punto de Venta">
-                </a>
-            </div>
         </div>
 
     </div>
-
-  </div>
 
 {% endblock content %}

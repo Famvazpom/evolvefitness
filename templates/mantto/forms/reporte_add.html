@@ -1,0 +1,97 @@
+{% load widget_tweaks %}
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content container">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <form id="modal_form" method='POST' enctype="multipart/form-data" action='{{action}}'>
+            <div class="modal-body">
+                
+                {% csrf_token %}
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                                    
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+
+                <div class='d-flex align-items-center row'>
+                    <div class='col d-md-none d-lg-block'>
+                        <img class="img-fluid" src='{{ equipo.imagen.url }}'>
+                    </div>
+                    <div class='col-auto d-none d-md-block d-lg-none '>
+                        <img class="img-fluid" src='{{ equipo.imagen.url }}'>
+                    </div>
+                    <div class='col'>
+                      <div class='row'>
+                            <div class='col'>
+                                {{ form.id_reporte.label_tag }}
+                                {{ form.id_reporte.errors }}
+                                {% render_field form.id_reporte class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.equipo.label_tag }}
+                                {{ form.equipo.errors }}
+                                {% render_field form.equipo class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.estado.label_tag }}
+                                {{ form.estado.errors }}
+                                {% render_field form.estado class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.gym.label_tag }}
+                                {{ form.gym.errors }}
+                                {% render_field form.gym class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.reporto.label_tag }}
+                                {{ form.reporto.errors }}
+                                {% render_field form.reporto class='form-control' %}
+                            </div>
+                            <div class='col'>
+                                {{ form.asignado.label_tag }}
+                                {{ form.asignado.errors }}
+                                {% render_field form.asignado class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.costo.label_tag }}
+                                {{ form.costo.errors }}
+                                {% render_field form.costo class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.falla.label_tag }}
+                                {{ form.falla.errors }}
+                                {% render_field form.falla class='form-control' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        
+                <button type="submit" class="btn btn-info">Guardar Cambios</button>        
+            </div>
+        </form>
+    </div>
+</div>

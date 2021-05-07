@@ -29,11 +29,11 @@
                                         </div>
                                         <form method='POST' enctype="multipart/form-data">
                                             {% csrf_token %}
-                                            <div class="form-group">
+                                            <div class="form-group login-form">
                                                 {{ form.username.label_tag }}
                                                 {% render_field form.username class='form-control' %}
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group login-form">
                                                 {{ form.password.label_tag }}
                                                 {% render_field form.password class='form-control' %}
                                             </div>

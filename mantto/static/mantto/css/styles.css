@@ -28,3 +28,51 @@ body
 .form-group {
     color:black;
   }
+
+.navbar-brand {
+    position: relative;
+    width: 170px;
+    height: 65px;
+    left: 15px;
+    background-size: cover;
+}
+
+.navbar-brand img{
+    width: inherit;
+    height: inherit  !important;
+}
+
+.reporte-card, .reporte-card .card-footer
+{
+    background-color: #31493C;
+}
+
+.reporte-card .list-group .list-group-item
+{
+    background-color: #31493C;
+    color: white;
+}
+
+.dataTables_length select, label {
+    color: white;
+}
+.dataTables_filter input, label {
+    color: white;
+}
+
+
+.modal-content {
+    background-color: #282828 ;
+ }
+
+
+.login-form *
+{
+    color: black;
+}
+
+.report-image
+{
+    max-width: 100%;
+}
+

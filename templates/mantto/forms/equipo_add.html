@@ -1,0 +1,75 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+  <div class='container'>
+    <form id="modal_form" method='POST' enctype="multipart/form-data">
+      {% csrf_token %}
+      {% if form.errors %}
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+            </div>
+          {% endfor %}
+      {% endif %}
+                          
+      {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+      <div class='d-flex align-items-center row'>
+        <div class='col'>
+          <img class='image-fluid report-image' id="image" />
+        </div>
+        <div class='col-auto'>
+          <div class='row'>
+              <div class='col'>
+                {{ form.nombre.label_tag }}
+                {{ form.nombre.errors }}
+                {% render_field form.nombre class='form-control' %}
+              </div>
+          </div>
+          <div class='row'>
+              <div class='col'>
+                {{ form.marca.label_tag }}
+                {{ form.marca.errors }}
+                {% render_field form.marca class='form-control' %}
+              </div>
+          </div>
+          <div class='row'>
+              <div class='col'>
+                {{ form.modelo.label_tag }}
+                {{ form.modelo.errors }}
+                {% render_field form.modelo class='form-control' %}
+              </div>
+          </div>
+          <div class='row'>
+              <div class='col'>
+                {{ form.gym.label_tag }}
+                {{ form.gym.errors }}
+                {% render_field form.gym class='form-control' %}
+              </div>
+          </div>
+
+          <div class='row'>
+              <div class='col'>
+                {{ form.imagen.label_tag }}
+                {{ form.imagen.errors }}
+                {% render_field form.imagen class='form-control' %}
+              </div>
+          </div>
+          <div class='row'>
+            <div class='col mt-5'>
+              <button type="submit" class="btn btn-secondary">Guardar cambios</button>                
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
+
+{% block extrajs %}
+<script src='{% static "mantto/js/photo_show.js" %}'></script>
+{% endblock extrajs %}
