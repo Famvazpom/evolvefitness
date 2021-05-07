@@ -55,7 +55,6 @@ class ReporteAddView(BaseView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Reportar Equipo'
-        
         context["form"] = self.form()
         return context
 
@@ -65,7 +64,10 @@ class ReporteAddView(BaseView):
         context['action'] = reverse_lazy(self.action, kwargs={'id_equipo':id_equipo})
         context['form'].fields['equipo'].initial = context['equipo']
         context['form'].fields['gym'].initial = context['equipo'].gym
-        context['form'].fields['id_reporte'].initial = Reporte.objects.latest('id').pk+1
+        try:
+            context['form'].fields['id_reporte'].initial = Reporte.objects.latest('id').pk+1
+        except Reporte.DoesNotExist:
+            context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
