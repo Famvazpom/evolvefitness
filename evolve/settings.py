@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import sys 
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 def find_or_create_secret_key():
-    """ 
+    """
     Look for secret_key.py and return the SECRET_KEY entry in it if the file exists.
     Otherwise, generate a new secret key, save it in secret_key.py, and return the key.
     """
     SECRET_KEY_DIR = os.path.dirname(__file__)
-    SECRET_KEY_FILEPATH = os.path.join(SECRET_KEY_DIR, 'secret_key.py') 
-    sys.path.insert(1,SECRET_KEY_DIR) 
+    SECRET_KEY_FILEPATH = os.path.join(SECRET_KEY_DIR, 'secret_key.py')
+    sys.path.insert(1,SECRET_KEY_DIR)
 
     if os.path.isfile(SECRET_KEY_FILEPATH):
         from secret_key import SECRET_KEY
@@ -81,7 +81,7 @@ ROOT_URLCONF = 'evolve.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates/'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,7 +147,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/' 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
