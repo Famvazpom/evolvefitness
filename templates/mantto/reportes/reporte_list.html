@@ -10,18 +10,16 @@
         <h2 class='text-center'>Registro de Mantenimientos</h2>
         <div class='row'>
             <table id="reporteTable" class="table table-dark table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th class='d-none d-lg-table-cell'> # Reporte </th>
-                        <th>ID</th>
-                        <th>Gym</th>
-                        <th class='d-none d-lg-table-cell'>Fecha</th>
-                        <th class='d-none d-lg-table-cell'>Maquina</th>
-                        <th class='d-none d-lg-table-cell'>Falla</th>
-                        <th>Estado</th>
-                        <th class='d-none d-lg-table-cell'>Asignado</th>
-                        <th>Detalles</th>
-                    </tr>
+                <thead class='d-none'>
+                    <th class='d-none d-lg-table-cell'> # Reporte </th>
+                    <th>ID</th>
+                    <th>Gym</th>
+                    <th class='d-none d-lg-table-cell'>Fecha</th>
+                    <th class='d-none d-lg-table-cell'>Maquina</th>
+                    <th class='d-none d-lg-table-cell'>Falla</th>
+                    <th>Estado</th>
+                    <th class='d-none d-lg-table-cell'>Asignado</th>
+                    <th>Detalles</th>
                 </thead>
                 <tbody>
                     {% for reporte in reportes %}
