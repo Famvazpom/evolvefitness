@@ -91,12 +91,7 @@ class ReporteAddView(BaseView):
 
 class ReporteListView(BaseView):
     template_name = 'mantto/reportes/reporte_list.html'
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["reportes"] = Reporte.objects.all()
-        return context
+    
 
 class ReporteDetailsView(BaseView):
     template_name = 'mantto/forms/reporte_detalles_modal.html'
@@ -125,6 +120,5 @@ class ReporteDetailsView(BaseView):
             form.save()
             return redirect(reverse('reportes'))
         else:
-            print(form.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)

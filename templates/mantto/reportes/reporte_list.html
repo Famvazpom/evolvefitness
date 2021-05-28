@@ -8,41 +8,15 @@
 {% block content %}
     <div class='container'>
         <h2 class='text-center'>Registro de Mantenimientos</h2>
-        <div class='row'>
-            <table id="reporteTable" class="table table-dark table-hover table-responsive">
-                <thead class='d-none'>
-                    <th class='d-none d-lg-table-cell'> # Reporte </th>
-                    <th>ID</th>
-                    <th>Gym</th>
-                    <th class='d-none d-lg-table-cell'>Fecha</th>
-                    <th class='d-none d-lg-table-cell'>Maquina</th>
-                    <th class='d-none d-lg-table-cell'>Falla</th>
-                    <th>Estado</th>
-                    <th class='d-none d-lg-table-cell'>Asignado</th>
-                    <th>Detalles</th>
-                </thead>
-                <tbody>
-                    {% for reporte in reportes %}
-                    <tr >
-                        <td class='d-none d-lg-table-cell'> {{ reporte.pk }} </td>
-                        <td>{{ reporte.equipo.id }}</td>
-                        <td>{{ reporte.equipo.gym }}</td>
-                        <td class='d-none d-lg-table-cell' data-sort="{{reporte.fecha.date | date:'Ymd'}}">{{reporte.fecha | localtime | date:'d/m/Y' }}</td>
-                        <td class='d-none d-lg-table-cell'>{{ reporte.equipo.nombre  }}</td>
-                        <td class='d-none d-lg-table-cell'>{{ reporte.falla }}</td>
-                        <td class='{{ reporte.estado.css_class }}'>{{ reporte.estado }}</td>
-                        <td class='d-none d-lg-table-cell'>{{ reporte.asignado }}</td>
-                        <td><a onclick='openModal("{% url 'reporte_detalles' id=reporte.pk %}")' class="btn btn-info">Detalles</a></td>
-                    </tr>
-                    
-                    {% endfor %}
-                </tbody>
-        </table>
+        <div id='cardContainer' data-source='{% url 'reporte-list' %}' class='card-columns'>
+        </div>
+        <div id='cardPagination' class='row'>
         </div>
     </div>
 {% endblock content %}
     
 {% block extrajs %}
+
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="{% static 'mantto/js/reporte_table.js' %}" crossorigin="anonymous"></script>
 

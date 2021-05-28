@@ -80,3 +80,14 @@ body
     padding-right:0;
     padding-left:0;
 }
+
+#cardContainer .card
+{
+    background-color: rgb(33, 37, 41);
+    border-color: white;
+}
+
+.page-link
+{
+    background-color: black;
+}

@@ -1,3 +1,5 @@
 django
 django-widget-tweaks
 pillow
+django-rest-framework
+djangorestframework-datatables

@@ -1,6 +1,11 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 from django.contrib.auth.decorators import login_required
+from rest_framework import routers
+from .viewsets import *
+
+router = routers.SimpleRouter()
+router.register('reportes',ReporteViewSet)
 
 urlpatterns = [
     path('home/',login_required(views.homeView.as_view()),name='home'),
@@ -12,4 +17,5 @@ urlpatterns = [
     path('mantenimiento/reporte/crear/<int:id_equipo>/',login_required(views.ReporteAddView.as_view()),name="reporte_crear"),
     path('mantenimiento/reporte/',login_required(views.ReporteListView.as_view()),name="reportes"),
     path('mantenimiento/reporte/<int:id>/',login_required(views.ReporteDetailsView.as_view()),name="reporte_detalles"),
-]
+    path('api/',include(router.urls))
+] 
