@@ -15,6 +15,11 @@ class GimnasioSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
 
+class EquipoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipo
+        fields = ("__all__")
+
 class ReporteSerializer(serializers.ModelSerializer):
     gym = GimnasioSerializer()
     fecha = serializers.SerializerMethodField()
@@ -22,9 +27,10 @@ class ReporteSerializer(serializers.ModelSerializer):
     estado = EstadoSerializer()
     url = serializers.SerializerMethodField()
     ultima_modificacion = serializers.SerializerMethodField()
+    equipo = EquipoSerializer()
     class Meta:
         model = Reporte
-        fields = ("pk","fecha","gym","asignado","estado",'falla','url','ultima_modificacion')
+        fields = ("pk","fecha","equipo","gym","asignado","estado",'falla','url','ultima_modificacion')
 
     def get_fecha(self,reporte):
         return reporte.fecha.date()

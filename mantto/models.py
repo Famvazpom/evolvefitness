@@ -36,6 +36,11 @@ class pathandrename(object):
         return os.path.join(self.path, filename)
 eq_path = pathandrename('images/equipos/')
 
+class Rol(models.Model):
+    nombre = models.CharField(max_length=50)
+    def __str__(self):
+        return f'{self.nombre}'
+
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     mantenimiento = models.BooleanField(default=False)
