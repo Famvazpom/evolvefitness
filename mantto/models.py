@@ -43,9 +43,7 @@ class Rol(models.Model):
 
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    mantenimiento = models.BooleanField(default=False)
-    contabilidad = models.BooleanField(default=False)
-    recepcion = models.BooleanField(default=False)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Perfil")

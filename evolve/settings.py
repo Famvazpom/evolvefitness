@@ -136,11 +136,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
     'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'rest_framework_datatables.filters.DatatablesFilterBackend',
-    ),
     'DEFAULT_PAGINATION_CLASS': 'evolve.pagination.ApiPaginator',
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 9,
 }
 
 

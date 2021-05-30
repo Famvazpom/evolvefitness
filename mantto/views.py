@@ -91,6 +91,14 @@ class ReporteAddView(BaseView):
 
 class ReporteListView(BaseView):
     template_name = 'mantto/reportes/reporte_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['estados'] = Estado.objects.all()
+        context['gyms'] = Gimnasio.objects.all()
+        context['asignado'] = Perfil.objects.filter(rol__nombre='Mantenimiento')
+        return context
+
     
 
 class ReporteDetailsView(BaseView):

@@ -8,9 +8,63 @@
 {% block content %}
     <div class='container'>
         <h2 class='text-center'>Registro de Mantenimientos</h2>
-        <div id='cardContainer' data-source='{% url 'reporte-list' %}' class='card-columns'>
+        
+        <div class='row m-3'>
+            <h6>Filtros</h6>
+            <div class='col'>
+                <div class='row'>
+                    <div class='col-auto'>
+                        <label>ID Maquina</label>
+                        <input id='maquinaInput' class='form-control'>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-auto'>
+                        <label>Gimnasio</label>
+                        <select id='gymSelect' class='form-control'>
+                            <option value selected> ---------- </option>
+                            {% for gym in gyms %}
+                                <option value="{{gym.pk}}"> {{gym}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% if user.perfil.rol.nombre != 'Mantenimiento' %}
+                <div class='row'>
+                    <div class='col-auto'>
+                        <label>Asignado a</label>
+                        <select id='asignadoSelect' class='form-control'>
+                            <option value selected> ---------- </option>
+                            {% for person in asignado %}
+                                <option value="{{person.pk}}"> {{person}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% endif %}
+                <div class='row mt-2'>
+                    <div class='col-auto'>
+                        <button onclick='addFilters()' class='btn btn-primary'> Filtrar </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id='cardPagination' class='row'>
+
+        <nav id='reportFilterNav' class='nav nav-tabs'>
+            <li class="nav-item">
+                <a class="nav-link active" id='generalTab' onclick="addFilters()">General</a>
+            </li>
+            {% for status in estados %}
+                <li class="nav-item">
+                    <a class="nav-link" st-pk='{{status.pk}}' onclick="addFilters('{{status.pk}}')" >{{ status }}</a>
+                </li>
+            {% endfor %}
+        </nav> 
+        <div class='tab-content mt-3'>
+            <div id='cardContainer' data-source='{% url 'reporte-list' %}' class='card-columns'>
+            </div>
+            <div id='cardPagination' class='row'>
+            </div>
         </div>
     </div>
 {% endblock content %}
