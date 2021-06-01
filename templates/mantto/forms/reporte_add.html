@@ -33,7 +33,7 @@
                         <img class="img-fluid" src='{{ equipo.imagen.url }}'>
                     </div>
                     <div class='col'>
-                      <div class='row'>
+                        <div class='row'>
                             <div class='col'>
                                 {{ form.id_reporte.label_tag }}
                                 {{ form.id_reporte.errors }}
@@ -78,6 +78,13 @@
                                 {{ form.costo.label_tag }}
                                 {{ form.costo.errors }}
                                 {% render_field form.costo class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.fotos.label_tag }}
+                                {{ form.fotos.errors }}
+                                {% render_field form.fotos class='form-control' %}
                             </div>
                         </div>
                         <div class='row'>

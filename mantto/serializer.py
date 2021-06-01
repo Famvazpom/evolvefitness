@@ -9,6 +9,11 @@ class EstadoSerializer(serializers.ModelSerializer):
         model = Estado
         fields = ("pk","nombre","css_class")
 
+class FotoReporteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FotoReporte
+        fields = ("__all__")
+
 class GimnasioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gimnasio
@@ -26,11 +31,12 @@ class ReporteSerializer(serializers.ModelSerializer):
     asignado = serializers.SerializerMethodField()
     estado = EstadoSerializer()
     url = serializers.SerializerMethodField()
+    foto_url = serializers.SerializerMethodField()
     ultima_modificacion = serializers.SerializerMethodField()
     equipo = EquipoSerializer()
     class Meta:
         model = Reporte
-        fields = ("pk","fecha","equipo","gym","asignado","estado",'falla','url','ultima_modificacion')
+        fields = ("pk","fecha","equipo","gym","asignado","estado",'falla','foto_url','url','ultima_modificacion')
 
     def get_fecha(self,reporte):
         return reporte.fecha.date()
@@ -40,6 +46,9 @@ class ReporteSerializer(serializers.ModelSerializer):
     
     def get_url(self,reporte):
         return reverse_lazy('reporte_detalles', kwargs={ 'id': reporte.pk})
+    
+    def get_foto_url(self,reporte):
+        return reverse_lazy('reporte_fotos', kwargs={ 'id': reporte.pk})
     
     def get_ultima_modificacion(self,reporte):
         return f'{reporte.ultima_modificacion.date()}'

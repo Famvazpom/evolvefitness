@@ -16,6 +16,7 @@ function getNode(data)
     out += '<h6 class="card-subtitle mb-2 text-muted '+ data.estado.css_class +' ">'+data.estado.nombre+'</h6>';
     out += '<p class="card-text">'+ data.falla +'</p>';
     out += '<a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a>';
+    out += '<a onclick="openModal(\''+data.foto_url+'\')" class="card-link btn btn-info ">Ver Fotos</a>';
     out += '</div>';
     out +='<div class="card-footer">'
     out += '<small class="text-muted"> Ultima Modificación: '+ data.ultima_modificacion +'</small>'

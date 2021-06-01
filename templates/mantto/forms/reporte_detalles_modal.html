@@ -73,6 +73,13 @@
                         </div>
                         <div class='row'>
                             <div class='col'>
+                                {{ form.fotos.label_tag }}
+                                {{ form.fotos.errors }}
+                                {% render_field form.fotos class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
                                 {{ form.falla.label_tag }}
                                 {{ form.falla.errors }}
                                 {% render_field form.falla class='form-control' %}

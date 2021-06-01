@@ -1,3 +1,4 @@
+from mantto.models import FotoReporte
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
@@ -7,7 +8,7 @@ from .forms import *
 
 # Create your views here.
 class BaseView(TemplateView):
-
+    mantto_obj = Rol.objects.get(nombre='Mantenimiento')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["section"] = 'Mantenimiento'
@@ -69,6 +70,7 @@ class ReporteAddView(BaseView):
         except Reporte.DoesNotExist:
             context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
         return render(request,self.template_name,context)
@@ -81,9 +83,12 @@ class ReporteAddView(BaseView):
         form.fields['reporto'].initial = request.user.perfil
         form.fields['id_reporte'].disabled=True
         form.fields['equipo'].disabled = True
-
         if form.is_valid():
-            form.save()
+            reporte = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    foto = FotoReporte(reporte=reporte,img=file)
+                    foto.save()
             return redirect(reverse('equipo_lista'))
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
@@ -113,7 +118,6 @@ class ReporteDetailsView(BaseView):
         context['title'] = f'Reporte: {id}'
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
         context['form'] = self.form(instance=context['reporte'])
-        
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
@@ -125,8 +129,21 @@ class ReporteDetailsView(BaseView):
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
         if form.is_valid():
-            form.save()
+            reporte = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    foto = FotoReporte(reporte=reporte,img=file)
+                    foto.save()
             return redirect(reverse('reportes'))
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
+
+class ReporteFotosView(BaseView):
+    template_name = 'mantto/forms/reporte_fotos_modal.html'
+
+    def get(self,request,id,*args, **kwargs):
+        context = self.get_context_data()
+        context['fotos'] = FotoReporte.objects.filter(reporte=get_object_or_404(Reporte,pk=id))
+        context['title'] = f'Fotos del Reporte: {id}'
+        return render(request,self.template_name,context)

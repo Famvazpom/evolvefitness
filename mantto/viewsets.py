@@ -1,3 +1,4 @@
+from mantto.serializer import FotoReporteSerializer
 from rest_framework import viewsets
 from .models import *
 from .serializer import *
@@ -22,3 +23,15 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
             out = out.filter(estado=status)
 
         return out.filter(asignado=self.request.user.perfil) if self.request.user.perfil.rol == Rol.objects.get(nombre='Mantenimiento') else out
+    
+class FotoReporteViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = FotoReporte.objects.all()
+    serializer_class = FotoReporteSerializer
+
+    def get_queryset(self):
+        out = self.queryset
+        reporte = self.request.query_params.get('reporte')
+        if reporte is not None:
+            out = out.filter(reporte=reporte)
+
+        return out

@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 
 
+
 @deconstructible
 class pathandrename(object):
     def __init__(self, sub_path):
@@ -22,7 +23,7 @@ class pathandrename(object):
             except OSError:
                 pass
             name = f'{instance.pk} - {instance.nombre} {instance.marca}'
-            filename = '{}.{}'.format(name, ext)
+            filename = '{}.{}'.format(name,ext)
         else:
             # set filename as random string
             try:
@@ -31,10 +32,26 @@ class pathandrename(object):
             except Equipo.DoesNotExist:
                 pk = 0
             name = f'{pk+1} - {instance.nombre} {instance.marca}'
-            filename = '{}.{}'.format(name, ext)
+            filename = '{}.{}'.format(name,ext)
         # return the whole path to the file
         return os.path.join(self.path, filename)
+
+@deconstructible
+class pathandrenameReporte(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        filename = filename.split('.')[:-1]
+        # set filename as random string
+        name = f'Reporte - {instance.reporte.pk} { filename }'
+        filename = '{}.{}'.format(name, ext)
+        # return the whole path to the file
+        return os.path.join(self.path, filename)
+
 eq_path = pathandrename('images/equipos/')
+rep_path = pathandrenameReporte('images/reportes/')
 
 class Rol(models.Model):
     nombre = models.CharField(max_length=50)
@@ -132,3 +149,22 @@ class Reporte(models.Model):
 
     def __str__(self):
         return f'Reporte: {self.pk} - {self.equipo}'
+
+class FotoReporte(models.Model):
+    reporte = models.ForeignKey(Reporte, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)
+    img = models.ImageField(upload_to=rep_path, height_field=None, width_field=None, max_length=None)
+
+    class Meta:
+        verbose_name = ("Foto de Reporte")
+        verbose_name_plural = ("Fotos de Reportes")
+
+    def __str__(self):
+        return f'{self.reporte}'
+
+
+
+@receiver(models.signals.post_delete, sender=FotoReporte)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.img:
+        if os.path.isfile(instance.img.path):
+            os.remove(instance.img.path)

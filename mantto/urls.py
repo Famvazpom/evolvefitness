@@ -6,6 +6,7 @@ from .viewsets import *
 
 router = routers.SimpleRouter()
 router.register('reportes',ReporteViewSet)
+router.register('foto-reporte',FotoReporteViewSet)
 
 urlpatterns = [
     path('home/',login_required(views.homeView.as_view()),name='home'),
@@ -16,6 +17,7 @@ urlpatterns = [
     path('mantenimiento/equipo/',login_required(views.EquipoListView.as_view()),name="equipo_lista"),
     path('mantenimiento/reporte/crear/<int:id_equipo>/',login_required(views.ReporteAddView.as_view()),name="reporte_crear"),
     path('mantenimiento/reporte/',login_required(views.ReporteListView.as_view()),name="reportes"),
-    path('mantenimiento/reporte/<int:id>/',login_required(views.ReporteDetailsView.as_view()),name="reporte_detalles"),
+    path('mantenimiento/reporte/detalles/<int:id>/',login_required(views.ReporteDetailsView.as_view()),name="reporte_detalles"),
+    path('mantenimiento/reporte/fotos/<int:id>/',login_required(views.ReporteFotosView.as_view()),name="reporte_fotos"),
     path('api/',include(router.urls))
 ] 
