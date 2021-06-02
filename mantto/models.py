@@ -140,9 +140,11 @@ class Reporte(models.Model):
     gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
     reporto = models.ForeignKey(Perfil, related_name=("Reporto"), on_delete=models.CASCADE)
     asignado = models.ForeignKey(Perfil,related_name=("Asignado"), on_delete=models.CASCADE)
+    diagnostico = models.TextField()
     falla = models.TextField()
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     costo = models.DecimalField(null=True,blank=True,max_digits=5, decimal_places=2)
+    revisado = models.BooleanField(default=False)
     class Meta:
         verbose_name = ("Reporte")
         verbose_name_plural = ("Reportes")

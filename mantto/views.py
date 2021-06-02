@@ -9,6 +9,7 @@ from .forms import *
 # Create your views here.
 class BaseView(TemplateView):
     mantto_obj = Rol.objects.get(nombre='Mantenimiento')
+    admin_obj = Rol.objects.get(nombre='Administrador')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["section"] = 'Mantenimiento'
@@ -71,6 +72,7 @@ class ReporteAddView(BaseView):
             context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
         context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
+        context['form'].fields['estado'].queryset = Estado.objects.filter(nombre = 'No Funciona')
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
         return render(request,self.template_name,context)
@@ -85,6 +87,7 @@ class ReporteAddView(BaseView):
         form.fields['equipo'].disabled = True
         if form.is_valid():
             reporte = form.save()
+
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)
@@ -104,8 +107,6 @@ class ReporteListView(BaseView):
         context['asignado'] = Perfil.objects.filter(rol__nombre='Mantenimiento')
         return context
 
-    
-
 class ReporteDetailsView(BaseView):
     template_name = 'mantto/forms/reporte_detalles_modal.html'
     form = ReporteUpdateForm
@@ -121,6 +122,7 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
+        context['form'].fields['diagnostico'].required = True
         return render(request,self.template_name,context)
     
     def post(self,request,id,*args, **kwargs):
@@ -130,6 +132,9 @@ class ReporteDetailsView(BaseView):
         form.fields['gym'].disabled = True
         if form.is_valid():
             reporte = form.save()
+            if reporte.asignado == request.user.perfil:
+                reporte.revisado = True
+                reporte.save()
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)

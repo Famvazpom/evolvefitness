@@ -12,11 +12,30 @@ function getNode(data)
 {
     var out = '<div class="card p-1">';
     out += '<div class="card-body text-center">';
-    out += '<h5 class="card-title">'+data.gym.nombre+'- ID : '+ data.equipo.id +'</h5>';
+    out += '<h5 class="card-title">'+data.gym.nombre+'<br> ID : '+ data.equipo.id +'</h5>';
     out += '<h6 class="card-subtitle mb-2 text-muted '+ data.estado.css_class +' ">'+data.estado.nombre+'</h6>';
-    out += '<p class="card-text">'+ data.falla +'</p>';
+    out += '<p class="card-text text-justify">'+ data.falla +'</p>';
+    if(data.costo)
+    {
+        out += '<p class="card-text"> Costo: $'+ data.costo +'</p>';
+    }
+    
     out += '<a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a>';
-    out += '<a onclick="openModal(\''+data.foto_url+'\')" class="card-link btn btn-info ">Ver Fotos</a>';
+    if(data.foto)
+    {   
+        out += '<a onclick="openModal(\''+data.foto_url+'\')" class="card-link btn btn-info ">Ver Fotos</a>';
+    }
+    else{
+        out += '<a class="card-link btn btn-info ">Sin Fotos</a>';
+    }
+    
+    if(data.revisado)
+    {
+        out += '<br><small class="text-muted"> Revisado </small>';
+    }
+    else{
+        out += '<br><small class="text-muted"> Sin revisar </small>';
+    }
     out += '</div>';
     out +='<div class="card-footer">'
     out += '<small class="text-muted"> Ultima Modificación: '+ data.ultima_modificacion +'</small>'
@@ -94,6 +113,7 @@ function addFilters(st_pk)
     maquina = $( "#maquinaInput" ).val();
     gym = $( "#gymSelect option:selected" ).val();
     asignado = $( "#asignadoSelect option:selected" ).val();
+    revisado = $( "#revisadoSelect option:selected" ).val();
     if(maquina)
     {
         url = addParameters(url,'maquina',maquina);
@@ -108,8 +128,13 @@ function addFilters(st_pk)
     }
     if(st_pk)
     {
-        url = addParameters(url,'status',st_pk)
+        url = addParameters(url,'status',st_pk);
     }
+    if(revisado)
+    {
+        url = addParameters(url,'revisado',revisado);
+    }
+    console.log(url);
     changeActiveClass(st_pk);
     getReportCards(url);
 }

@@ -13,12 +13,12 @@ class ReporteCreateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     class Meta:
         model = Reporte
-        exclude = ["costo"]
+        exclude = ["costo","diagnostico"]
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     class Meta:
         model = Reporte
-        fields = ("__all__")
+        exclude = ["revisado"]
 
 

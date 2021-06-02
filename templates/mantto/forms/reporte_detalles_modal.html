@@ -71,6 +71,7 @@
                                 {% render_field form.costo class='form-control' %}
                             </div>
                         </div>
+                        
                         <div class='row'>
                             <div class='col'>
                                 {{ form.fotos.label_tag }}
@@ -85,6 +86,14 @@
                                 {% render_field form.falla class='form-control' %}
                             </div>
                         </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.diagnostico.label_tag }}
+                                {{ form.diagnostico.errors }}
+                                {% render_field form.diagnostico class='form-control' %}
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

@@ -30,18 +30,28 @@
                     </div>
                 </div>
                 {% if user.perfil.rol.nombre != 'Mantenimiento' %}
+                    <div class='row'>
+                        <div class='col-auto'>
+                            <label>Asignado a</label>
+                            <select id='asignadoSelect' class='form-control'>
+                                <option value selected> ---------- </option>
+                                {% for person in asignado %}
+                                    <option value="{{person.pk}}"> {{person}} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class='row'>
                     <div class='col-auto'>
-                        <label>Asignado a</label>
-                        <select id='asignadoSelect' class='form-control'>
+                        <label>Revision</label>
+                        <select id='revisadoSelect' class='form-control'>
                             <option value selected> ---------- </option>
-                            {% for person in asignado %}
-                                <option value="{{person.pk}}"> {{person}} </option>
-                            {% endfor %}
+                            <option value="1"> Revisado </option>
+                            <option value="2"> Sin revisar </option>
                         </select>
                     </div>
                 </div>
-                {% endif %}
                 <div class='row mt-2'>
                     <div class='col-auto'>
                         <button onclick='addFilters()' class='btn btn-primary'> Filtrar </button>

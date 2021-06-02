@@ -4,7 +4,7 @@ from .models import *
 from .serializer import *
 
 class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Reporte.objects.all().order_by('-ultima_modificacion')
+    queryset = Reporte.objects.all().order_by('revisado','-ultima_modificacion')
     serializer_class = ReporteSerializer
 
     def get_queryset(self):
@@ -13,6 +13,7 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
         asignado = self.request.query_params.get('asignado')
         maquina = self.request.query_params.get('maquina')
         status = self.request.query_params.get('status')
+        revisado = self.request.query_params.get('revisado')
         if gym is not None:
             out = out.filter(gym=gym)
         if maquina is not None:
@@ -21,6 +22,11 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
             out = out.filter(asignado=asignado)
         if status is not None:
             out = out.filter(estado=status)
+        if revisado:
+            if revisado =='1':
+                out = out.filter(revisado=True)
+            if revisado == '2':
+                out = out.filter(revisado=False)
 
         return out.filter(asignado=self.request.user.perfil) if self.request.user.perfil.rol == Rol.objects.get(nombre='Mantenimiento') else out
     
