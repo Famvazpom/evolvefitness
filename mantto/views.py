@@ -1,15 +1,22 @@
+from mantto.forms import UsuarioCreacionForm
 from mantto.models import FotoReporte
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from django.urls import reverse,reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin
 from .forms import *
 
+
+class AdministracionCheck(UserPassesTestMixin):
+    def test_func(self):
+        return True if self.request.user.perfil.rol == Rol.objects.get(nombre='Administrador') else False
 
 # Create your views here.
 class BaseView(TemplateView):
     mantto_obj = Rol.objects.get(nombre='Mantenimiento')
-    admin_obj = Rol.objects.get(nombre='Administrador')
+    admin_obj = Rol.objects.get(nombre='Administrador')    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["section"] = 'Mantenimiento'
@@ -22,7 +29,7 @@ class homeView(BaseView):
 class ManttoMenuView(BaseView):
     template_name = "mantto/mantenimiento_menu.html"
 
-class EquipoAddView(BaseView):
+class EquipoAddView(AdministracionCheck,BaseView):
     template_name = "mantto/forms/equipo_add.html"
     form = EquipoForm
 
@@ -72,7 +79,7 @@ class ReporteAddView(BaseView):
             context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
         context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
-        context['form'].fields['estado'].queryset = Estado.objects.filter(nombre = 'No Funciona')
+        context['form'].fields['estado'].queryset = Estado.objects.filter(nombre__in = ['No Funciona','Funcionando con detalles pendientes'])
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
         return render(request,self.template_name,context)
@@ -122,7 +129,13 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
-        context['form'].fields['diagnostico'].required = True
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
+
+        if request.user.perfil == context['reporte'].asignado:
+            context['form'].fields['diagnostico'].required = True
+        else:
+            context['form'].fields['diagnostico'].disabled = True
+
         return render(request,self.template_name,context)
     
     def post(self,request,id,*args, **kwargs):
@@ -130,6 +143,9 @@ class ReporteDetailsView(BaseView):
         form.fields['reporto'].disabled=True
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
+        if request.user.perfil != get_object_or_404(Reporte,pk=id).asignado:
+            form.fields['diagnostico'].disabled = True
+
         if form.is_valid():
             reporte = form.save()
             if reporte.asignado == request.user.perfil:
@@ -152,3 +168,36 @@ class ReporteFotosView(BaseView):
         context['fotos'] = FotoReporte.objects.filter(reporte=get_object_or_404(Reporte,pk=id))
         context['title'] = f'Fotos del Reporte: {id}'
         return render(request,self.template_name,context)
+
+class AdminMenuView(AdministracionCheck,BaseView):
+    template_name = "mantto/administracion_menu.html"
+
+class UserListView(AdministracionCheck,BaseView):
+    template_name = "mantto/admin/usuarios.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['usuarios'] = Perfil.objects.all()
+        return context
+
+class UserCreateView(AdministracionCheck,BaseView):
+    template_name = "mantto/forms/usuario_crear.html"
+    form = UsuarioCreacionForm
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['form'] = self.form()
+        context['title'] = 'Crear usuario'
+        context['action'] = reverse_lazy('administracion_usuarios_crear')
+        return context
+    
+    def post(self,request, *args,**kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            user = form.save()
+            profile = Perfil(user = user, rol = form.cleaned_data['rol'])
+            profile.save()
+            return redirect(reverse('administracion_usuarios'))
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)

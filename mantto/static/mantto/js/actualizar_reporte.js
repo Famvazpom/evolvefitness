@@ -37,10 +37,13 @@ $(document).on('submit','#modal_form',function(event)
             location.reload();
         },
         error: function(data){
-            alert('ERROR');
+            errors = 'ERROR\n';
             jQuery.each(data.responseJSON, function(i, val) {
-                //console.log(i,val);
+                jQuery.each(val, function(i, obj) {
+                    errors += obj.message + '\n';
+                });
             });
+            alert(errors);
             ob.prop('disabled',false);
         }
     })  

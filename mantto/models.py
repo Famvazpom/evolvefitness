@@ -2,6 +2,7 @@ import os
 from uuid import uuid4
 
 from django.db import models
+from django.db.models.fields.related import ForeignKey
 from django.utils.deconstruct import deconstructible
 from django.dispatch import receiver
 from django.contrib.auth.models import User
@@ -83,27 +84,14 @@ class Gimnasio(models.Model):
     def __str__(self):
         return str(self.nombre)
 
-class Marca(models.Model):
-    nombre = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name = "Marca"
-
-    def save(self,*args,**kwargs):
-        self.nombre = self.nombre.upper()
-        return super(Marca,self).save(*args,**kwargs)
-
-    def __str__(self):
-        return self.nombre
 
 # Create your models here.
 class Equipo(models.Model):
     id = models.AutoField(primary_key = True)
-    nombre = models.CharField( max_length=50)
-    marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
+    nombre = models.CharField( max_length=100)
+    marca = models.CharField( max_length=50)
     modelo = models.CharField( max_length=50)
     gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to=eq_path, height_field=None, width_field=None, max_length=None)
 
     class Meta:
         verbose_name = ("Equipo")
@@ -114,11 +102,15 @@ class Equipo(models.Model):
 
     def save(self,*args,**kwargs):
         self.nombre = self.nombre.upper()
-
+        self.marca = self.marca.upper()
         return super(Equipo,self).save(*args,**kwargs)
 
-    def get_absolute_url(self):
-        return reverse("Equipo_detail", kwargs={"pk": self.pk})
+class FotosEquipo(models.Model):
+    img = models.ImageField(upload_to=eq_path, height_field=None, width_field=None, max_length=None)
+    equipo = models.ForeignKey(Equipo,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Foto de {self.equipo}'
 
 class Estado(models.Model):
 
@@ -140,7 +132,7 @@ class Reporte(models.Model):
     gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
     reporto = models.ForeignKey(Perfil, related_name=("Reporto"), on_delete=models.CASCADE)
     asignado = models.ForeignKey(Perfil,related_name=("Asignado"), on_delete=models.CASCADE)
-    diagnostico = models.TextField()
+    diagnostico = models.TextField(blank=True)
     falla = models.TextField()
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     costo = models.DecimalField(null=True,blank=True,max_digits=5, decimal_places=2)

@@ -16,6 +16,7 @@
                     <tr>
                         <th scope='col'>ID</th>
                         <th scope='col'>Maquina</th>
+                        <th scope='col'>Marca</th>
                         <th scope='col' class='d-none d-lg-table-cell'>Gym</th>
                         <th scope='col'>Detalles</th>
                     </tr>
@@ -25,6 +26,7 @@
                     <tr>
                         <td > {{ equipo.pk }} </td>
                         <td> {{ equipo.nombre }}</td>
+                        <td> {{ equipo.marca }}</td>
                         <td class='d-none d-lg-table-cell'>{{ equipo.gym }}</td>
                         <td><a onclick='openModal("{% url 'reporte_crear' id_equipo=equipo.pk %}")' class="btn btn-info">Reportar Falla</a></td>
                     </tr>

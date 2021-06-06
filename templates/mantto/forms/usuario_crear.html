@@ -1,0 +1,86 @@
+{% load widget_tweaks %}
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content container">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <form id="modal_form" method='POST' enctype="multipart/form-data" action='{{action}}'>
+            <div class="modal-body">
+                
+                {% csrf_token %}
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                            <div c
+                        lass="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                                    
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+
+                <div class='d-flex align-items-center row'>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.username.label_tag }}
+                            {{ form.username.errors }}
+                            {% render_field form.username class='form-control' %}
+                            {{ form.username.help_text }}
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.first_name.label_tag }}
+                            {{ form.first_name.errors }}
+                            {% render_field form.first_name class='form-control' %}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.last_name.label_tag }}
+                            {{ form.last_name.errors }}
+                            {% render_field form.last_name class='form-control' %}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.rol.label_tag }}
+                            {{ form.rol.errors }}
+                            {% render_field form.rol class='form-control' %}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.password1.label_tag }}
+                            {{ form.password1.errors }}
+                            {% render_field form.password1 class='form-control' %}
+                            {{ form.password1.help_text }}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
+                            {{ form.password2.label_tag }}
+                            {{ form.password2.errors }}
+                            {% render_field form.password2 class='form-control' %}
+                            {{ form.password2.help_text }}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        
+                <button type="submit" class="btn btn-info">Guardar Cambios</button>        
+            </div>
+        </form>
+    </div>
+</div>

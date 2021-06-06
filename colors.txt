@@ -5,3 +5,6 @@ https://coolors.co/d16014-21a0a0-046865-6761a8-31493c-001a23-133c55-235789-2f250
 
 mantto
 https://coolors.co/684756-989572-31493c
+
+Admin
+https://coolors.co/21a0a0-0a369d-4472ca-5e7ce2-ff0035-da3e52-b26e63-ed254e-91785d-8b5d33

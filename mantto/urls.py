@@ -19,5 +19,8 @@ urlpatterns = [
     path('mantenimiento/reporte/',login_required(views.ReporteListView.as_view()),name="reportes"),
     path('mantenimiento/reporte/detalles/<int:id>/',login_required(views.ReporteDetailsView.as_view()),name="reporte_detalles"),
     path('mantenimiento/reporte/fotos/<int:id>/',login_required(views.ReporteFotosView.as_view()),name="reporte_fotos"),
+    path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
+    path('administracion/usuarios/',login_required(views.UserListView.as_view()),name="administracion_usuarios"),
+    path('administracion/usuarios/crear/',login_required(views.UserCreateView.as_view()),name="administracion_usuarios_crear"),
     path('api/',include(router.urls))
 ] 

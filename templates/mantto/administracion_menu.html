@@ -1,0 +1,121 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class='d-flex justify-content-center'>
+        <div class="col-md-auto mt-5 ml-0 d-md-none">
+            <div class="row">
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/v_membresias_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                    </a>
+                </div>
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/v_productos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/proveedores_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <a href='{% url 'administracion_usuarios' %}'>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/crear_usuarios_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                    </a>
+                </div>
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_membresias_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/r_visitas_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_productos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/inventario_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/v_gastos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-auto mt-5 ml-0 d-none d-md-block">
+            <div class="row">
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/admin/v_membresias.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                    </a>
+                </div>
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/admin/v_productos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/admin/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <a href='{% url 'administracion_usuarios' %}'>
+                        <img src="{% static 'mantto/assets/images/icons/admin/crear_usuarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                    </a>
+                </div>
+                <div class="col">
+                    <a>
+                        <img src="{% static 'mantto/assets/images/icons/admin/c_membresias.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/admin/r_visitas.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/admin/c_productos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                    </a>
+                </div>
+                <div class="col">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/admin/inventario.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col-md-auto ">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/admin/v_gastos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}
