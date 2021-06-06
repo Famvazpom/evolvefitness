@@ -13,13 +13,13 @@
             <h6>Filtros</h6>
             <div class='col'>
                 <div class='row'>
-                    <div class='col-auto'>
+                    <div class='col-8'>
                         <label>ID Maquina</label>
                         <input id='maquinaInput' class='form-control'>
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='col-auto'>
+                    <div class='col-8'>
                         <label>Gimnasio</label>
                         <select id='gymSelect' class='form-control'>
                             <option value selected> ---------- </option>
@@ -31,7 +31,7 @@
                 </div>
                 {% if user.perfil.rol.nombre != 'Mantenimiento' %}
                     <div class='row'>
-                        <div class='col-auto'>
+                        <div class='col-8'>
                             <label>Asignado a</label>
                             <select id='asignadoSelect' class='form-control'>
                                 <option value selected> ---------- </option>
@@ -43,7 +43,7 @@
                     </div>
                 {% endif %}
                 <div class='row'>
-                    <div class='col-auto'>
+                    <div class='col-8'>
                         <label>Revision</label>
                         <select id='revisadoSelect' class='form-control'>
                             <option value selected> ---------- </option>
@@ -53,20 +53,20 @@
                     </div>
                 </div>
                 <div class='row mt-2'>
-                    <div class='col-auto'>
+                    <div class='col-8'>
                         <button onclick='addFilters()' class='btn btn-primary'> Filtrar </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <nav id='reportFilterNav' class='nav nav-tabs'>
+        <nav id='reportFilterNav' class='nav nav-pills nav-fill'>
             <li class="nav-item">
                 <a class="nav-link active" id='generalTab' onclick="addFilters()">General</a>
             </li>
             {% for status in estados %}
                 <li class="nav-item">
-                    <a class="nav-link" st-pk='{{status.pk}}' onclick="addFilters('{{status.pk}}')" >{{ status }}</a>
+                    <a class="nav-link " st-pk='{{status.pk}}' onclick="addFilters('{{status.pk}}')" >{{ status }}</a>
                 </li>
             {% endfor %}
         </nav> 

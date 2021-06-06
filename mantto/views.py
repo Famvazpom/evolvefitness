@@ -1,5 +1,5 @@
 from mantto.forms import UsuarioCreacionForm
-from mantto.models import FotoReporte
+from mantto.models import FotoReporte, FotosEquipo
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic.base import TemplateView
@@ -40,8 +40,14 @@ class EquipoAddView(AdministracionCheck,BaseView):
 
     def post(self,request,*args, **kwargs):
         form = self.form(request.POST,request.FILES)
+
         if form.is_valid():
-            form.save()
+            equipo = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    print('file')
+                    foto = FotosEquipo(equipo=equipo,img=file)
+                    foto.save()
             return redirect(reverse('mantenimiento'))
         else:
             context = self.get_context_data()

@@ -16,6 +16,7 @@ class UsuarioCreacionForm(UserCreationForm):
         return user
 
 class EquipoForm(forms.ModelForm):    
+    fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     class Meta:
         model = Equipo
         fields = ('__all__')

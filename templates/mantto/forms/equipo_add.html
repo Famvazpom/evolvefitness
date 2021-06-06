@@ -4,7 +4,9 @@
 
 
 {% block content %}
+
   <div class='container'>
+  <h5> Agregar Equipo </h5>
     <form id="modal_form" method='POST' enctype="multipart/form-data">
       {% csrf_token %}
       {% if form.errors %}
@@ -50,10 +52,10 @@
           </div>
 
           <div class='row'>
-              <div class='col'>
-                {{ form.imagen.label_tag }}
-                {{ form.imagen.errors }}
-                {% render_field form.imagen class='form-control' %}
+                <div class='col'>
+                  {{ form.fotos.label_tag }}
+                  {{ form.fotos.errors }}
+                  {% render_field form.fotos class='form-control' %}
               </div>
           </div>
           <div class='row'>

@@ -134,7 +134,6 @@ function addFilters(st_pk)
     {
         url = addParameters(url,'revisado',revisado);
     }
-    console.log(url);
     changeActiveClass(st_pk);
     getReportCards(url);
 }

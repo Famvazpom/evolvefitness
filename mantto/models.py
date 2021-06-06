@@ -16,24 +16,10 @@ class pathandrename(object):
 
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
+        filename = filename.split('.')[:-1]
         # set filename as random string
-        if instance.pk:
-            try:
-                ob = Equipo.objects.get(pk=instance.pk)
-                os.remove(ob.imagen.path)
-            except OSError:
-                pass
-            name = f'{instance.pk} - {instance.nombre} {instance.marca}'
-            filename = '{}.{}'.format(name,ext)
-        else:
-            # set filename as random string
-            try:
-                last = Equipo.objects.latest('id')
-                pk = last.pk
-            except Equipo.DoesNotExist:
-                pk = 0
-            name = f'{pk+1} - {instance.nombre} {instance.marca}'
-            filename = '{}.{}'.format(name,ext)
+        name = f'Equipo - {instance.equipo.pk} - { filename }'
+        filename = '{}.{}'.format(name, ext)
         # return the whole path to the file
         return os.path.join(self.path, filename)
 
@@ -158,6 +144,7 @@ class FotoReporte(models.Model):
 
 
 @receiver(models.signals.post_delete, sender=FotoReporte)
+@receiver(models.signals.post_delete, sender=FotosEquipo)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.img:
         if os.path.isfile(instance.img.path):
