@@ -1,0 +1,31 @@
+.nav-tabs
+{
+    background-color:#161616;
+}
+
+.tab-content
+{
+    background-color:#303136;
+    color:#fff;
+    padding:5px
+}
+
+
+.nav-tabs> li > a.status-tab.active {
+    background-color: #fed136;
+    border-color: black;
+}
+
+
+.nav-tabs> li > a.status-tab {
+    background-color: #303136;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    
+}
+.nav-tabs > li > a:hover
+{
+    background-color: #ddbe4c;
+    color:black;
+}

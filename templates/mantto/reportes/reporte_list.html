@@ -60,13 +60,13 @@
             </div>
         </div>
 
-        <nav id='reportFilterNav' class='nav nav-pills nav-fill'>
+        <nav id='reportFilterNav' class='nav nav-fill nav-tabs'>
             <li class="nav-item">
-                <a class="nav-link active" id='generalTab' onclick="addFilters()">General</a>
+                <a class="nav-link status-tab active" id='generalTab' onclick="addFilters()">General</a>
             </li>
             {% for status in estados %}
                 <li class="nav-item">
-                    <a class="nav-link " st-pk='{{status.pk}}' onclick="addFilters('{{status.pk}}')" >{{ status }}</a>
+                    <a class="nav-link status-tab" st-pk='{{status.pk}}' onclick="addFilters('{{status.pk}}')" >{{ status }}</a>
                 </li>
             {% endfor %}
         </nav> 
