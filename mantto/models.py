@@ -121,7 +121,7 @@ class Reporte(models.Model):
     diagnostico = models.TextField(blank=True)
     falla = models.TextField()
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    costo = models.DecimalField(null=True,blank=True,max_digits=5, decimal_places=2)
+    costo = models.DecimalField(null=True,blank=True,max_digits=10, decimal_places=2)
     revisado = models.BooleanField(default=False)
     class Meta:
         verbose_name = ("Reporte")
