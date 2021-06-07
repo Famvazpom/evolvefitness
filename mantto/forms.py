@@ -21,6 +21,14 @@ class EquipoForm(forms.ModelForm):
         model = Equipo
         fields = ('__all__')
 
+class EquipoUpdateForm(forms.ModelForm):    
+    id_equipo = forms.IntegerField(required=False)
+    fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    class Meta:
+        model = Equipo
+        fields = ('__all__')
+
+
 class ReporteCreateForm(forms.ModelForm):
     id_reporte = forms.IntegerField(required=False)
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)

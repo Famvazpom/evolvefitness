@@ -22,11 +22,11 @@
                 {% for hidden_field in form.hidden_fields %}
                     {{ hidden_field }}
                 {% endfor %}
+
                 <div class='d-flex row text-center'>
-                    {% if fotosequipo %}
+                {% if fotosequipo %}
                     <h5> Fotos del Equipo </h5>
                     <div id="equipoFotos" class="carousel slide" data-ride="carousel">
-                    
                         <ol class="carousel-indicators">
                             {% for i in fotosequipo %}
                                 {% if forloop.first %}
@@ -39,9 +39,9 @@
                         <div class="carousel-inner">
                             {% for i in fotosequipo %}
                                 {% if forloop.first %}
-                                    <div class="carousel-item active">
+                                    <div   img-del="{{ i.pk }}" class="carousel-item active">
                                 {%else%}
-                                    <div class="carousel-item">
+                                    <div  img-del="{{ i.pk }}" class="carousel-item">
                                 {% endif %}
                                     <img src="{{ i.img.url }}" class="d-block w-100">
                                 </div>
@@ -56,20 +56,35 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
+                
                 {% endif %}
                 </div>
                 <div class='d-flex align-items-center row'>
                     <div class='col'>
                         <div class='row'>
                             <div class='col'>
-                                {{ form.equipo.label_tag }}
-                                {{ form.equipo.errors }}
-                                {% render_field form.equipo class='form-control' %}
+                                {{ form.id_equipo.label_tag }}
+                                {{ form.id_equipo.errors }}
+                                {% render_field form.id_equipo class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.nombre.label_tag }}
+                                {{ form.nombre.errors }}
+                                {% render_field form.nombre class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.marca.label_tag }}
+                                {{ form.marca.errors }}
+                                {% render_field form.marca class='form-control' %}
                             </div>
                             <div class='col'>
-                                {{ form.estado.label_tag }}
-                                {{ form.estado.errors }}
-                                {% render_field form.estado class='form-control' %}
+                                {{ form.modelo.label_tag }}
+                                {{ form.modelo.errors }}
+                                {% render_field form.modelo class='form-control' %}
                             </div>
                         </div>
                         <div class='row'>
@@ -81,89 +96,15 @@
                         </div>
                         <div class='row'>
                             <div class='col'>
-                                {{ form.reporto.label_tag }}
-                                {{ form.reporto.errors }}
-                                {% render_field form.reporto class='form-control' %}
-                            </div>
-                            <div class='col'>
-                                {{ form.asignado.label_tag }}
-                                {{ form.asignado.errors }}
-                                {% render_field form.asignado class='form-control' %}
-                            </div>
-                        </div>
-                        <div class='row'>
-                            <div class='col'>
-                                {{ form.costo.label_tag }}
-                                {{ form.costo.errors }}
-                                {% render_field form.costo class='form-control' %}
-                            </div>
-                        </div>
-                        
-                        <div class='row'>
-                            <div class='col'>
                                 {{ form.fotos.label_tag }}
                                 {{ form.fotos.errors }}
                                 {% render_field form.fotos class='form-control' %}
                             </div>
                         </div>
-                        <div class='row'>
-                            <div class='col'>
-                                {{ form.falla.label_tag }}
-                                {{ form.falla.errors }}
-                                {% render_field form.falla class='form-control' %}
-                            </div>
-                        </div>
-                        <div class='row'>
-                            <div class='col'>
-                                {{ form.diagnostico.label_tag }}
-                                {{ form.diagnostico.errors }}
-                                {% render_field form.diagnostico class='form-control' %}
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
             </div>
-            {% if fotos %}
-            <div class='row text-center'>
-                <h5> Fotos Subidas </h5>
-                <div id="reporteFotos" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        {% for i in fotos %}
-                            {% if forloop.first %}
-                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
-                            {%else%}
-                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}"></li>
-                            {% endif %}
-                        {% endfor %}               
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for i in fotos %}
-                            {% if forloop.first %}
-                                <div class="carousel-item active">
-                            {%else%}
-                                <div class="carousel-item">
-                            {% endif %}
-                                <img src="{{ i.img.url }}" class="d-block w-100">
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <a class="carousel-control-prev" href="#reporteFotos" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#reporteFotos" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            {% else %}
-             <div class='row'>
-                <h5> Sin fotos disponibles </h5>
-             </div>
-            {% endif %}
-            <div class='modal-footer mt-3'>
+            <div class='modal-footer'>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        
                 <button type="submit" class="btn btn-info">Guardar Cambios</button>        
             </div>

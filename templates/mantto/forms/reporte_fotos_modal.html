@@ -10,13 +10,13 @@
         <div class="modal-body">
             <div class='row text-center'>
                 <h5> Fotos Subidas </h5>
-                <div id="reporteFotos" class="carousel slide" data-bs-ride="carousel">
+                <div id="reporteFotos" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {% for i in fotos %}
                             {% if forloop.first %}
-                                <li data-bs-target="#reporteFotos" data-bs-slide-to="{{ forloop.counter0 }}" class="active"></li>
+                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
                             {%else%}
-                                <li data-target="#reporteFotos" data-bs-slide-to="{{ forloop.counter0 }}"></li>
+                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}"></li>
                             {% endif %}
                         {% endfor %}               
                     </ol>

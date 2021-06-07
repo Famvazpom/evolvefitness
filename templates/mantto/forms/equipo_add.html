@@ -5,64 +5,73 @@
 
 {% block content %}
 
-  <div class='container'>
-  <h5> Agregar Equipo </h5>
+  <div class='container text-center'>
+    <h5> Agregar Equipo </h5>
     <form id="modal_form" method='POST' enctype="multipart/form-data">
-      {% csrf_token %}
-      {% if form.errors %}
-          {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">
-              <strong>{{ error|escape }}</strong>
-            </div>
-          {% endfor %}
-      {% endif %}
-                          
-      {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field }}
-      {% endfor %}
-      <div class='d-flex align-items-center row'>
+      <div class='row text-justify'>
         <div class='col-auto'>
-          <div class='row'>
-              <div class='col'>
-                {{ form.nombre.label_tag }}
-                {{ form.nombre.errors }}
-                {% render_field form.nombre class='form-control' %}
-              </div>
-          </div>
-          <div class='row'>
-              <div class='col'>
-                {{ form.marca.label_tag }}
-                {{ form.marca.errors }}
-                {% render_field form.marca class='form-control' %}
-              </div>
-          </div>
-          <div class='row'>
-              <div class='col'>
-                {{ form.modelo.label_tag }}
-                {{ form.modelo.errors }}
-                {% render_field form.modelo class='form-control' %}
-              </div>
-          </div>
-          <div class='row'>
-              <div class='col'>
-                {{ form.gym.label_tag }}
-                {{ form.gym.errors }}
-                {% render_field form.gym class='form-control' %}
-              </div>
-          </div>
+          
+            {% csrf_token %}
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                  </div>
+                {% endfor %}
+            {% endif %}
+                                
+            {% for hidden_field in form.hidden_fields %}
+              {{ hidden_field }}
+            {% endfor %}
+            <div class='d-flex align-items-center row'>
+              <div class='col-auto'>
+                <div class='row'>
+                    <div class='col'>
+                      {{ form.nombre.label_tag }}
+                      {{ form.nombre.errors }}
+                      {% render_field form.nombre class='form-control' %}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                      {{ form.marca.label_tag }}
+                      {{ form.marca.errors }}
+                      {% render_field form.marca class='form-control' %}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                      {{ form.modelo.label_tag }}
+                      {{ form.modelo.errors }}
+                      {% render_field form.modelo class='form-control' %}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                      {{ form.gym.label_tag }}
+                      {{ form.gym.errors }}
+                      {% render_field form.gym class='form-control' %}
+                    </div>
+                </div>
 
-          <div class='row'>
-                <div class='col'>
-                  {{ form.fotos.label_tag }}
-                  {{ form.fotos.errors }}
-                  {% render_field form.fotos class='form-control' %}
+                <div class='row'>
+                      <div class='col'>
+                        {{ form.fotos.label_tag }}
+                        {{ form.fotos.errors }}
+                        {% render_field form.fotos class='form-control' %}
+                    </div>
+                </div>
+                
               </div>
-          </div>
-          <div class='row'>
-            <div class='col mt-5'>
-              <button type="submit" class="btn btn-secondary">Guardar cambios</button>                
             </div>
-          </div>
+          
+        </div>
+        <div id='foto-container' class='col p-5'>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col mt-5'>
+          <button type="submit" class="btn btn-secondary">Guardar cambios</button>                
         </div>
       </div>
     </form>

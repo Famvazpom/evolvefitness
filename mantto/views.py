@@ -61,6 +61,40 @@ class EquipoListView(BaseView):
         context["equipos"] = Equipo.objects.all()
         return context
 
+class EquipoUpdateView(BaseView):
+    template_name = 'mantto/forms/equipo_actualizar.html'
+    form = EquipoUpdateForm
+    action = 'equipo_actualizar'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Actualizar Equipo'
+        return context
+
+    def get(self,request,id_equipo,*args, **kwargs):
+        context = self.get_context_data()
+        equipo =  get_object_or_404(Equipo,pk=id_equipo)
+        context["form"] = self.form(instance=equipo)
+        context['form'].fields['id_equipo'].initial = equipo.pk
+        context['form'].fields['id_equipo'].disabled = True
+        context['fotosequipo'] = FotosEquipo.objects.filter(equipo__pk=id_equipo)
+        context['action'] = reverse_lazy(self.action, kwargs={'id_equipo':id_equipo})
+        return render(request,self.template_name,context)
+
+    def post(self,request,id_equipo,*args, **kwargs):
+        equipo = get_object_or_404(Equipo,pk=id_equipo)
+        form = self.form(request.POST,instance = equipo)
+        if form.is_valid():
+            equipo = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    FotosEquipo.objects.create(equipo=equipo,img=file)
+            return redirect(reverse('equipo_lista'))
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+
 class ReporteAddView(BaseView):
     template_name = 'mantto/forms/reporte_add.html'
     form = ReporteCreateForm
@@ -75,6 +109,7 @@ class ReporteAddView(BaseView):
     def get(self,request,id_equipo,*args, **kwargs):
         context = self.get_context_data()
         context['equipo'] = get_object_or_404(Equipo,pk=id_equipo)
+        context['fotosequipo'] = FotosEquipo.objects.filter(equipo__pk=id_equipo)
         context['action'] = reverse_lazy(self.action, kwargs={'id_equipo':id_equipo})
         context['form'].fields['equipo'].initial = context['equipo']
         context['form'].fields['gym'].initial = context['equipo'].gym
@@ -129,6 +164,7 @@ class ReporteDetailsView(BaseView):
         context['reporte'] = get_object_or_404(Reporte,pk=id)
         context['equipo'] = context['reporte'].equipo
         context['title'] = f'Reporte: {id}'
+        context['fotosequipo'] = FotosEquipo.objects.filter(equipo=context['reporte'].equipo)
         context['fotos'] = FotoReporte.objects.filter(reporte__pk=id)
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
         context['form'] = self.form(instance=context['reporte'])

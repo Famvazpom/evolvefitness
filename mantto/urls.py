@@ -14,6 +14,7 @@ urlpatterns = [
     # [------------- MANTENIMIENTO --------------] # 
     path('mantenimiento/',login_required(views.ManttoMenuView.as_view()),name="mantenimiento"),
     path('mantenimiento/equipo/agregar/',login_required(views.EquipoAddView.as_view()),name="equipo_agregar"),
+    path('mantenimiento/equipo/actualizar/<int:id_equipo>/',login_required(views.EquipoUpdateView.as_view()),name="equipo_actualizar"),
     path('mantenimiento/equipo/',login_required(views.EquipoListView.as_view()),name="equipo_lista"),
     path('mantenimiento/reporte/crear/<int:id_equipo>/',login_required(views.ReporteAddView.as_view()),name="reporte_crear"),
     path('mantenimiento/reporte/',login_required(views.ReporteListView.as_view()),name="reportes"),
