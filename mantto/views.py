@@ -129,6 +129,7 @@ class ReporteDetailsView(BaseView):
         context['reporte'] = get_object_or_404(Reporte,pk=id)
         context['equipo'] = context['reporte'].equipo
         context['title'] = f'Reporte: {id}'
+        context['fotos'] = FotoReporte.objects.filter(reporte__pk=id)
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
         context['form'] = self.form(instance=context['reporte'])
         context['form'].fields['reporto'].disabled=True
