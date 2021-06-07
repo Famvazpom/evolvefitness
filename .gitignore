@@ -90,3 +90,5 @@ db.sqlite3
 media/
 migrations/
 *.json
+*.csv
+*.code-workspace
