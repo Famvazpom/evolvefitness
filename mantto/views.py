@@ -45,7 +45,6 @@ class EquipoAddView(AdministracionCheck,BaseView):
             equipo = form.save()
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
-                    print('file')
                     foto = FotosEquipo(equipo=equipo,img=file)
                     foto.save()
             return redirect(reverse('mantenimiento'))

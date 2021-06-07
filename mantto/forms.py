@@ -33,5 +33,9 @@ class ReporteUpdateForm(forms.ModelForm):
     class Meta:
         model = Reporte
         exclude = ["revisado"]
+    
+    def __init__(self, *args, **kwargs):
+        super(ReporteUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['diagnostico'].label = "Reparacion"
 
 
