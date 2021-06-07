@@ -4,25 +4,8 @@
 {% block content %}
 
     <div class='d-flex justify-content-center'>
-        <div class="col-md-auto ml-0 d-none d-md-block">
-            <div class="row">
-                <div class="col-md-auto">
-                    <a href="{% url 'equipo_agregar' %}">
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/registrar.svg' %}" class="side-menu-btn flex-md-wrap" alt="Registrar Equipo">
-                    </a>
-                </div>
-                <div class="col-md-auto">
-                    <a href="{% url 'equipo_lista' %}">
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/reportar.svg' %}" class="side-menu-btn flex-md-wrap" alt="Reportar Falla">
-                    </a>
-                </div>
-                <div class="col-md-auto">
-                    <a href="{% url 'reportes' %}">
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/reporte.svg' %}" class="side-menu-btn flex-md-wrap" alt="Reporte de Fallas">
-                    </a>
-                </div>
-            </div>
-        </div>
+
+        <!-- Mobile -->
         <div class="col-md-auto mt-5 ml-0 d-md-none">
             <div class="row">
                 <div class="col">
@@ -42,6 +25,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-auto ml-0 d-none d-md-block">
+            <div class="row">
+                <div class="col p-0">
+                    <a href="{% url 'equipo_agregar' %}">
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/registrar.svg' %}" class="side-menu-btn flex-md-wrap" alt="Registrar Equipo">
+                    </a>
+                </div>
+                <div class="col p-0">
+                    <a href="{% url 'equipo_lista' %}">
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/reportar.svg' %}" class="side-menu-btn flex-md-wrap" alt="Reportar Falla">
+                    </a>
+                </div>
+                <div class="col p-0">
+                    <a href="{% url 'reportes' %}">
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/mantto/reporte.svg' %}" class="side-menu-btn flex-md-wrap" alt="Reporte de Fallas">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        
     </div>
 
 {% endblock content %}
