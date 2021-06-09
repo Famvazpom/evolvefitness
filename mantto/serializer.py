@@ -26,6 +26,11 @@ class EquipoSerializer(serializers.ModelSerializer):
         model = Equipo
         fields = ("__all__")
 
+class ReporteMensajeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReporteMensaje
+        fields = ("__all__")
+
 class ReporteSerializer(serializers.ModelSerializer):
     gym = GimnasioSerializer()
     fecha = serializers.SerializerMethodField()
@@ -37,9 +42,10 @@ class ReporteSerializer(serializers.ModelSerializer):
     ultima_modificacion = serializers.SerializerMethodField()
     costo = serializers.SerializerMethodField('costo_localize')
     equipo = EquipoSerializer()
+    mensajes = ReporteMensajeSerializer(read_only=True,many=True)
     class Meta:
         model = Reporte
-        fields = ("pk","fecha","equipo","gym","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
+        fields = ("pk","fecha","equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
 
     def costo_localize(self,reporte):
         return number_format(reporte.costo) if reporte.costo else None

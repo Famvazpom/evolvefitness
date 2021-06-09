@@ -110,6 +110,25 @@ class Estado(models.Model):
     def __str__(self):
         return self.nombre
 
+class TipoPagoReporte(models.Model):
+    nombre = models.CharField( max_length=50)
+    class Meta:
+        verbose_name = ("Tipo de Pago")
+        verbose_name_plural = ("Tipos de Pago")
+
+    def __str__(self):
+        return self.nombre
+
+class ReporteMensaje(models.Model):
+    mensaje = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = ("Reporte Mensaje")
+        verbose_name_plural = ("Reporte Mensajes")
+
+    def __str__(self):
+        return f'{ self.fecha.date() } - { self.mensaje }'
 
 class Reporte(models.Model):
     equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
@@ -118,17 +137,22 @@ class Reporte(models.Model):
     gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
     reporto = models.ForeignKey(Perfil, related_name=("Reporto"), on_delete=models.CASCADE)
     asignado = models.ForeignKey(Perfil,related_name=("Asignado"), on_delete=models.CASCADE)
-    diagnostico = models.TextField(blank=True)
     falla = models.TextField()
+    #tipopago = models.ForeignKey(TipoPagoReporte,on_delete=models.CASCADE)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     costo = models.DecimalField(null=True,blank=True,max_digits=10, decimal_places=2)
     revisado = models.BooleanField(default=False)
+    mensajes = models.ManyToManyField(ReporteMensaje)
+
     class Meta:
         verbose_name = ("Reporte")
         verbose_name_plural = ("Reportes")
 
     def __str__(self):
         return f'Reporte: {self.pk} - {self.equipo}'
+
+
+
 
 class FotoReporte(models.Model):
     reporte = models.ForeignKey(Reporte, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)

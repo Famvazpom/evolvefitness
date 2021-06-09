@@ -34,16 +34,18 @@ class ReporteCreateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     class Meta:
         model = Reporte
-        exclude = ["costo","diagnostico"]
+        exclude = ["costo"]
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    diagnostico = forms.CharField(widget=forms.Textarea(),required=False)
     class Meta:
         model = Reporte
-        exclude = ["revisado"]
+        exclude = ["revisado",'mensajes']
+
+    def __init__(self,*args,**kwargs):
+        super(ReporteUpdateForm,self).__init__(*args, **kwargs)
+        self.fields['diagnostico'].label = 'Reparación'
     
-    def __init__(self, *args, **kwargs):
-        super(ReporteUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['diagnostico'].label = "Reparacion"
 
 

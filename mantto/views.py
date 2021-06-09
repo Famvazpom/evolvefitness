@@ -171,12 +171,16 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
-        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
+        
+        if request.user.perfil.rol == self.mantto_obj:
+            context['form'].fields['asignado'].disabled = True
+            
 
         if request.user.perfil == context['reporte'].asignado:
             context['form'].fields['diagnostico'].required = True
         else:
             context['form'].fields['diagnostico'].disabled = True
+
 
         return render(request,self.template_name,context)
     
@@ -185,6 +189,10 @@ class ReporteDetailsView(BaseView):
         form.fields['reporto'].disabled=True
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
+
+        if request.user.perfil.rol == self.mantto_obj:
+            form.fields['asignado'].disabled = True
+
         if request.user.perfil != get_object_or_404(Reporte,pk=id).asignado:
             form.fields['diagnostico'].disabled = True
 
@@ -192,13 +200,19 @@ class ReporteDetailsView(BaseView):
             reporte = form.save()
             if reporte.asignado == request.user.perfil:
                 reporte.revisado = True
+                dg = form.cleaned_data['diagnostico']
+                mensaje = ReporteMensaje(reporte=reporte,mensaje=dg)
+                mensaje.save()
+                reporte.mensajes.add(mensaje)
                 reporte.save()
+            
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)
                     foto.save()
             return redirect(reverse('reportes'))
         else:
+            print(form.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
