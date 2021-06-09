@@ -29,3 +29,8 @@
     background-color: #ddbe4c;
     color:black;
 }
+
+
+#cardContainer {
+  column-count: 1;
+}

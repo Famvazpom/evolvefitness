@@ -10,36 +10,37 @@ function createReportCards(container,pag,data)
 
 function getNode(data)
 {
-    var out = '<div class="card p-1">';
-    out += '<div class="card-body text-center">';
-    out += '<h5 class="card-title">'+data.gym.nombre+'<br> ID : '+ data.equipo.id +'</h5>';
-    out += '<h6 class="card-subtitle mb-2 text-muted '+ data.estado.css_class +' ">'+data.estado.nombre+'</h6>';
-    out += '<p class="card-text text-justify">'+ data.falla +'</p>';
-    if(data.costo)
-    {
-        out += '<p class="card-text"> Costo: $'+ data.costo +'</p>';
-    }
-    
-    out += '<a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a>';
-    if(data.foto)
-    {   
-        out += '<a onclick="openModal(\''+data.foto_url+'\')" class="card-link btn btn-info ">Ver Fotos</a>';
-    }
-    else{
-        out += '<a class="card-link btn btn-info ">Sin Fotos</a>';
-    }
-    
-    if(data.revisado)
-    {
-        out += '<br><small class="text-muted"> Revisado </small>';
-    }
-    else{
-        out += '<br><small class="text-muted"> Sin revisar </small>';
-    }
-    out += '</div>';
-    out +='<div class="card-footer">'
-    out += '<small class="text-muted"> Ultima Modificación: '+ data.ultima_modificacion +'</small>'
-    out += '</div>';
+    var out = '<div class="card p-2">';
+        out += '<div class="card-body table-responsive text-center">';
+            out += '<table class="table table-sm table-dark">';
+            out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" card-subtitle mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
+            out += '<tr><td>'+data.asignado +'</td>';
+            if(data.costo)
+            {
+                out += '<td> $'+ data.costo +'</td>';
+            } 
+            else{
+                out += '<td></td>';
+            }
+            if(data.tipopago)
+            {
+                out += '<td>'+ data.tipopago.nombre +'</td><td></td></tr>';
+            } 
+            else{
+                out += '<td></td><td></td></tr>';
+            }
+            out += '<tr><td>'+ data.fecha +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
+            if(data.mensajes)
+            {
+                jQuery.each(data.mensajes, function(i, msg) {
+                    console.log(msg);
+                    out += '<tr><td>'+ msg.fecha +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
+                });
+            }
+            out += '<tr><td><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td></tr>';
+
+            out += '</table>';
+        out += '</div>';
     out += '</div>';
     return out;
 }

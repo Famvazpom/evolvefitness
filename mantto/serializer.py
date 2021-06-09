@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.urls import reverse_lazy
 from django.utils.formats import number_format
+from rest_framework.fields import SerializerMethodField
 from .models import *
 
 
@@ -27,8 +28,18 @@ class EquipoSerializer(serializers.ModelSerializer):
         fields = ("__all__")
 
 class ReporteMensajeSerializer(serializers.ModelSerializer):
+    fecha = serializers.SerializerMethodField()
     class Meta:
         model = ReporteMensaje
+        fields = ("__all__")
+    
+    def get_fecha(self,reporte):
+        return reporte.fecha.date()
+
+class TipoPagoSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = TipoPagoReporte
         fields = ("__all__")
 
 class ReporteSerializer(serializers.ModelSerializer):
@@ -43,9 +54,10 @@ class ReporteSerializer(serializers.ModelSerializer):
     costo = serializers.SerializerMethodField('costo_localize')
     equipo = EquipoSerializer()
     mensajes = ReporteMensajeSerializer(read_only=True,many=True)
+    tipopago = TipoPagoSerializer(read_only=True)
     class Meta:
         model = Reporte
-        fields = ("pk","fecha","equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
+        fields = ("pk","fecha",'tipopago',"equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
 
     def costo_localize(self,reporte):
         return number_format(reporte.costo) if reporte.costo else None
