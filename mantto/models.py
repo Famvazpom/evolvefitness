@@ -122,6 +122,7 @@ class TipoPagoReporte(models.Model):
 class ReporteMensaje(models.Model):
     mensaje = models.TextField()
     fecha = models.DateTimeField(auto_now_add=True)
+    autor = models.ForeignKey(Perfil,null=True,on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Reporte Mensaje")

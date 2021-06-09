@@ -29,12 +29,12 @@ function getNode(data)
             else{
                 out += '<td></td><td></td></tr>';
             }
-            out += '<tr><td>'+ data.fecha +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
+            out += '<tr><td>'+ data.fecha +' - '+ data.reporto +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
             if(data.mensajes)
             {
                 jQuery.each(data.mensajes, function(i, msg) {
                     console.log(msg);
-                    out += '<tr><td>'+ msg.fecha +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
+                    out += '<tr><td>'+ msg.fecha +' - '+ msg.autor +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
                 });
             }
             out += '<tr><td><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td></tr>';

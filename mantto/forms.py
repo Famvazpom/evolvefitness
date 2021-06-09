@@ -45,7 +45,7 @@ class ReporteUpdateForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):
         super(ReporteUpdateForm,self).__init__(*args, **kwargs)
-        self.fields['diagnostico'].label = 'Reparación'
+        self.fields['diagnostico'].label = 'Reparación/Nueva Falla'
     
 
 

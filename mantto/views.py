@@ -171,6 +171,7 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
+        context['form'].fields['falla'].disabled = True
 
         
         if request.user.perfil.rol == self.mantto_obj:
@@ -179,8 +180,6 @@ class ReporteDetailsView(BaseView):
 
         if request.user.perfil == context['reporte'].asignado:
             context['form'].fields['diagnostico'].required = True
-        else:
-            context['form'].fields['diagnostico'].disabled = True
 
 
         return render(request,self.template_name,context)
@@ -194,15 +193,14 @@ class ReporteDetailsView(BaseView):
         if request.user.perfil.rol == self.mantto_obj:
             form.fields['asignado'].disabled = True
 
-        if request.user.perfil != get_object_or_404(Reporte,pk=id).asignado:
-            form.fields['diagnostico'].disabled = True
-
         if form.is_valid():
             reporte = form.save()
             if reporte.asignado == request.user.perfil:
                 reporte.revisado = True
-                dg = form.cleaned_data['diagnostico']
-                mensaje = ReporteMensaje(reporte=reporte,mensaje=dg)
+                reporte.save()
+            dg = form.cleaned_data['diagnostico']
+            if dg:
+                mensaje = ReporteMensaje(reporte=reporte,mensaje=dg,autor=request.user.perfil)
                 mensaje.save()
                 reporte.mensajes.add(mensaje)
                 reporte.save()
@@ -213,7 +211,6 @@ class ReporteDetailsView(BaseView):
                     foto.save()
             return redirect(reverse('reportes'))
         else:
-            print(form.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
