@@ -18,7 +18,9 @@
                         <th scope='col'>Maquina</th>
                         <th scope='col'>Marca</th>
                         <th scope='col' class='d-none d-lg-table-cell'>Gym</th>
+                    {% if user.perfil.rol.nombre == 'Administrador' %}
                         <th scope='col' class='d-none d-lg-table-cell'>Modificar</th>
+                    {%endif %}
                         <th scope='col'>Detalles</th>
                     </tr>
                 </thead>
@@ -29,7 +31,9 @@
                         <td> {{ equipo.nombre }}</td>
                         <td> {{ equipo.marca }}</td>
                         <td class='d-none d-lg-table-cell'>{{ equipo.gym }}</td>
+                    {% if user.perfil.rol.nombre == 'Administrador' %}
                         <td><a onclick='openModal("{% url 'equipo_actualizar' id_equipo=equipo.pk %}")' class="btn btn-info">Modificar</a></td>
+                    {% endif %}
                         <td><a onclick='openModal("{% url 'reporte_crear' id_equipo=equipo.pk %}")' class="btn btn-info">Reportar Falla</a></td>
                     </tr>
                     
