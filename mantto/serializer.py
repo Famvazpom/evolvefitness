@@ -86,7 +86,52 @@ class ReporteSerializer(serializers.ModelSerializer):
     
     def get_foto(self,reporte):
         return True if FotoReporte.objects.filter(reporte=reporte.pk).count() > 0 else False
+    
+    def get_ultima_modificacion(self,reporte):
+        return f'{reporte.ultima_modificacion.date()}'
+
+class ReporteSerializerAdmin(serializers.ModelSerializer):
+    gym = GimnasioSerializer()
+    fecha = serializers.SerializerMethodField()
+    asignado = serializers.SerializerMethodField()
+    reporto = serializers.SerializerMethodField()
+    estado = EstadoSerializer()
+    url = serializers.SerializerMethodField()
+    foto = serializers.SerializerMethodField()
+    foto_url = serializers.SerializerMethodField()
+    ultima_modificacion = serializers.SerializerMethodField()
+    delete = serializers.SerializerMethodField()
+    costo = serializers.SerializerMethodField('costo_localize')
+    equipo = EquipoSerializer()
+    mensajes = ReporteMensajeSerializer(read_only=True,many=True)
+    tipopago = TipoPagoSerializer(read_only=True)
+    class Meta:
+        model = Reporte
+        fields = ("pk","fecha",'delete','reporto','tipopago',"equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
+
+    def costo_localize(self,reporte):
+        return number_format(reporte.costo) if reporte.costo else None
+
+    def get_fecha(self,reporte):
+        return reporte.fecha.date()
+
+    def get_asignado(self,reporte):
+        return reporte.asignado.__str__()
+    
+    def get_reporto(self,reporte):
+        return reporte.reporto.__str__()
+    
+    def get_url(self,reporte):
+        return reverse_lazy('reporte_detalles', kwargs={ 'id': reporte.pk})
+    
+    def get_foto_url(self,reporte):
         return reverse_lazy('reporte_fotos', kwargs={ 'id': reporte.pk})
+
+    def get_delete(self,reporte):
+        return reverse_lazy('reporte_eliminar', kwargs={ 'id': reporte.pk})
+    
+    def get_foto(self,reporte):
+        return True if FotoReporte.objects.filter(reporte=reporte.pk).count() > 0 else False
     
     def get_ultima_modificacion(self,reporte):
         return f'{reporte.ultima_modificacion.date()}'

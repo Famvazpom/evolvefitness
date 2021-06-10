@@ -5,7 +5,14 @@ from .serializer import *
 
 class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Reporte.objects.all().order_by('revisado','-ultima_modificacion')
-    serializer_class = ReporteSerializer
+    serializer_class = ReporteSerializerAdmin
+    serializer_class_normal = ReporteSerializer
+
+    def get_serializer_class(self):
+        if self.request.user.perfil.rol == Rol.objects.get(nombre="Administrador"):
+            return self.serializer_class
+        else:
+            return self.serializer_class_normal
 
     def get_queryset(self):
         out = self.queryset

@@ -216,6 +216,23 @@ class ReporteDetailsView(BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
+class ReporteDeleteView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/reporte_eliminar_modal.html'
+    action = 'reporte_eliminar'
+
+    def get(self,request,id,*args, **kwargs):
+        context = self.get_context_data()
+        context['title'] = f'Eliminar Reporte: {id}'
+        context['action'] = reverse_lazy(self.action, kwargs={'id':id})
+        return render(request,self.template_name,context)
+    
+    def post(self,request,id, *args,**kwargs):
+        reporte = Reporte.objects.get(pk=id)
+        for i in reporte.mensajes.all():
+            i.delete()
+        reporte.delete()
+        return redirect(reverse('reportes'))
+    
 class ReporteFotosView(BaseView):
     template_name = 'mantto/forms/reporte_fotos_modal.html'
 
@@ -224,6 +241,7 @@ class ReporteFotosView(BaseView):
         context['fotos'] = FotoReporte.objects.filter(reporte=get_object_or_404(Reporte,pk=id))
         context['title'] = f'Fotos del Reporte: {id}'
         return render(request,self.template_name,context)
+
 
 class AdminMenuView(AdministracionCheck,BaseView):
     template_name = "mantto/administracion_menu.html"

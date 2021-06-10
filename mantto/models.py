@@ -124,6 +124,7 @@ class ReporteMensaje(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     autor = models.ForeignKey(Perfil,null=True,on_delete=models.CASCADE)
 
+
     class Meta:
         verbose_name = ("Reporte Mensaje")
         verbose_name_plural = ("Reporte Mensajes")

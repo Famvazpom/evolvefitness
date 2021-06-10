@@ -11,36 +11,40 @@ function createReportCards(container,pag,data)
 function getNode(data)
 {
     var out = '<div class="card">';
-        out += '<div class="container card-body text-center">';
-            out += '<table class="table table-sm table-dark reporteCardTable">';
-            out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" card-subtitle mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
-            out += '<tr><td>'+data.asignado +'</td>';
-            if(data.costo)
-            {
-                out += '<td> $'+ data.costo +'</td>';
-            } 
-            else{
-                out += '<td></td>';
-            }
-            if(data.tipopago)
-            {
-                out += '<td>'+ data.tipopago.nombre +'</td><td></td></tr>';
-            } 
-            else{
-                out += '<td></td><td></td></tr>';
-            }
-            out += '<tr><td>'+ data.fecha +' - '+ data.reporto +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
-            if(data.mensajes)
-            {
-                jQuery.each(data.mensajes, function(i, msg) {
-                    console.log(msg);
-                    out += '<tr><td>'+ msg.fecha +' - '+ msg.autor +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
-                });
-            }
-            out += '<tr><td><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td></tr>';
-
-            out += '</table>';
-        out += '</div>';
+    out += '<div class="container card-body text-center">';
+    out += '<table class="table table-sm table-dark reporteCardTable">';
+    out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" card-subtitle mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
+    out += '<tr><td>'+data.asignado +'</td>';
+    if(data.costo)
+    {
+        out += '<td> $'+ data.costo +'</td>';
+    } 
+    else{
+        out += '<td></td>';
+    }
+    if(data.tipopago)
+    {
+        out += '<td>'+ data.tipopago.nombre +'</td><td></td></tr>';
+    } 
+    else{
+        out += '<td></td><td></td></tr>';
+    }
+    out += '<tr><td>'+ data.fecha +' - '+ data.reporto +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
+    if(data.mensajes)
+    {
+        jQuery.each(data.mensajes, function(i, msg) {
+            console.log(msg);
+            out += '<tr><td>'+ msg.fecha +' - '+ msg.autor +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
+        });
+    }
+    out += '<tr><td><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td>';
+    if(data.delete)
+    {
+        out+= '<td><a onclick="openModal(\''+data.delete+'\')" class="card-link btn btn-danger ">Eliminar</a></td>';
+    }
+        out += '</tr>';
+    out += '</table>';
+    out += '</div>';
     out += '</div>';
     return out;
 }
