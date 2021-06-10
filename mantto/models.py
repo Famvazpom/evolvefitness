@@ -6,8 +6,13 @@ from django.db.models.fields.related import ForeignKey
 from django.utils.deconstruct import deconstructible
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from PIL import Image
+from io import BytesIO
+from pyheif_pillow_opener import register_heif_opener
 
 
+register_heif_opener()
 
 @deconstructible
 class pathandrename(object):
@@ -95,6 +100,25 @@ class FotosEquipo(models.Model):
     img = models.ImageField(upload_to=eq_path, height_field=None, width_field=None, max_length=None)
     equipo = models.ForeignKey(Equipo,on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        
+        if self.img:
+            filename = "%s.jpg" % self.img.name.split('.')[0]
+            
+            img = Image.open(self.img).convert('RGB')
+            # for PNG images discarding the alpha channel and fill it with some color
+            if img.mode in ('RGBA', 'LA'):
+                    background = Image.new(img.mode[:-1], img.size, '#fff')
+                    background.paste(img, img.split()[-1])
+                    img = background
+            image_io = BytesIO()
+            img.save(image_io, format='JPEG', quality=50)
+
+            # change the img field value to be the newly modified img value
+            self.img.save(filename, ContentFile(image_io.getvalue()), save=False)
+
+        super(FotosEquipo, self).save(*args, **kwargs)
+
     def __str__(self):
         return f'Foto de {self.equipo}'
 
@@ -163,6 +187,25 @@ class FotoReporte(models.Model):
     class Meta:
         verbose_name = ("Foto de Reporte")
         verbose_name_plural = ("Fotos de Reportes")
+
+    def save(self, *args, **kwargs):
+        
+        if self.img:
+            filename = "%s.jpg" % self.img.name.split('.')[0]
+            
+            img = Image.open(self.img).convert('RGB')
+            # for PNG images discarding the alpha channel and fill it with some color
+            if img.mode in ('RGBA', 'LA'):
+                    background = Image.new(img.mode[:-1], img.size, '#fff')
+                    background.paste(img, img.split()[-1])
+                    img = background
+            image_io = BytesIO()
+            img.save(image_io, format='JPEG', quality=50)
+
+            # change the img field value to be the newly modified img value
+            self.img.save(filename, ContentFile(image_io.getvalue()), save=False)
+
+        super(FotoReporte, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.reporte}'

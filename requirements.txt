@@ -4,3 +4,4 @@ pillow
 django-rest-framework
 djangorestframework-datatables
 mysqlclient
+pyheif-pillow-opener
