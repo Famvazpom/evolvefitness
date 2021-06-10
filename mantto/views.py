@@ -189,6 +189,8 @@ class ReporteDetailsView(BaseView):
         form.fields['reporto'].disabled=True
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
+        form.fields['falla'].disabled = True
+
 
         if request.user.perfil.rol == self.mantto_obj:
             form.fields['asignado'].disabled = True
