@@ -38,6 +38,8 @@ class ReporteCreateForm(forms.ModelForm):
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    fotos_facturas = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+
     diagnostico = forms.CharField(widget=forms.Textarea(),required=False)
     class Meta:
         model = Reporte
@@ -46,6 +48,7 @@ class ReporteUpdateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super(ReporteUpdateForm,self).__init__(*args, **kwargs)
         self.fields['diagnostico'].label = 'Reparación/Nueva Falla'
+        self.fields['fotos_facturas'].label = 'Fotos de Notas / Facturas'
     
 
 

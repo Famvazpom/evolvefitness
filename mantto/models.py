@@ -44,6 +44,7 @@ class pathandrenameReporte(object):
 
 eq_path = pathandrename('images/equipos/')
 rep_path = pathandrenameReporte('images/reportes/')
+repnota_path = pathandrenameReporte('images/notas_reportes/')
 
 class Rol(models.Model):
     nombre = models.CharField(max_length=50)
@@ -177,9 +178,6 @@ class Reporte(models.Model):
     def __str__(self):
         return f'Reporte: {self.pk} - {self.equipo}'
 
-
-
-
 class FotoReporte(models.Model):
     reporte = models.ForeignKey(Reporte, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)
     img = models.ImageField(upload_to=rep_path, height_field=None, width_field=None, max_length=None)
@@ -206,6 +204,36 @@ class FotoReporte(models.Model):
             self.img.save(filename, ContentFile(image_io.getvalue()), save=False)
 
         super(FotoReporte, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.reporte}'
+
+class FotoNotaReporte(models.Model):
+    reporte = models.ForeignKey(Reporte, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)
+    img = models.ImageField(upload_to=repnota_path, height_field=None, width_field=None, max_length=None)
+
+    class Meta:
+        verbose_name = ("Foto de Nota de Reporte")
+        verbose_name_plural = ("Fotos de Notas de Reportes")
+
+    def save(self, *args, **kwargs):
+        
+        if self.img:
+            filename = "%s.jpg" % self.img.name.split('.')[0]
+            
+            img = Image.open(self.img).convert('RGB')
+            # for PNG images discarding the alpha channel and fill it with some color
+            if img.mode in ('RGBA', 'LA'):
+                    background = Image.new(img.mode[:-1], img.size, '#fff')
+                    background.paste(img, img.split()[-1])
+                    img = background
+            image_io = BytesIO()
+            img.save(image_io, format='JPEG', quality=50)
+
+            # change the img field value to be the newly modified img value
+            self.img.save(filename, ContentFile(image_io.getvalue()), save=False)
+
+        super(FotoNotaReporte, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.reporte}'

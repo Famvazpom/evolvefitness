@@ -4,7 +4,7 @@ from .models import *
 from .serializer import *
 
 class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Reporte.objects.all().order_by('revisado','-ultima_modificacion')
+    queryset = Reporte.objects.all().order_by('-ultima_modificacion')
     serializer_class = ReporteSerializerAdmin
     serializer_class_normal = ReporteSerializer
 

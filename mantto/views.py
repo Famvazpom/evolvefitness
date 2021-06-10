@@ -171,7 +171,8 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
-        context['form'].fields['falla'].disabled = True
+        if request.user.perfil.rol != self.admin_obj:
+            context['form'].fields['falla'].disabled = True
 
         
         if request.user.perfil.rol == self.mantto_obj:
@@ -189,7 +190,8 @@ class ReporteDetailsView(BaseView):
         form.fields['reporto'].disabled=True
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
-        form.fields['falla'].disabled = True
+        if request.user.perfil.rol != self.admin_obj:
+            form.fields['falla'].disabled = True
 
 
         if request.user.perfil.rol == self.mantto_obj:
@@ -210,6 +212,9 @@ class ReporteDetailsView(BaseView):
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)
+                    foto.save()
+                for file in self.request.FILES.getlist('fotos_facturas'):
+                    foto = FotoNotaReporte(reporte=reporte,img=file)
                     foto.save()
             return redirect(reverse('reportes'))
         else:
@@ -232,7 +237,14 @@ class ReporteDeleteView(AdministracionCheck,BaseView):
             i.delete()
         reporte.delete()
         return redirect(reverse('reportes'))
+
+class ReporteFotoDeleteView(AdministracionCheck,BaseView):
     
+    def post(self,request,id, *args,**kwargs):
+        reporte = FotoReporte.objects.get(pk=id)
+        reporte.delete()
+        return JsonResponse({'msg': 'Eliminacion Correcta'})
+
 class ReporteFotosView(BaseView):
     template_name = 'mantto/forms/reporte_fotos_modal.html'
 
