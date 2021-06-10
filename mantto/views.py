@@ -165,6 +165,7 @@ class ReporteDetailsView(BaseView):
         context['equipo'] = context['reporte'].equipo
         context['title'] = f'Reporte: {id}'
         context['fotosequipo'] = FotosEquipo.objects.filter(equipo=context['reporte'].equipo)
+        context['fotos_facturas'] = FotoNotaReporte.objects.filter(reporte=context['reporte'])
         context['fotos'] = FotoReporte.objects.filter(reporte__pk=id)
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
         context['form'] = self.form(instance=context['reporte'])
