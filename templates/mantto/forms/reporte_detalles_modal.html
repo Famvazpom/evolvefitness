@@ -113,6 +113,13 @@
                         </div>
                         <div class='row'>
                             <div class='col'>
+                                {{ form.fotos_facturas.label_tag }}
+                                {{ form.fotos_facturas.errors }}
+                                {% render_field form.fotos_facturas class='form-control' %}
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col'>
                                 {{ form.falla.label_tag }}
                                 {{ form.falla.errors }}
                                 {% render_field form.falla class='form-control' %}
@@ -130,41 +137,21 @@
                 </div>
             
             {% if fotos %}
-            <div class='row text-center'>
-                <h5> Fotos Subidas </h5>
-                <div id="reporteFotos" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
+                <div class='row text-center mt-2'>
+                    <h5> Fotos Subidas </h5>
+                    <div id="reporteFotos">
                         {% for i in fotos %}
-                            {% if forloop.first %}
-                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
-                            {%else%}
-                                <li data-target="#reporteFotos" data-slide-to="{{ forloop.counter0 }}"></li>
-                            {% endif %}
-                        {% endfor %}               
-                    </ol>
-                    <div class="carousel-inner">
-                        {% for i in fotos %}
-                            {% if forloop.first %}
-                                <div class="carousel-item active">
-                            {%else%}
-                                <div class="carousel-item">
-                            {% endif %}
+                            <div class="foto-container p-3" id="{{ i.pk }}">
                                 <img src="{{ i.img.url }}" class="d-block w-100">
+                            {% if request.user.perfil.rol.nombre == "Administrador" %}
+                                <a class='btn btn-primary' onclick="deleteFoto('{% url 'reporte_foto_eliminar' id=i.pk %}','{{ i.pk }}')"> Eliminar Foto </a>
+                            {% endif %}
                             </div>
                         {% endfor %}
                     </div>
-                    <a class="carousel-control-prev" href="#reporteFotos" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#reporteFotos" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
                 </div>
-            </div>
             {% else %}
-             <div class='row'>
+             <div class='row text-center mt-2'>
                 <h5> Sin fotos disponibles </h5>
              </div>
             {% endif %}
