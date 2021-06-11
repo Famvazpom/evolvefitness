@@ -242,6 +242,7 @@ class FotoNotaReporte(models.Model):
 
 @receiver(models.signals.post_delete, sender=FotoReporte)
 @receiver(models.signals.post_delete, sender=FotosEquipo)
+@receiver(models.signals.post_delete, sender=FotoNotaReporte)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.img:
         if os.path.isfile(instance.img.path):
