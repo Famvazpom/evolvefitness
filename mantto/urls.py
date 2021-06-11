@@ -21,7 +21,7 @@ urlpatterns = [
     path('mantenimiento/reporte/detalles/<int:id>/',login_required(views.ReporteDetailsView.as_view()),name="reporte_detalles"),
     path('mantenimiento/reporte/eliminar/<int:id>/',login_required(views.ReporteDeleteView.as_view()),name="reporte_eliminar"),
     path('mantenimiento/reporte/fotos/<int:id>/',login_required(views.ReporteFotosView.as_view()),name="reporte_fotos"),
-    path('mantenimiento/reporte/fotos/eliminar/<int:id>/',login_required(views.ReporteFotoDeleteView.as_view()),name="reporte_foto_eliminar"),
+    path('mantenimiento/reporte/nota/eliminar/<int:id>/',login_required(views.ReporteFotoNotaDeleteView.as_view()),name="reporte_foto_nota_eliminar"),
 
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
     path('administracion/usuarios/',login_required(views.UserListView.as_view()),name="administracion_usuarios"),

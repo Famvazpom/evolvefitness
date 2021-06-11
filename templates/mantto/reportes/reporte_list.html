@@ -15,13 +15,13 @@
                 <div class='row'>
                     <div class='col-8'>
                         <label>ID Maquina</label>
-                        <input id='maquinaInput' class='form-control'>
+                        <input onchange='addFilters()' id='maquinaInput' class='form-control'>
                     </div>
                 </div>
                 <div class='row'>
                     <div class='col-8'>
                         <label>Gimnasio</label>
-                        <select id='gymSelect' class='form-control'>
+                        <select onchange='addFilters()' id='gymSelect' class='form-control'>
                             <option value selected> ---------- </option>
                             {% for gym in gyms %}
                                 <option value="{{gym.pk}}"> {{gym}} </option>
@@ -33,7 +33,7 @@
                     <div class='row'>
                         <div class='col-8'>
                             <label>Asignado a</label>
-                            <select id='asignadoSelect' class='form-control'>
+                            <select onchange='addFilters()' id='asignadoSelect' class='form-control'>
                                 <option value selected> ---------- </option>
                                 {% for person in asignado %}
                                     <option value="{{person.pk}}"> {{person}} </option>
@@ -45,16 +45,11 @@
                 <div class='row'>
                     <div class='col-8'>
                         <label>Revision</label>
-                        <select id='revisadoSelect' class='form-control'>
+                        <select onchange='addFilters()' id='revisadoSelect' class='form-control'>
                             <option value selected> ---------- </option>
                             <option value="1"> Revisado </option>
                             <option value="2"> Sin revisar </option>
                         </select>
-                    </div>
-                </div>
-                <div class='row mt-2'>
-                    <div class='col-8'>
-                        <button onclick='addFilters()' class='btn btn-primary'> Filtrar </button>
                     </div>
                 </div>
             </div>

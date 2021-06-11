@@ -246,6 +246,15 @@ class ReporteFotoDeleteView(AdministracionCheck,BaseView):
         reporte.delete()
         return JsonResponse({'msg': 'Eliminacion Correcta'})
 
+class ReporteFotoNotaDeleteView(AdministracionCheck,BaseView):
+    
+    def post(self,request,id, *args,**kwargs):
+        reporte = FotoNotaReporte.objects.get(pk=id)
+        print(id)
+        reporte.delete()
+        return JsonResponse({'msg': 'Eliminacion Correcta'})
+
+
 class ReporteFotosView(BaseView):
     template_name = 'mantto/forms/reporte_fotos_modal.html'
 
