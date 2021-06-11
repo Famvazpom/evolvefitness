@@ -174,14 +174,9 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['gym'].disabled = True
         if request.user.perfil.rol != self.admin_obj:
             context['form'].fields['falla'].disabled = True
-
         
         if request.user.perfil.rol == self.mantto_obj:
             context['form'].fields['asignado'].disabled = True
-            
-
-        if request.user.perfil == context['reporte'].asignado:
-            context['form'].fields['diagnostico'].required = True
 
 
         return render(request,self.template_name,context)
@@ -193,8 +188,7 @@ class ReporteDetailsView(BaseView):
         form.fields['gym'].disabled = True
         if request.user.perfil.rol != self.admin_obj:
             form.fields['falla'].disabled = True
-
-
+            
         if request.user.perfil.rol == self.mantto_obj:
             form.fields['asignado'].disabled = True
 
