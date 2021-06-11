@@ -35,15 +35,21 @@ class ReporteCreateForm(forms.ModelForm):
     class Meta:
         model = Reporte
         exclude = ["costo","tipopago",'mensajes']
+        widgets = {
+          'falla': forms.Textarea(attrs={'rows':4}),
+        }
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
-    fotos_facturas = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    fotos_facturas = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}),required=False)
 
-    diagnostico = forms.CharField(widget=forms.Textarea(),required=False)
+    diagnostico = forms.CharField(widget=forms.Textarea(attrs={'rows':4}),required=False)
     class Meta:
         model = Reporte
         exclude = ["revisado",'mensajes']
+        widgets = {
+          'falla': forms.Textarea(attrs={'rows':4}),
+        }
 
     def __init__(self,*args,**kwargs):
         super(ReporteUpdateForm,self).__init__(*args, **kwargs)
