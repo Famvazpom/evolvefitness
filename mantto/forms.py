@@ -38,8 +38,26 @@ class ReporteCreateForm(forms.ModelForm):
         model = Reporte
         exclude = ["costo","tipopago",'mensajes']
         widgets = {
-          'falla': forms.Textarea(attrs={'rows':4}),
+          'falla': forms.Textarea(attrs={'rows':2}),
         }
+
+class MensajeUpdateForm(forms.ModelForm):
+    eliminar = forms.BooleanField(required=False)
+    class Meta:
+        model= ReporteMensaje
+        fields = ('mensaje','eliminar')
+        widgets = {
+          'mensaje': forms.Textarea(attrs={'rows':2,'required':False}),
+        }
+    def save(self, commit=True):
+        instance = super(MensajeUpdateForm, self).save(commit=False)
+        if commit:
+            if self.cleaned_data['eliminar']:
+                instance.delete() 
+            else:
+                instance.save()
+            
+        return instance
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
@@ -52,7 +70,7 @@ class ReporteUpdateForm(forms.ModelForm):
         model = Reporte
         exclude = ["revisado",'mensajes']
         widgets = {
-          'falla': forms.Textarea(attrs={'rows':4}),
+          'falla': forms.Textarea(attrs={'rows':2}),
         }
 
     def __init__(self,*args,**kwargs):

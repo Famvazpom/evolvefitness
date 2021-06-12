@@ -125,6 +125,40 @@
                                 {% render_field form.falla class='form-control' %}
                             </div>
                         </div>
+                        {{ formset.management_form }}
+                        <div class='row mt-2 text-center'>
+                            <h5> Reparaciones anteriores </h5>
+                        </div>
+                        {% for item in formset %}
+                            <div class='row d-none'>
+                                {{ item.id.label_tag }}
+                                {{ item.id.errors }}
+                                {% render_field item.id class='form-control' %}
+                            </div>
+                            <div class='row'>
+                                <div class='col'>
+                                    {{ item.mensaje.label_tag }}
+                                    {{ item.mensaje.errors }}
+                                    {% render_field item.mensaje class='form-control' %}
+                                </div>
+                            </div>
+                            {% if request.user.perfil.rol.nombre == 'Administrador' %}
+                            <div class='row-auto'>
+                                {{ item.eliminar.label_tag }}
+                                    {{ item.eliminar.errors }}
+                                    {{ item.eliminar }}
+                            </div>
+                            {% else %}
+                            <div class='row-auto d-none'>
+                                {{ item.eliminar.label_tag }}
+                                    {{ item.eliminar.errors }}
+                                    {{ item.eliminar }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class='row mt-2 text-center'>
+                            <h5> Agregar Mensaje </h5>
+                        </div>
                         <div class='row'>
                             <div class='col'>
                                 {{ form.diagnostico.label_tag }}

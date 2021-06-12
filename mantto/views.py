@@ -1,3 +1,4 @@
+from django.db.models import query
 from mantto.forms import UsuarioCreacionForm
 from mantto.models import FotoReporte, FotosEquipo
 from django.shortcuts import render,redirect, get_object_or_404
@@ -5,6 +6,7 @@ from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.forms.models import modelformset_factory
 from .forms import *
 
 
@@ -157,7 +159,15 @@ class ReporteListView(BaseView):
 class ReporteDetailsView(BaseView):
     template_name = 'mantto/forms/reporte_detalles_modal.html'
     form = ReporteUpdateForm
+    formset = modelformset_factory(ReporteMensaje,form=MensajeUpdateForm,extra=0)
     action = 'reporte_detalles'
+
+    def disable_formset(self,request,formset):
+        if request.user.perfil.rol != self.admin_obj:
+            for i in formset:
+                i.fields['mensaje'].disabled = True
+                i.fields['eliminar'].disabled = True
+        return formset
 
     def get(self,request,id,*args, **kwargs):
         context = self.get_context_data()
@@ -168,6 +178,7 @@ class ReporteDetailsView(BaseView):
         context['fotos_facturas'] = FotoNotaReporte.objects.filter(reporte=context['reporte'])
         context['fotos'] = FotoReporte.objects.filter(reporte__pk=id)
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
+        context['formset'] = self.disable_formset(request,self.formset(queryset=context['reporte'].mensajes.all()))
         context['form'] = self.form(instance=context['reporte'])
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
@@ -179,11 +190,11 @@ class ReporteDetailsView(BaseView):
         if request.user.perfil.rol == self.mantto_obj:
             context['form'].fields['asignado'].disabled = True
 
-
         return render(request,self.template_name,context)
     
     def post(self,request,id,*args, **kwargs):
         form = self.form(request.POST,instance=get_object_or_404(Reporte,pk=id))
+        formset = self.disable_formset(request,self.formset(request.POST,queryset=get_object_or_404(Reporte,pk=id).mensajes.all()))
         form.fields['reporto'].disabled=True
         form.fields['equipo'].disabled = True
         form.fields['gym'].disabled = True
@@ -193,7 +204,7 @@ class ReporteDetailsView(BaseView):
         if request.user.perfil.rol == self.mantto_obj:
             form.fields['asignado'].disabled = True
 
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             reporte = form.save()
             if reporte.asignado == request.user.perfil:
                 reporte.revisado = True
@@ -204,7 +215,8 @@ class ReporteDetailsView(BaseView):
                 mensaje.save()
                 reporte.mensajes.add(mensaje)
                 reporte.save()
-            
+            for item in formset:
+                item.save()
             if request.FILES:
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)
@@ -214,6 +226,7 @@ class ReporteDetailsView(BaseView):
                     foto.save()
             return redirect(reverse('reportes'))
         else:
+            print(formset.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
