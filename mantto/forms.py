@@ -32,6 +32,8 @@ class EquipoUpdateForm(forms.ModelForm):
 class ReporteCreateForm(forms.ModelForm):
     id_reporte = forms.IntegerField(required=False)
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    asignado= forms.ModelMultipleChoiceField(queryset=Perfil.objects.filter(rol=Rol.objects.get(nombre='Mantenimiento')),
+            widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Reporte
         exclude = ["costo","tipopago",'mensajes']
@@ -42,6 +44,8 @@ class ReporteCreateForm(forms.ModelForm):
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     fotos_facturas = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}),required=False)
+    asignado= forms.ModelMultipleChoiceField(queryset=Perfil.objects.filter(rol=Rol.objects.get(nombre='Mantenimiento')),
+            widget=forms.CheckboxSelectMultiple)
 
     diagnostico = forms.CharField(widget=forms.Textarea(attrs={'rows':4}),required=False)
     class Meta:

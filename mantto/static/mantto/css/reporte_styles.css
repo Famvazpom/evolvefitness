@@ -35,6 +35,10 @@
   column-count: 1;
 }
 
+#modal_form ul
+{
+    list-style-type: none;
+}
 
 @media (max-width: 576px) {
 

@@ -95,10 +95,12 @@
                                 {{ form.reporto.errors }}
                                 {% render_field form.reporto class='form-control' %}
                             </div>
-                            <div class='col'>
+                        </div>
+                        <div class='row '>
+                            <div class='form-check form-switch'>
                                 {{ form.asignado.label_tag }}
                                 {{ form.asignado.errors }}
-                                {% render_field form.asignado class='form-control' %}
+                                {{ form.asignado }}
                             </div>
                         </div>
                         <div class='row'>

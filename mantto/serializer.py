@@ -116,7 +116,8 @@ class ReporteSerializerAdmin(serializers.ModelSerializer):
         return reporte.fecha.date()
 
     def get_asignado(self,reporte):
-        return reporte.asignado.__str__()
+        asignados = [i.__str__() for i in reporte.asignado.all() ]
+        return asignados
     
     def get_reporto(self,reporte):
         return reporte.reporto.__str__()

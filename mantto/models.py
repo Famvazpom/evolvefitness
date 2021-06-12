@@ -163,7 +163,7 @@ class Reporte(models.Model):
     ultima_modificacion = models.DateTimeField(auto_now=True)
     gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
     reporto = models.ForeignKey(Perfil, related_name=("Reporto"), on_delete=models.CASCADE)
-    asignado = models.ForeignKey(Perfil,related_name=("Asignado"), on_delete=models.CASCADE)
+    asignado = models.ManyToManyField(Perfil,related_name=("Personas_asignadas"))
     falla = models.TextField()
     tipopago = models.ForeignKey(TipoPagoReporte,blank=True,null=True,on_delete=models.CASCADE)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
