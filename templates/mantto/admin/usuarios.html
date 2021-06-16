@@ -48,8 +48,8 @@
                 </td>
                 <td>
                     {%if i.user.username != user.username %}
-                        <button class='btn btn-primary btn-circle' value={{ i.user.username }} > <i class="fas fa-edit"></i> </button>
-                        <button class='btn btn-info btn-circle' data-toggle="tooltip" data-placement="top" title="Cambiar contraseña" value={{ i.user.username }} > <i class="fas fa-key"></i></button>
+                        <button class='btn btn-primary btn-circle' onclick='openModal("{% url 'administracion_usuarios_actualizar' usr=i.user.username %}")'> <i class="fas fa-edit"></i> </button>
+                        <button class='btn btn-info btn-circle' data-toggle="tooltip" data-placement="top" title="Cambiar contraseña" onclick='openModal("{% url 'administracion_usuarios_actualizar_pwd' usr=i.user.username %}")'> <i class="fas fa-key"></i></button>
 
                         {%if i.user.is_active %}
                             <button class='btn btn-danger btn-circle' value={{ i.user.username }} > <i class="fas fa-ban"></i> </button>

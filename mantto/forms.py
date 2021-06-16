@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AdminPasswordChangeForm
 from .models import *
 
 class UsuarioCreacionForm(UserCreationForm):
@@ -78,5 +79,13 @@ class ReporteUpdateForm(forms.ModelForm):
         self.fields['diagnostico'].label = 'Reparación/Nueva Falla'
         self.fields['fotos_facturas'].label = 'Fotos de Notas / Facturas'
     
+class PerfilActualizarForm(forms.ModelForm):
+    rol = forms.ModelChoiceField(queryset=Rol.objects.all())
+    class Meta:
+        model= User
+        fields = ['first_name','last_name']
 
-
+class UserPasswordChangeForm(AdminPasswordChangeForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(user, *args, **kwargs)

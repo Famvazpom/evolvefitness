@@ -1,5 +1,4 @@
 from django.db.models import query
-from mantto.forms import UsuarioCreacionForm
 from mantto.models import FotoReporte, FotosEquipo
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import JsonResponse
@@ -305,3 +304,64 @@ class UserCreateView(AdministracionCheck,BaseView):
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
+
+class UserUpdateView(AdministracionCheck,BaseView):
+    template_name = "mantto/forms/usuario_actualizar.html"
+    form = PerfilActualizarForm
+
+    def get_context_data(self,usr, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        obj = User.objects.get(username=usr)
+        context['title'] = f'Actualizar usuario {obj.perfil}'
+        context['form'] = self.form(instance=obj)
+        context['form'].fields['rol'].initial = obj.perfil.rol
+        context['action'] = reverse_lazy('administracion_usuarios_actualizar', kwargs={'usr': obj.username})
+        return context
+    
+    def get(self,request,usr,*args, **kwargs):
+        context = self.get_context_data(usr)
+        return render(request,self.template_name,context)
+
+    def post(self,request,usr,*args, **kwargs):
+        obj = User.objects.get(username=usr)
+        form = self.form(request.POST,instance=obj)
+        
+        if form.is_valid():
+            form.save()
+            obj.perfil.rol = form.cleaned_data['rol']
+            obj.perfil.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            print(form.errors)
+            return JsonResponse(data=errors, status=400)
+
+
+class UserPasswordUpdateView(AdministracionCheck,BaseView):
+    template_name = "mantto/forms/usuario_crear.html"
+    form = UserPasswordChangeForm
+
+    def get_context_data(self,usr, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        obj = User.objects.get(username=usr)
+        context['title'] = f'Actualizar usuario {obj.perfil}'
+        context['form'] = self.form(user=obj)
+        context['action'] = reverse_lazy('administracion_usuarios_actualizar_pwd', kwargs={'usr': obj.username})
+        return context
+    
+    def get(self,request,usr,*args, **kwargs):
+        context = self.get_context_data(usr)
+        return render(request,self.template_name,context)
+
+    def post(self,request,usr,*args, **kwargs):
+        obj = User.objects.get(username=usr)
+        form = self.form(obj,request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            print(form.errors)
+            return JsonResponse(data=errors, status=400)
+

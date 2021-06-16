@@ -27,5 +27,8 @@ urlpatterns = [
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
     path('administracion/usuarios/',login_required(views.UserListView.as_view()),name="administracion_usuarios"),
     path('administracion/usuarios/crear/',login_required(views.UserCreateView.as_view()),name="administracion_usuarios_crear"),
+    path('administracion/usuarios/actualizar/<slug:usr>',login_required(views.UserUpdateView.as_view()),name="administracion_usuarios_actualizar"),
+    path('administracion/usuarios/pwd/<slug:usr>',login_required(views.UserPasswordUpdateView.as_view()),name="administracion_usuarios_actualizar_pwd"),
+
     path('api/',include(router.urls))
 ] 
