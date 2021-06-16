@@ -1,4 +1,5 @@
 from mantto.serializer import FotoReporteSerializer
+from django.db.models import Q
 from rest_framework import viewsets
 from .models import *
 from .serializer import *
@@ -35,7 +36,7 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
             if revisado == '2':
                 out = out.filter(revisado=False)
 
-        return out.filter(asignado=self.request.user.perfil) if self.request.user.perfil.rol == Rol.objects.get(nombre='Mantenimiento') else out
+        return out.filter(Q(asignado=self.request.user.perfil) | Q(reporto=self.request.user.perfil)) if self.request.user.perfil.rol == Rol.objects.get(nombre='Mantenimiento') else out
     
 class FotoReporteViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = FotoReporte.objects.all()
