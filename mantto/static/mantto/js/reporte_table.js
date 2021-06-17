@@ -9,7 +9,7 @@ function createReportCards(container,pag,data)
 
 function getNode(data)
 {
-    var out = '<div class="card">';
+    var out = '<div class="row card mt-2">';
     out += '<div class="container card-body text-center">';
     out += '<table class="table table-sm table-dark reporteCardTable">';
     out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" card-subtitle mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
