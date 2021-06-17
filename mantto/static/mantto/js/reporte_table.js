@@ -101,19 +101,6 @@ function changeActiveClass(st_pk)
 
 }
 
-function addParameters(url,prefix,parameter)
-{
-    if(url.includes('?'))
-    {
-        url += '&'+prefix+'='+parameter;
-    }
-    else
-    {
-        url += '?'+prefix+'='+parameter;
-    }
-    return url;
-}
-
 function addFilters(st_pk)
 {
     url = $('#cardContainer').attr('data-source');

@@ -1,3 +1,4 @@
+from django.urls.base import reverse
 from rest_framework import serializers
 from django.urls import reverse_lazy
 from django.utils.formats import number_format
@@ -22,7 +23,32 @@ class GimnasioSerializer(serializers.ModelSerializer):
         fields = ("__all__")
     
 
+class EquipoSerializerAdmin(serializers.ModelSerializer):
+    gym = GimnasioSerializer()
+    reportar = serializers.SerializerMethodField()
+    modificar = serializers.SerializerMethodField()
+    
+    def get_modificar(self, obj):
+        modify_url = reverse_lazy('equipo_actualizar',kwargs={ 'id_equipo': obj.pk })
+        return f'<a onclick=\'openModal("{ modify_url }")\' class="btn btn-info">Modificar</a>'
+        
+    
+    def get_reportar(self, obj):
+        modify_url = reverse_lazy('reporte_crear',kwargs={ 'id_equipo': obj.pk })
+        return f'<a onclick=\'openModal("{ modify_url }")\' class="btn btn-info">Reportar</a>'
+        
+    class Meta:
+        model = Equipo
+        fields = ("__all__")
+
 class EquipoSerializer(serializers.ModelSerializer):
+    gym = GimnasioSerializer()
+    reportar = serializers.SerializerMethodField()
+    
+    def get_reportar(self, obj):
+        modify_url = reverse_lazy('reporte_crear',kwargs={ 'id_equipo': obj.pk })
+        return f'<a onclick=\'openModal("{ modify_url }")\' class="btn btn-info">Reportar</a>'
+        
     class Meta:
         model = Equipo
         fields = ("__all__")

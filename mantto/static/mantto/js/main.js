@@ -1,3 +1,15 @@
+function addParameters(url,prefix,parameter)
+{
+    if(url.includes('?'))
+    {
+        url += '&'+prefix+'='+parameter;
+    }
+    else
+    {
+        url += '?'+prefix+'='+parameter;
+    }
+    return url;
+}
 
 function openModal(url)
 {

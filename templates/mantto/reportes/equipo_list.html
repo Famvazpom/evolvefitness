@@ -9,9 +9,44 @@
 {% block content %}
 
     <div class='container'>
+        <div class='row m-3'>
+            <h6>Filtros</h6>
+            <div class='col'>
+                <div class='row'>
+                    <div class='col-8'>
+                        <label>ID Maquina</label>
+                        <input onchange='addFilters()' id='idmaquinaInput' class='form-control'>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-8'>
+                        <label>Gimnasio</label>
+                        <select onchange='addFilters()' id='gymSelect' class='form-control'>
+                            <option value selected> ---------- </option>
+                            {% for gym in gyms %}
+                                <option value="{{gym.pk}}"> {{gym}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-8'>
+                        <label>Marca</label>
+                        <input onchange='addFilters()' id='marcaInput' class='form-control'>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-8'>
+                        <label>Maquina</label>
+                        <input onchange='addFilters()' id='maquinaInput' class='form-control'>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <h2 class='text-center'>Lista de Equipos</h2>
         <div class='table-responsive'>
-            <table id="equipoTable" class="table table-striped table-dark">
+            <table id="equipoTable" data-source="{% url 'equipo-list' %}" class="table table-striped table-dark">
                 <thead>
                     <tr>
                         <th scope='col'>ID</th>
@@ -25,19 +60,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for equipo in equipos %}
-                    <tr>
-                        <td class='text-center' > {{ equipo.pk }} </td>
-                        <td> {{ equipo.nombre }}</td>
-                        <td> {{ equipo.marca }}</td>
-                        <td>{{ equipo.gym }}</td>
-                    {% if user.perfil.rol.nombre == 'Administrador' %}
-                        <td><a onclick='openModal("{% url 'equipo_actualizar' id_equipo=equipo.pk %}")' class="btn btn-info">Modificar</a></td>
-                    {% endif %}
-                        <td><a onclick='openModal("{% url 'reporte_crear' id_equipo=equipo.pk %}")' class="btn btn-info">Reportar Falla</a></td>
-                    </tr>
-                    
-                    {% endfor %}
                 </tbody>
             </table>
         </div>

@@ -59,7 +59,7 @@ class EquipoListView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["equipos"] = Equipo.objects.all()
+        context['gyms'] = Gimnasio.objects.all()
         return context
 
 class EquipoUpdateView(BaseView):

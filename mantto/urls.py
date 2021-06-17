@@ -6,6 +6,7 @@ from .viewsets import *
 
 router = routers.SimpleRouter()
 router.register('reportes',ReporteViewSet)
+router.register('equipos',EquipoViewSet)
 router.register('foto-reporte',FotoReporteViewSet)
 
 urlpatterns = [
