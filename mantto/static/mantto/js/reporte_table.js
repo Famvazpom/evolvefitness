@@ -39,10 +39,10 @@ function getNode(data)
             out += '<tr><td>'+ msg.fecha +' - '+ msg.autor +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
         });
     }
-    out += '<tr><td><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td>';
+    out += '<tr><td ><a onclick="openModal(\''+data.url+'\')" class="card-link btn btn-info ">Detalles</a></td>';
     if(data.delete)
     {
-        out+= '<td><a onclick="openModal(\''+data.delete+'\')" class="card-link btn btn-danger ">Eliminar</a></td>';
+        out+= '<td colspan=2 class="ml-3" ><a onclick="openModal(\''+data.delete+'\')" class="card-link btn btn-danger ">Eliminar</a></td>';
     }
         out += '</tr>';
     out += '</table>';
