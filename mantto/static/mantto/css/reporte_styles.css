@@ -40,6 +40,29 @@
     list-style-type: none;
 }
 
+.report-card
+{
+    background-color: rgb(33, 37, 41);
+     min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-color: #fff;
+    border-radius: 0.25rem;
+}
+.report-status
+{
+    color: white !important;
+    -webkit-text-stroke: 1px black;
+    -webkit-text-fill-color: white;
+
+}
+
+.reporteCardTable
+{
+    table-layout:fixed;
+}
+
 @media (max-width: 576px) {
 
     .reporteCardTable

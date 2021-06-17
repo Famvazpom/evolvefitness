@@ -9,10 +9,10 @@ function createReportCards(container,pag,data)
 
 function getNode(data)
 {
-    var out = '<div class="row card mt-2">';
+    var out = '<div class="row report-card mt-2">';
     out += '<div class="container card-body text-center">';
     out += '<table class="table table-sm table-dark reporteCardTable">';
-    out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" card-subtitle mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
+    out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" report-status mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
     out += '<tr><td>';
     data.asignado.forEach(element => {
         out+=element + "<br>";
@@ -36,7 +36,6 @@ function getNode(data)
     if(data.mensajes)
     {
         jQuery.each(data.mensajes, function(i, msg) {
-            console.log(msg);
             out += '<tr><td>'+ msg.fecha +' - '+ msg.autor +'</td><td class"text-justify" colspan=3>'+ msg.mensaje +'</td></tr>';
         });
     }
@@ -54,7 +53,7 @@ function getNode(data)
 
 function addPagination(data)
 {
-    var out = '<nav>';
+    var out = '<nav class="mt-2">';
         out += '<ul class="pagination justify-content-center">';
         if (data.previous)
         {
