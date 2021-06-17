@@ -25,7 +25,11 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
         if gym is not None:
             out = out.filter(gym=gym)
         if maquina is not None:
-            out = out.filter(equipo=maquina)
+            if maquina.isnumeric():
+                out = out.filter(equipo=maquina)
+            else:
+                out = out.filter(equipo__nombre__icontains=maquina)
+            
         if asignado is not None:
             out = out.filter(asignado=asignado)
         if status is not None:
