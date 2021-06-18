@@ -133,7 +133,7 @@ class ReporteSerializerAdmin(serializers.ModelSerializer):
     tipopago = TipoPagoSerializer(read_only=True)
     class Meta:
         model = Reporte
-        fields = ("pk","fecha",'delete','reporto','tipopago',"equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
+        fields = ('__all__')
 
     def costo_localize(self,reporte):
         return number_format(reporte.costo) if reporte.costo else None

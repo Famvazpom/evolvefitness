@@ -26,6 +26,9 @@ urlpatterns = [
     path('mantenimiento/reporte/nota/eliminar/<int:id>/',login_required(views.ReporteFotoNotaDeleteView.as_view()),name="reporte_foto_nota_eliminar"),
 
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
+    path('administracion/sucursales/crear/',login_required(views.SucursalCreateView.as_view()),name="administracion-sucursal-crear"),
+
+
     path('administracion/usuarios/',login_required(views.UserListView.as_view()),name="administracion_usuarios"),
     path('administracion/usuarios/crear/',login_required(views.UserCreateView.as_view()),name="administracion_usuarios_crear"),
     path('administracion/usuarios/actualizar/<slug:usr>',login_required(views.UserUpdateView.as_view()),name="administracion_usuarios_actualizar"),

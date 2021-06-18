@@ -95,7 +95,6 @@ class EquipoUpdateView(BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-
 class ReporteAddView(BaseView):
     template_name = 'mantto/forms/reporte_add.html'
     form = ReporteCreateForm
@@ -123,6 +122,8 @@ class ReporteAddView(BaseView):
         context['form'].fields['estado'].queryset = Estado.objects.filter(nombre__in = ['No Funciona','Funcionando con detalles pendientes'])
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
+
+
         return render(request,self.template_name,context)
 
     def post(self,request,id_equipo,*args, **kwargs):
@@ -336,7 +337,6 @@ class UserUpdateView(AdministracionCheck,BaseView):
             print(form.errors)
             return JsonResponse(data=errors, status=400)
 
-
 class UserPasswordUpdateView(AdministracionCheck,BaseView):
     template_name = "mantto/forms/usuario_crear.html"
     form = UserPasswordChangeForm
@@ -362,6 +362,27 @@ class UserPasswordUpdateView(AdministracionCheck,BaseView):
             return JsonResponse({'msg':'Correcto'})
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
-            print(form.errors)
             return JsonResponse(data=errors, status=400)
+
+class SucursalCreateView(AdministracionCheck,BaseView):
+    template_name = "mantto/forms/sucursal_crear.html"
+    form = GimnasioCreateForm
+    action = 'administracion-sucursal-crear'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form()
+        context['title'] = 'Crear Gimnasio'
+        context['action'] = reverse_lazy(self.action)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
 

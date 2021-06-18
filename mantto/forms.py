@@ -16,6 +16,11 @@ class UsuarioCreacionForm(UserCreationForm):
         user = super(UsuarioCreacionForm, self).save(commit=True)
         return user
 
+class GimnasioCreateForm(forms.ModelForm):
+    class Meta:
+        model = Gimnasio
+        fields = ('__all__')
+
 class EquipoForm(forms.ModelForm):    
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
     class Meta:

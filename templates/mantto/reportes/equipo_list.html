@@ -29,7 +29,13 @@
                                 <option value="{{gym.pk}}"> {{gym}} </option>
                             {% endfor %}
                         </select>
+                        
                     </div>
+                    {% if user.perfil.rol.nombre ==  'Administrador' %}
+                        <div class='col-4 mt-auto'>
+                            <a onclick="openModal('{% url 'administracion-sucursal-crear' %}')" class="card-link btn btn-info ">Agregar</a></td>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class='row'>
                     <div class='col-8'>
