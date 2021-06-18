@@ -7,6 +7,8 @@
 
 
 {% block content %}
+    {% url 'administracion' as url %}
+    {% include '../includes/nav-arrows.html' with previous=url %}
 <div class='container'>
     
     <h3> Usuarios</h3> 
