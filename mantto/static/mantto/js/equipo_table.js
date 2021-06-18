@@ -16,6 +16,20 @@ function createEquipoRows(container,data)
    container.rows.add(end).draw();
 }
 
+function addParameters(url,prefix,parameter)
+{
+    if(url.includes('?'))
+    {
+        url += '&'+prefix+'='+parameter;
+    }
+    else
+    {
+        url += '?'+prefix+'='+parameter;
+    }
+    return url;
+}
+
+
 function getRow(data)
 {
     if(data.modificar)
