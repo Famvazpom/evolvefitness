@@ -169,6 +169,10 @@ class GastoSerializer(serializers.ModelSerializer):
     forma_pago = serializers.SerializerMethodField()
     pagado = serializers.SerializerMethodField()
     proveedor = serializers.SerializerMethodField()
+    importe = serializers.SerializerMethodField()
+    detalles = serializers.SerializerMethodField()
+    archivos =serializers.SerializerMethodField()
+        
     class Meta:
         model = Gasto
         fields = ('__all__')
@@ -190,3 +194,12 @@ class GastoSerializer(serializers.ModelSerializer):
 
     def get_pagado(self,obj):
         return "Si" if obj.pagado else "No"
+
+    def get_importe(self, obj):
+        return f'${obj.importe}' if obj.importe else "$-.--"
+
+    def get_detalles(self,obj):
+        return '<a class="btn btn-info btn-circle" > <i class="fas fa-info-circle"></i>Detalles </a>'
+
+    def get_archivos(self,obj):
+        return '<a class="btn btn-info btn-circle" > <i class="fas fa-download"></i>Descargar </a>'
