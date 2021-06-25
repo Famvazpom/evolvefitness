@@ -161,3 +161,32 @@ class ReporteSerializerAdmin(serializers.ModelSerializer):
     
     def get_ultima_modificacion(self,reporte):
         return f'{reporte.ultima_modificacion.date()}'
+
+class GastoSerializer(serializers.ModelSerializer):
+    pago = serializers.SerializerMethodField()
+    fecha = serializers.SerializerMethodField()
+    gym = serializers.SerializerMethodField()
+    forma_pago = serializers.SerializerMethodField()
+    pagado = serializers.SerializerMethodField()
+    proveedor = serializers.SerializerMethodField()
+    class Meta:
+        model = Gasto
+        fields = ('__all__')
+
+    def get_pago(self,gasto):
+        return gasto.pago.__str__() if gasto.pago else None
+
+    def get_fecha(self,gasto):
+        return gasto.fecha.date()
+    
+    def get_gym(self, obj):
+        return obj.gym.__str__()
+    
+    def get_forma_pago(self, obj):
+        return obj.forma_pago.__str__()
+
+    def get_proveedor(self,obj):
+        return obj.proveedor.__str__() if obj.proveedor else ""
+
+    def get_pagado(self,obj):
+        return "Si" if obj.pagado else "No"

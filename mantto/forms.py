@@ -94,3 +94,10 @@ class UserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super().__init__(user, *args, **kwargs)
+
+class GastoAddForm(forms.ModelForm):
+    proveedor= forms.ModelChoiceField(queryset=Perfil.objects.filter(rol=Rol.objects.get(nombre='Proveedor')))
+    class Meta:
+        model = Gasto
+        fields = ("__all__")
+

@@ -4,14 +4,12 @@ from rest_framework import viewsets,pagination
 from .models import *
 from .serializer import *
 
-class EquipoPaginator(pagination.PageNumberPagination):       
-       page_size = 300
 
 class EquipoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Equipo.objects.all().order_by('pk')
     serializer_class_normal = EquipoSerializer
     serializer_class = EquipoSerializerAdmin
-    pagination_class = EquipoPaginator
+    pagination_class= None
 
     def get_serializer_class(self):
         if self.request.user.perfil.rol == Rol.objects.get(nombre="Administrador"):
@@ -90,3 +88,10 @@ class FotoReporteViewSet(viewsets.ReadOnlyModelViewSet):
             out = out.filter(reporte=reporte)
 
         return out
+
+class GastoViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Gasto.objects.all()
+    serializer_class = GastoSerializer
+    pagination_class = None
+
+

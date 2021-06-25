@@ -8,6 +8,7 @@ router = routers.SimpleRouter()
 router.register('reportes',ReporteViewSet)
 router.register('equipos',EquipoViewSet)
 router.register('foto-reporte',FotoReporteViewSet)
+router.register('gastos',GastoViewSet)
 
 urlpatterns = [
     path('home/',login_required(views.homeView.as_view()),name='home'),
@@ -26,6 +27,8 @@ urlpatterns = [
     path('mantenimiento/reporte/nota/eliminar/<int:id>/',login_required(views.ReporteFotoNotaDeleteView.as_view()),name="reporte_foto_nota_eliminar"),
 
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
+    path('administracion/gastos/',login_required(views.GastosListView.as_view()),name="administracion-gastos"),
+    path('administracion/gastos/add/',login_required(views.GastosAddView.as_view()),name="administracion-gastos-agregar"),
     path('administracion/sucursales/crear/',login_required(views.SucursalCreateView.as_view()),name="administracion-sucursal-crear"),
 
 

@@ -1,0 +1,93 @@
+{% load widget_tweaks %}
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content container">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <form id="modal_form" method='POST' enctype="multipart/form-data" action='{{action}}'>
+            <div class="modal-body">
+                
+                {% csrf_token %}
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                            <div c
+                        lass="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                                    
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.gym.label_tag }}
+                        {{ form.gym.errors }}
+                        {% render_field form.gym class='form-control' %}
+                        {{ form.gym.help_text }}
+                    </div>
+                    <div class='col'>
+                        {{ form.importe.label_tag }}
+                        {{ form.importe.errors }}
+                        {% render_field form.importe class='form-control' %}
+                        {{ form.importe.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.pago.label_tag }}
+                        {{ form.pago.errors }}
+                        {% render_field form.pago class='form-control' %}
+                        {{ form.pago.help_text }}
+                    </div>
+                    <div class='col'>
+                        {{ form.pagado.label_tag }}
+                        {{ form.pagado.errors }}
+                        {{ form.pagado }}
+                        
+                    </div>
+                </div>
+
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.proveedor.label_tag }}
+                        {{ form.proveedor.errors }}
+                        {% render_field form.proveedor class='form-control' %}
+                        {{ form.proveedor.help_text }}
+                    </div>
+                    <div class='col'>
+                        {{ form.forma_pago.label_tag }}
+                        {{ form.forma_pago.errors }}
+                        {% render_field form.forma_pago class='form-control' %}
+                        {{ form.forma_pago.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.reportes.label_tag }}
+                        {{ form.reportes.errors }}
+                        {% render_field form.reportes class='form-control' %}
+                        {{ form.reportes.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.descripcion.label_tag }}
+                        {{ form.descripcion.errors }}
+                        {% render_field form.descripcion class='form-control' %}
+                        {{ form.descripcion.help_text }}
+                    </div>
+                    
+                </div>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        
+                <button type="submit" class="btn btn-info">Guardar Cambios</button>        
+            </div>
+        </form>
+    </div>
+</div>

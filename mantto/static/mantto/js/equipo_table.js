@@ -7,11 +7,11 @@ $(document).ready( function () {
 } );
 
 function createEquipoRows(container,data)
-{
+{   
     end = [];
-    for(var i = 0; i<data.results.length;i++ )
+    for(var i = 0; i<data.length;i++ )
     {
-       end.push(getRow(data.results[i]));
+       end.push(getRow(data[i]));
     }
    container.rows.add(end).draw();
 }

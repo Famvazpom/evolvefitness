@@ -386,3 +386,30 @@ class SucursalCreateView(AdministracionCheck,BaseView):
             return JsonResponse(data=errors, status=400)
 
 
+class GastosListView(AdministracionCheck,BaseView):
+    template_name = "mantto/admin/gastos_list.html"
+
+class GastosAddView(AdministracionCheck,BaseView):
+    template_name = "mantto/forms/gasto_add.html"
+    title = "Registrar Gasto"
+    action = 'administracion-gastos-agregar'
+    form = GastoAddForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        context['action'] = reverse_lazy(self.action)
+        context['form'] = self.form()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+    
+    
