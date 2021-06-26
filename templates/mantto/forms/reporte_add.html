@@ -97,10 +97,10 @@
                             </div>
                         </div>
                         <div class='row '>
-                            <div class='form-check'>
+                            <div class='col'>
                                 {{ form.asignado.label_tag }}
                                 {{ form.asignado.errors }}
-                                {{ form.asignado }}
+                                {% render_field form.asignado class='form-control' %}
                             </div>
                         </div>
                         <div class='row'>
