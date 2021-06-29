@@ -9,10 +9,18 @@
     {% url 'administracion' as url %}
     {% include '../includes/nav-arrows.html' with previous=url %}
     <div class='container'>
-        
-        <a class="btn btn-success btn-circle mb-5" onclick="openModal('{% url 'administracion-gastos-agregar' %}')">
-            <i class="fas fa-plus"></i>        
-        </a>
+        <div class='row'>
+            <div class='col-auto'>
+                <a class="btn btn-success btn-circle mb-5" onclick="openModal('{% url 'administracion-gastos-agregar' %}')">
+                    <i class="fas fa-plus"></i> Registrar Gasto    
+                </a>
+            </div>
+            <div class='col-auto'>
+                <a class="btn btn-info btn-circle mb-5" onclick="openModal('{% url 'administracion-proveedor-agregar' %}')">
+                    <i class="fas fa-plus"></i> Registrar Proveedor
+                </a>
+            </div>
+        </div>
         <div class='table-responsive'>
             <table id="gastosTable" data-source="{% url 'gasto-list' %}" class="table table-striped table-dark">
                 <thead>

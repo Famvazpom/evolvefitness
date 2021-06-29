@@ -253,6 +253,18 @@ class FotoNotaReporte(models.Model):
     def __str__(self):
         return f'{self.pk} - {self.reporte}'
 
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=10,blank=True,null=True,default='-')
+
+    class Meta:
+        verbose_name = ("Proveedor")
+        verbose_name_plural = ("Proveedores")
+
+    def __str__(self):
+        return f'{self.nombre} - {self.telefono}'
+
+
 class Gasto(models.Model):
     reportes = models.ManyToManyField(Reporte, verbose_name=("Reportes relacionados"),blank=True)
     importe = models.DecimalField(max_digits=10, decimal_places=2)
@@ -260,7 +272,7 @@ class Gasto(models.Model):
     pagado = models.BooleanField()
     descripcion = models.TextField()
     fecha = models.DateTimeField(auto_now=False, auto_now_add=True)
-    proveedor = models.ForeignKey(Perfil,blank=True,null=True,related_name=("Proveedor"),on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor,blank=True,null=True,related_name=("Proveedor"),on_delete=models.CASCADE)
     gym = models.ForeignKey(Gimnasio,blank=True,null=True,on_delete=models.CASCADE)
     forma_pago = models.ForeignKey(TipoPagoReporte,blank=True,null=True,on_delete=models.CASCADE)
 

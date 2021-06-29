@@ -29,6 +29,7 @@ urlpatterns = [
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
     path('administracion/gastos/',login_required(views.GastosListView.as_view()),name="administracion-gastos"),
     path('administracion/gastos/add/',login_required(views.GastosAddView.as_view()),name="administracion-gastos-agregar"),
+    path('administracion/proveedor/add/',login_required(views.ProveedorAddView.as_view()),name="administracion-proveedor-agregar"),
     path('administracion/sucursales/crear/',login_required(views.SucursalCreateView.as_view()),name="administracion-sucursal-crear"),
 
 
