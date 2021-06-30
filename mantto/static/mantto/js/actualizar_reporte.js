@@ -14,6 +14,36 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function deleteFoto(url,pk)
+{
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": getCookie("csrftoken") }
+    });
+
+    $.ajax({
+        url: url,
+        processData: false,
+        contentType: false,
+
+        type: 'POST',
+        success:function(json){
+            alert('Eliminacion Correcta');
+            $('#'+pk).remove();
+        },
+        error: function(data){
+            errors = 'ERROR\n';
+            jQuery.each(data.responseJSON, function(i, val) {
+                jQuery.each(val, function(i, obj) {
+                    errors += obj.message + '\n';
+                });
+            });
+            alert(errors);
+            ob.prop('disabled',false);
+        }
+    })  
+}
+
+
 $(document).on('submit','#modal_form',function(event)
 {
     var action = $('#modal_form').attr('action');

@@ -43,6 +43,20 @@ class pathandrenameReporte(object):
         return os.path.join(self.path, filename)
 
 @deconstructible
+class pathandrenameGasto(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        filename = filename.split('.')[:-1]
+        # set filename as random string
+        name = f'Gasto - {instance.gasto.pk} { filename }'
+        filename = '{}.{}'.format(name, ext)
+        # return the whole path to the file
+        return os.path.join(self.path, filename)
+
+@deconstructible
 class pathandrenameArchivo(object):
     def __init__(self, sub_path):
         self.path = sub_path
@@ -58,7 +72,7 @@ class pathandrenameArchivo(object):
 
 eq_path = pathandrename('images/equipos/')
 rep_path = pathandrenameReporte('images/reportes/')
-repnota_path = pathandrenameReporte('images/notas_reportes/')
+repnota_path = pathandrenameGasto('images/notas_reportes/')
 gasto_path = pathandrenameArchivo('files/gastos/')
 
 class Rol(models.Model):
@@ -180,9 +194,7 @@ class Reporte(models.Model):
     reporto = models.ForeignKey(Perfil, related_name=("Reporto"), on_delete=models.CASCADE)
     asignado = models.ManyToManyField(Perfil,related_name=("Personas_asignadas"))
     falla = models.TextField()
-    tipopago = models.ForeignKey(TipoPagoReporte,blank=True,null=True,on_delete=models.CASCADE)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    costo = models.DecimalField(null=True,blank=True,max_digits=10, decimal_places=2)
     revisado = models.BooleanField(default=False)
     mensajes = models.ManyToManyField(ReporteMensaje)
 
@@ -223,8 +235,46 @@ class FotoReporte(models.Model):
     def __str__(self):
         return f'{self.reporte}'
 
+
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=10,blank=True,null=True,default='-')
+
+    class Meta:
+        verbose_name = ("Proveedor")
+        verbose_name_plural = ("Proveedores")
+
+    def __str__(self):
+        return f'{self.nombre}'
+
+
+class Gasto(models.Model):
+    reportes = models.ManyToManyField(Reporte, verbose_name=("Reportes relacionados"),blank=True)
+    importe = models.DecimalField(max_digits=10, decimal_places=2)
+    pago = models.ForeignKey(Perfil,blank=True,null=True,verbose_name=("Usuario que hizo el pago"), on_delete=models.CASCADE)
+    pagado = models.BooleanField()
+    descripcion = models.TextField()
+    fecha = models.DateTimeField(auto_now=False, auto_now_add=True)
+    proveedor = models.ForeignKey(Proveedor,blank=True,null=True,related_name=("Proveedor"),on_delete=models.CASCADE)
+    gym = models.ForeignKey(Gimnasio,blank=True,null=True,on_delete=models.CASCADE)
+    forma_pago = models.ForeignKey(TipoPagoReporte,blank=True,null=True,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Gasto: {self.pk} - ${ self.importe } - { self.gym }'
+
+class GastosArchivos(models.Model):
+    archivo = models.FileField(upload_to=gasto_path, max_length=100)
+    gasto = models.ForeignKey(Gasto,on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = ("Archivo de un Gasto")
+        verbose_name_plural = ("Archivos de los Gastos")
+    
+    def __str__(self):
+        return f'Gasto relacionado: {self.gasto.pk}'
+
 class FotoNotaReporte(models.Model):
-    reporte = models.ForeignKey(Reporte, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)
+    gasto = models.ForeignKey(Gasto, verbose_name=("Reporte Relacionado"), on_delete=models.CASCADE)
     img = models.ImageField(upload_to=repnota_path, height_field=None, width_field=None, max_length=None)
 
     class Meta:
@@ -253,48 +303,10 @@ class FotoNotaReporte(models.Model):
     def __str__(self):
         return f'{self.pk} - {self.reporte}'
 
-class Proveedor(models.Model):
-    nombre = models.CharField(max_length=50)
-    telefono = models.CharField(max_length=10,blank=True,null=True,default='-')
-
-    class Meta:
-        verbose_name = ("Proveedor")
-        verbose_name_plural = ("Proveedores")
-
-    def __str__(self):
-        return f'{self.nombre} - {self.telefono}'
-
-
-class Gasto(models.Model):
-    reportes = models.ManyToManyField(Reporte, verbose_name=("Reportes relacionados"),blank=True)
-    importe = models.DecimalField(max_digits=10, decimal_places=2)
-    pago = models.ForeignKey(Perfil,blank=True,null=True,verbose_name=("Usuario que hizo el pago"), on_delete=models.CASCADE)
-    pagado = models.BooleanField()
-    descripcion = models.TextField()
-    fecha = models.DateTimeField(auto_now=False, auto_now_add=True)
-    proveedor = models.ForeignKey(Proveedor,blank=True,null=True,related_name=("Proveedor"),on_delete=models.CASCADE)
-    gym = models.ForeignKey(Gimnasio,blank=True,null=True,on_delete=models.CASCADE)
-    forma_pago = models.ForeignKey(TipoPagoReporte,blank=True,null=True,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'Gasto: {self.pk} - ${ self.importe } - { self.gym }'
-
-class GastosArchivos(models.Model):
-    archivo = models.FileField(upload_to=gasto_path, max_length=100)
-    gasto = models.ForeignKey(Gasto,on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = ("Archivo de un Gasto")
-        verbose_name_plural = ("Archivos de los Gastos")
-    
-    def __str__(self):
-        return f'Gasto relacionado: {self.gasto.pk}'
-
 
 @receiver(models.signals.post_delete, sender=FotoReporte)
 @receiver(models.signals.post_delete, sender=FotosEquipo)
 @receiver(models.signals.post_delete, sender=FotoNotaReporte)
-
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.img:
         if os.path.isfile(instance.img.path):

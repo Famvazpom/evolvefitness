@@ -84,16 +84,13 @@ class ReporteSerializer(serializers.ModelSerializer):
     foto = serializers.SerializerMethodField()
     foto_url = serializers.SerializerMethodField()
     ultima_modificacion = serializers.SerializerMethodField()
-    costo = serializers.SerializerMethodField('costo_localize')
     equipo = EquipoSerializer()
     mensajes = ReporteMensajeSerializer(read_only=True,many=True)
     tipopago = TipoPagoSerializer(read_only=True)
     class Meta:
         model = Reporte
-        fields = ("pk","fecha",'reporto','tipopago',"equipo","gym","mensajes","asignado","estado",'falla','foto','foto_url','url','costo','ultima_modificacion','revisado')
+        fields = ("__all__")
 
-    def costo_localize(self,reporte):
-        return number_format(reporte.costo) if reporte.costo else None
 
     def get_fecha(self,reporte):
         return reporte.fecha.date()
@@ -127,16 +124,12 @@ class ReporteSerializerAdmin(serializers.ModelSerializer):
     foto_url = serializers.SerializerMethodField()
     ultima_modificacion = serializers.SerializerMethodField()
     delete = serializers.SerializerMethodField()
-    costo = serializers.SerializerMethodField('costo_localize')
     equipo = EquipoSerializer()
     mensajes = ReporteMensajeSerializer(read_only=True,many=True)
     tipopago = TipoPagoSerializer(read_only=True)
     class Meta:
         model = Reporte
         fields = ('__all__')
-
-    def costo_localize(self,reporte):
-        return number_format(reporte.costo) if reporte.costo else None
 
     def get_fecha(self,reporte):
         return reporte.fecha.date()
@@ -172,6 +165,7 @@ class GastoSerializer(serializers.ModelSerializer):
     importe = serializers.SerializerMethodField()
     detalles = serializers.SerializerMethodField()
     archivos =serializers.SerializerMethodField()
+    reportes = serializers.SerializerMethodField()
         
     class Meta:
         model = Gasto
@@ -199,7 +193,17 @@ class GastoSerializer(serializers.ModelSerializer):
         return f'${obj.importe}' if obj.importe else "$-.--"
 
     def get_detalles(self,obj):
-        return '<a class="btn btn-info btn-circle" > <i class="fas fa-info-circle"></i>Detalles </a>'
+        url = reverse_lazy('administracion-gastos-actualizar',kwargs={'gasto':obj.pk})
+        return f'<a class="btn btn-info btn-circle" onclick="openModal(\'{ url }\')" > <i class="fas fa-info-circle"></i>Detalles </a>'
 
     def get_archivos(self,obj):
         return '<a class="btn btn-info btn-circle" > <i class="fas fa-download"></i>Descargar </a>'
+    
+    def get_reportes(self,obj):
+        end = ""
+        for rep in obj.reportes.all():
+            
+            url = reverse_lazy('reporte_detalles', kwargs={ 'id': rep.pk})
+            
+            end+=f'<a onclick="openModal(\'{url}\')" class=" m-1 btn btn-info ">{rep.pk}</a>'
+        return end

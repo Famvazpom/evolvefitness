@@ -11,12 +11,20 @@ from .forms import *
 
 class AdministracionCheck(UserPassesTestMixin):
     def test_func(self):
-        return True if self.request.user.perfil.rol == Rol.objects.get(nombre='Administrador') else False
+        return self.request.user.perfil.rol == Rol.objects.get(nombre='Administrador')
+
+class AdministracionRecepcionCheck(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.perfil.rol in [
+            Rol.objects.get(nombre='Administrador'),
+            Rol.objects.get(nombre='Recepcionista')
+        ]
 
 # Create your views here.
 class BaseView(TemplateView):
     mantto_obj = Rol.objects.get(nombre='Mantenimiento')
-    admin_obj = Rol.objects.get(nombre='Administrador')    
+    admin_obj = Rol.objects.get(nombre='Administrador')  
+    recep_obj = Rol.objects.get(nombre="Recepcionista")  
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,7 +126,7 @@ class ReporteAddView(BaseView):
         except Reporte.DoesNotExist:
             context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
-        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj).order_by('user__first_name')
         context['form'].fields['estado'].queryset = Estado.objects.filter(nombre__in = ['No Funciona','Funcionando con detalles pendientes'])
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
@@ -175,7 +183,8 @@ class ReporteDetailsView(BaseView):
         context['equipo'] = context['reporte'].equipo
         context['title'] = f'Reporte: {id}'
         context['fotosequipo'] = FotosEquipo.objects.filter(equipo=context['reporte'].equipo)
-        context['fotos_facturas'] = FotoNotaReporte.objects.filter(reporte=context['reporte'])
+        context['fotos_facturas'] = FotoNotaReporte.objects.filter(gasto__in=Gasto.objects.filter(reportes=context['reporte']))
+
         context['fotos'] = FotoReporte.objects.filter(reporte__pk=id)
         context['action'] = reverse_lazy(self.action, kwargs={ 'id': context['reporte'].pk})
         context['formset'] = self.disable_formset(request,self.formset(queryset=context['reporte'].mensajes.all()))
@@ -183,7 +192,7 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
-        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj)
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj).order_by('user__first_name')
         if request.user.perfil.rol != self.admin_obj:
             context['form'].fields['falla'].disabled = True
         
@@ -200,7 +209,6 @@ class ReporteDetailsView(BaseView):
         form.fields['gym'].disabled = True
         if request.user.perfil.rol != self.admin_obj:
             form.fields['falla'].disabled = True
-            
         if request.user.perfil.rol == self.mantto_obj:
             form.fields['asignado'].disabled = True
 
@@ -221,12 +229,8 @@ class ReporteDetailsView(BaseView):
                 for file in self.request.FILES.getlist('fotos'):
                     foto = FotoReporte(reporte=reporte,img=file)
                     foto.save()
-                for file in self.request.FILES.getlist('fotos_facturas'):
-                    foto = FotoNotaReporte(reporte=reporte,img=file)
-                    foto.save()
             return redirect(reverse('reportes'))
         else:
-            print(formset.errors)
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
@@ -258,10 +262,8 @@ class ReporteFotoNotaDeleteView(AdministracionCheck,BaseView):
     
     def post(self,request,id, *args,**kwargs):
         reporte = FotoNotaReporte.objects.get(pk=id)
-        print(id)
         reporte.delete()
         return JsonResponse({'msg': 'Eliminacion Correcta'})
-
 
 class ReporteFotosView(BaseView):
     template_name = 'mantto/forms/reporte_fotos_modal.html'
@@ -272,8 +274,9 @@ class ReporteFotosView(BaseView):
         context['title'] = f'Fotos del Reporte: {id}'
         return render(request,self.template_name,context)
 
+## Menu de administracion
 
-class AdminMenuView(AdministracionCheck,BaseView):
+class AdminMenuView(AdministracionRecepcionCheck,BaseView):
     template_name = "mantto/administracion_menu.html"
 
 class UserListView(AdministracionCheck,BaseView):
@@ -364,6 +367,14 @@ class UserPasswordUpdateView(AdministracionCheck,BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
+class UserDeactivateView(AdministracionCheck,BaseView):
+    def get(self,request,usr,*args, **kwargs):
+        obj = User.objects.get(username=usr)
+        obj.is_active = not obj.is_active
+        obj.save()
+        print('in')
+        return redirect(reverse('administracion_usuarios'))
+
 class SucursalCreateView(AdministracionCheck,BaseView):
     template_name = "mantto/forms/sucursal_crear.html"
     form = GimnasioCreateForm
@@ -407,10 +418,10 @@ class ProveedorAddView(AdministracionCheck,BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-class GastosListView(AdministracionCheck,BaseView):
+class GastosListView(AdministracionRecepcionCheck,BaseView):
     template_name = "mantto/admin/gastos_list.html"
 
-class GastosAddView(AdministracionCheck,BaseView):
+class GastosAddView(AdministracionRecepcionCheck,BaseView):
     template_name = "mantto/forms/gasto_add.html"
     title = "Registrar Gasto"
     action = 'administracion-gastos-agregar'
@@ -426,11 +437,60 @@ class GastosAddView(AdministracionCheck,BaseView):
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    foto = FotoNotaReporte(gasto=obj,img=file)
+                    foto.save()
             return JsonResponse({'msg':'Correcto'})
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-    
+class GastosUpdateView(AdministracionRecepcionCheck,BaseView):
+    template_name = "mantto/forms/gasto_add.html"
+    title = "Registrar Gasto"
+    action = 'administracion-gastos-actualizar'
+    form = GastoUpdateForm
+
+    def disable_fields(self,user,form):
+        if user.perfil.rol != self.admin_obj:
+            form.fields['importe'].disabled = True
+            form.fields['gym'].disabled= True
+            form.fields['pago'].disabled= True
+            form.fields['proveedor'].disabled= True
+            form.fields['forma_pago'].disabled= True
+            form.fields['reportes'].disabled= True
+            form.fields['descripcion'].disabled= True
+        return form
+
+    def get_context_data(self,gasto, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        context['action'] = reverse_lazy(self.action,kwargs={'gasto':gasto})
+        context['form'] = self.form(instance=Gasto.objects.get(pk=gasto))
+        context['fotos_facturas'] = FotoNotaReporte.objects.filter(gasto=Gasto.objects.get(pk=gasto))
+
+        return context
+
+    def get(self, request,gasto, *args, **kwargs):
+        context = self.get_context_data(gasto)
+        self.disable_fields(request.user,context['form'])
+        return render(request,self.template_name,context)
+
+    def post(self, request,gasto, *args, **kwargs):
+        form = self.form(request.POST,instance=Gasto.objects.get(pk=gasto))
+        self.disable_fields(request.user,form)
+        if form.is_valid():
+            obj = form.save()
+            if request.FILES:
+                for file in self.request.FILES.getlist('fotos'):
+                    foto = FotoNotaReporte(gasto=obj,img=file)
+                    foto.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+       
     

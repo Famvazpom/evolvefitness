@@ -38,6 +38,8 @@ class EquipoUpdateForm(forms.ModelForm):
 class ReporteCreateForm(forms.ModelForm):
     id_reporte = forms.IntegerField(required=False)
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all().order_by('nombre'))
+
     class Meta:
         model = Reporte
         exclude = ["costo","tipopago",'mensajes']
@@ -65,8 +67,6 @@ class MensajeUpdateForm(forms.ModelForm):
 
 class ReporteUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
-    fotos_facturas = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,}),required=False)
-
     diagnostico = forms.CharField(widget=forms.Textarea(attrs={'rows':4}),required=False)
     class Meta:
         model = Reporte
@@ -78,7 +78,6 @@ class ReporteUpdateForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super(ReporteUpdateForm,self).__init__(*args, **kwargs)
         self.fields['diagnostico'].label = 'Reparación/Nueva Falla'
-        self.fields['fotos_facturas'].label = 'Fotos de Notas / Facturas'
     
 class PerfilActualizarForm(forms.ModelForm):
     rol = forms.ModelChoiceField(queryset=Rol.objects.all())
@@ -92,14 +91,33 @@ class UserPasswordChangeForm(AdminPasswordChangeForm):
         super().__init__(user, *args, **kwargs)
 
 class GastoAddForm(forms.ModelForm):
+    fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'))
+    pago = forms.ModelChoiceField(queryset=Perfil.objects.all().order_by('user__first_name'))
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all().order_by('nombre'))
+    forma_pago = forms.ModelChoiceField(queryset=TipoPagoReporte.objects.all().order_by('nombre'))
     class Meta:
         model = Gasto
         fields = ("__all__")
 
+    def __init__(self,*args, **kwargs):
+        super(GastoAddForm,self).__init__(*args, **kwargs)
+        self.fields['fotos'].label = 'Fotos de Notas/Facturas'
+
 class GastoUpdateForm(forms.ModelForm):
+    fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
+    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'))
+    pago = forms.ModelChoiceField(queryset=Perfil.objects.all().order_by('user__first_name'))
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all().order_by('nombre'))
+    forma_pago = forms.ModelChoiceField(queryset=TipoPagoReporte.objects.all().order_by('nombre'))
+
     class Meta:
         model = Gasto
         fields = ("__all__")
+    
+    def __init__(self,*args, **kwargs):
+        super(GastoUpdateForm,self).__init__(*args, **kwargs)
+        self.fields['fotos'].label = 'Fotos de Notas/Facturas'
 
 class ProveedorForm(forms.ModelForm):
     class Meta:

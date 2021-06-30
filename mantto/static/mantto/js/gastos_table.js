@@ -28,8 +28,8 @@ function getRow(data)
         data.forma_pago,
         data.pago,
         data.pagado,
-        null,
-        null
+        data.detalles,
+        data.reportes
     ];
     return out;
 }

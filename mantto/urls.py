@@ -29,6 +29,8 @@ urlpatterns = [
     path('administracion/',login_required(views.AdminMenuView.as_view()),name="administracion"),
     path('administracion/gastos/',login_required(views.GastosListView.as_view()),name="administracion-gastos"),
     path('administracion/gastos/add/',login_required(views.GastosAddView.as_view()),name="administracion-gastos-agregar"),
+    path('administracion/gastos/actualizar/<int:gasto>',login_required(views.GastosUpdateView.as_view()),name="administracion-gastos-actualizar"),
+
     path('administracion/proveedor/add/',login_required(views.ProveedorAddView.as_view()),name="administracion-proveedor-agregar"),
     path('administracion/sucursales/crear/',login_required(views.SucursalCreateView.as_view()),name="administracion-sucursal-crear"),
 
@@ -37,6 +39,7 @@ urlpatterns = [
     path('administracion/usuarios/crear/',login_required(views.UserCreateView.as_view()),name="administracion_usuarios_crear"),
     path('administracion/usuarios/actualizar/<slug:usr>',login_required(views.UserUpdateView.as_view()),name="administracion_usuarios_actualizar"),
     path('administracion/usuarios/pwd/<slug:usr>',login_required(views.UserPasswordUpdateView.as_view()),name="administracion_usuarios_actualizar_pwd"),
+    path('administracion/usuarios/activar/<slug:usr>',login_required(views.UserDeactivateView.as_view()),name="administracion_usuarios_activar"),
 
     path('api/',include(router.urls))
 ] 

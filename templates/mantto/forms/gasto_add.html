@@ -59,7 +59,7 @@
                         {% render_field form.proveedor class='form-control' %}
                         {{ form.proveedor.help_text }}
                     </div>
-                    <div class='col'>
+                    <div class='col form-group'>
                         {{ form.forma_pago.label_tag }}
                         {{ form.forma_pago.errors }}
                         {% render_field form.forma_pago class='form-control' %}
@@ -76,13 +76,35 @@
                 </div>
                 <div class='row'>
                     <div class='col'>
+                        {{ form.fotos.label_tag }}
+                        {{ form.fotos.errors }}
+                        {% render_field form.fotos class='form-control' %}
+                        {{ form.fotos.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
                         {{ form.descripcion.label_tag }}
                         {{ form.descripcion.errors }}
                         {% render_field form.descripcion class='form-control' %}
                         {{ form.descripcion.help_text }}
                     </div>
-                    
                 </div>
+                {% if fotos_facturas %}
+                    <div class='row text-center mt-2'>
+                        <h5> Notas / Facturas </h5>
+                        <div id="reporteNotaFotos">
+                            {% for i in fotos_facturas %}
+                                <div class="foto-container p-3" id="{{ i.pk }}">
+                                    <img src="{{ i.img.url }}" class="d-block w-100">
+                                {% if request.user.perfil.rol.nombre == "Administrador" %}
+                                    <a class='mt-3 btn btn-primary' onclick="deleteFoto('{% url 'reporte_foto_nota_eliminar' id=i.pk %}','{{ i.pk }}')"> Eliminar Foto </a>
+                                {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
             <div class='modal-footer'>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        

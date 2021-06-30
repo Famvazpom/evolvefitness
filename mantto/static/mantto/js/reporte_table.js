@@ -12,26 +12,13 @@ function getNode(data)
     var out = '<div class="row report-card mt-2">';
     out += '<div class="container card-body text-center">';
     out += '<table class="table table-sm table-dark reporteCardTable">';
-    out += '<tr><td>'+data.gym.nombre +'</td> <td>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" report-status mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
+    out += '<tr><td>'+data.gym.nombre +'</td> <td> No. REPORTE: '+data.id+' <br>ID: '+ data.equipo.id +'</td><td>'+ data.equipo.nombre +'</td><td class=" report-status mb-2 text-muted  '+ data.estado.css_class +'">'+ data.estado.nombre +'</td></tr>';
     out += '<tr><td>';
     data.asignado.forEach(element => {
         out+=element + "<br>";
     });
-    out += '</td>';
-    if(data.costo)
-    {
-        out += '<td> $'+ data.costo +'</td>';
-    } 
-    else{
-        out += '<td></td>';
-    }
-    if(data.tipopago)
-    {
-        out += '<td>'+ data.tipopago.nombre +'</td><td></td></tr>';
-    } 
-    else{
-        out += '<td></td><td></td></tr>';
-    }
+    out += '</td><td></td><td></td><td></td></tr>';
+
     out += '<tr><td>'+ data.fecha +' - '+ data.reporto +'</td><td class"text-justify" colspan=3>'+ data.falla +'</td></tr>';
     if(data.mensajes)
     {
@@ -145,34 +132,6 @@ function addFilters(st_pk)
     getReportCards(url);
 }
 
-function deleteFoto(url,pk)
-{
-    $.ajaxSetup({
-        headers: { "X-CSRFToken": getCookie("csrftoken") }
-    });
-
-    $.ajax({
-        url: url,
-        processData: false,
-        contentType: false,
-
-        type: 'POST',
-        success:function(json){
-            alert('Eliminacion Correcta');
-            $('#'+pk).remove();
-        },
-        error: function(data){
-            errors = 'ERROR\n';
-            jQuery.each(data.responseJSON, function(i, val) {
-                jQuery.each(val, function(i, obj) {
-                    errors += obj.message + '\n';
-                });
-            });
-            alert(errors);
-            ob.prop('disabled',false);
-        }
-    })  
-}
 
 $(document).ready( function () {
     getReportCards($('#cardContainer').attr('data-source'));
