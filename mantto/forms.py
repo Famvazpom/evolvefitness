@@ -5,16 +5,12 @@ from .models import *
 
 class UsuarioCreacionForm(UserCreationForm):
     rol = forms.ModelChoiceField(queryset=Rol.objects.all())
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all())
     
     class Meta:
         model = User
         fields = ['username','first_name','last_name','rol','password1','password2']
 
-    def save(self, commit=True):
-        if not commit:
-            raise NotImplementedError("Can't create User and UserProfile without database save")
-        user = super(UsuarioCreacionForm, self).save(commit=True)
-        return user
 
 class GimnasioCreateForm(forms.ModelForm):
     class Meta:
@@ -81,6 +77,7 @@ class ReporteUpdateForm(forms.ModelForm):
     
 class PerfilActualizarForm(forms.ModelForm):
     rol = forms.ModelChoiceField(queryset=Rol.objects.all())
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all())
     class Meta:
         model= User
         fields = ['first_name','last_name']
@@ -92,8 +89,11 @@ class UserPasswordChangeForm(AdminPasswordChangeForm):
 
 class GastoAddForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
-    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'))
-    pago = forms.ModelChoiceField(queryset=Perfil.objects.all().order_by('user__first_name'))
+    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'),required=False)
+    pago = forms.ModelChoiceField(queryset=Perfil.objects.exclude(rol__in=[
+        Rol.objects.get(nombre='Mantenimiento'),
+        Rol.objects.get(nombre='Proveedor')
+        ],).order_by('user__first_name'))
     gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all().order_by('nombre'))
     forma_pago = forms.ModelChoiceField(queryset=TipoPagoReporte.objects.all().order_by('nombre'))
     class Meta:
@@ -106,8 +106,11 @@ class GastoAddForm(forms.ModelForm):
 
 class GastoUpdateForm(forms.ModelForm):
     fotos = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),required=False)
-    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'))
-    pago = forms.ModelChoiceField(queryset=Perfil.objects.all().order_by('user__first_name'))
+    proveedor = forms.ModelChoiceField(queryset=Proveedor.objects.all().order_by('nombre'),required=False)
+    pago = forms.ModelChoiceField(queryset=Perfil.objects.exclude(rol__in=[
+        Rol.objects.get(nombre='Mantenimiento'),
+        Rol.objects.get(nombre='Proveedor')
+        ],).order_by('user__first_name'))
     gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all().order_by('nombre'))
     forma_pago = forms.ModelChoiceField(queryset=TipoPagoReporte.objects.all().order_by('nombre'))
 

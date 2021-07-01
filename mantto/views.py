@@ -17,7 +17,15 @@ class AdministracionRecepcionCheck(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.perfil.rol in [
             Rol.objects.get(nombre='Administrador'),
-            Rol.objects.get(nombre='Recepcionista')
+            Rol.objects.get(nombre='Recepcionista'),
+        ]
+
+class AdministracionContadorRecepcionCheck(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.perfil.rol in [
+            Rol.objects.get(nombre='Administrador'),
+            Rol.objects.get(nombre='Recepcionista'),
+            Rol.objects.get(nombre='Contabilidad'),
         ]
 
 # Create your views here.
@@ -126,7 +134,7 @@ class ReporteAddView(BaseView):
         except Reporte.DoesNotExist:
             context['form'].fields['id_reporte'].initial = 1
         context['form'].fields['reporto'].initial = request.user.perfil
-        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj).order_by('user__first_name')
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj,user__is_active=True).order_by('user__first_name')
         context['form'].fields['estado'].queryset = Estado.objects.filter(nombre__in = ['No Funciona','Funcionando con detalles pendientes'])
         context['form'].fields['id_reporte'].disabled=True
         context['form'].fields['equipo'].disabled = True
@@ -192,7 +200,7 @@ class ReporteDetailsView(BaseView):
         context['form'].fields['reporto'].disabled=True
         context['form'].fields['equipo'].disabled = True
         context['form'].fields['gym'].disabled = True
-        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj).order_by('user__first_name')
+        context['form'].fields['asignado'].queryset = Perfil.objects.filter(rol = self.mantto_obj,user__is_active=True).order_by('user__first_name')
         if request.user.perfil.rol != self.admin_obj:
             context['form'].fields['falla'].disabled = True
         
@@ -276,7 +284,7 @@ class ReporteFotosView(BaseView):
 
 ## Menu de administracion
 
-class AdminMenuView(AdministracionRecepcionCheck,BaseView):
+class AdminMenuView(AdministracionContadorRecepcionCheck,BaseView):
     template_name = "mantto/administracion_menu.html"
 
 class UserListView(AdministracionCheck,BaseView):
@@ -302,7 +310,7 @@ class UserCreateView(AdministracionCheck,BaseView):
         form = self.form(request.POST)
         if form.is_valid():
             user = form.save()
-            profile = Perfil(user = user, rol = form.cleaned_data['rol'])
+            profile = Perfil(user = user, rol = form.cleaned_data['rol'],gym = form.cleaned_data['gym'])
             profile.save()
             return redirect(reverse('administracion_usuarios'))
         else:
@@ -319,6 +327,7 @@ class UserUpdateView(AdministracionCheck,BaseView):
         context['title'] = f'Actualizar usuario {obj.perfil}'
         context['form'] = self.form(instance=obj)
         context['form'].fields['rol'].initial = obj.perfil.rol
+        context['form'].fields['gym'].initial = obj.perfil.gym
         context['action'] = reverse_lazy('administracion_usuarios_actualizar', kwargs={'usr': obj.username})
         return context
     
@@ -333,6 +342,7 @@ class UserUpdateView(AdministracionCheck,BaseView):
         if form.is_valid():
             form.save()
             obj.perfil.rol = form.cleaned_data['rol']
+            obj.perfil.gym = form.cleaned_data['gym']
             obj.perfil.save()
             return JsonResponse({'msg':'Correcto'})
         else:
@@ -418,10 +428,10 @@ class ProveedorAddView(AdministracionCheck,BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-class GastosListView(AdministracionRecepcionCheck,BaseView):
+class GastosListView(AdministracionContadorRecepcionCheck,BaseView):
     template_name = "mantto/admin/gastos_list.html"
 
-class GastosAddView(AdministracionRecepcionCheck,BaseView):
+class GastosAddView(AdministracionContadorRecepcionCheck,BaseView):
     template_name = "mantto/forms/gasto_add.html"
     title = "Registrar Gasto"
     action = 'administracion-gastos-agregar'
@@ -433,6 +443,22 @@ class GastosAddView(AdministracionRecepcionCheck,BaseView):
         context['action'] = reverse_lazy(self.action)
         context['form'] = self.form()
         return context
+
+    def disable_fields(self,form,perfil):
+        if perfil.rol not in [ Rol.objects.get(nombre='Administrador'),Rol.objects.get(nombre='Gerencia') ]:
+            form.fields['pago'].queryset = Perfil.objects.filter(pk = perfil.pk)
+            form.fields['pago'].initial = perfil
+        if perfil.rol == self.recep_obj:
+            form.fields['gym'].initial = perfil.gym
+            form.fields['gym'].queryset = Gimnasio.objects.filter(pk = perfil.gym.pk )
+
+        return
+    
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        self.disable_fields(context['form'],request.user.perfil)
+        return render(request,self.template_name,context)
+
 
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST)
@@ -447,7 +473,7 @@ class GastosAddView(AdministracionRecepcionCheck,BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-class GastosUpdateView(AdministracionRecepcionCheck,BaseView):
+class GastosUpdateView(AdministracionContadorRecepcionCheck,BaseView):
     template_name = "mantto/forms/gasto_add.html"
     title = "Registrar Gasto"
     action = 'administracion-gastos-actualizar'

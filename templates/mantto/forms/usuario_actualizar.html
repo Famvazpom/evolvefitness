@@ -41,12 +41,21 @@
                     </div>
                     <div class='row'>
                         <div class='col'>
+                            {{ form.gym.label_tag }}
+                            {{ form.gym.errors }}
+                            {% render_field form.gym class='form-control' %}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
                             {{ form.rol.label_tag }}
                             {{ form.rol.errors }}
                             {% render_field form.rol class='form-control' %}
                             {{ form.rol.help_text }}
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div class='modal-footer'>

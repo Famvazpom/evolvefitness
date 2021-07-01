@@ -90,8 +90,18 @@ class FotoReporteViewSet(viewsets.ReadOnlyModelViewSet):
         return out
 
 class GastoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Gasto.objects.all()
+    queryset = Gasto.objects.all().order_by('-fecha')
     serializer_class = GastoSerializer
     pagination_class = None
 
-
+    def extra_filter_queryset(self):
+        perfil = self.request.user.perfil
+        queryset = self.queryset
+        if perfil.rol == Rol.objects.get(nombre='Contabilidad'):
+            return queryset.filter(Q(pago = perfil) | Q(forma_pago=TipoPagoReporte.objects.get(nombre='Transferencia')))
+        if perfil.rol == Rol.objects.get(nombre = 'Recepcionista'):
+            return queryset.filter(pago=perfil)
+        return queryset
+    
+    def get_queryset(self):
+        return self.extra_filter_queryset()

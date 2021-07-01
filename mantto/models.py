@@ -80,17 +80,6 @@ class Rol(models.Model):
     def __str__(self):
         return f'{self.nombre}'
 
-class Perfil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = ("Perfil")
-        verbose_name_plural = ("Perfiles")
-
-    def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}'
-
 class Gimnasio(models.Model):
     nombre = models.CharField(max_length=200)
     direccion = models.TextField()
@@ -105,6 +94,17 @@ class Gimnasio(models.Model):
     def __str__(self):
         return str(self.nombre)
 
+class Perfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    gym = models.ForeignKey(Gimnasio, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = ("Perfil")
+        verbose_name_plural = ("Perfiles")
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
 # Create your models here.
 class Equipo(models.Model):

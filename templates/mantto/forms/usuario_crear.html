@@ -59,6 +59,14 @@
                     </div>
                     <div class='row'>
                         <div class='col'>
+                            {{ form.gym.label_tag }}
+                            {{ form.gym.errors }}
+                            {% render_field form.gym class='form-control' %}
+                            
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col'>
                             {{ form.password1.label_tag }}
                             {{ form.password1.errors }}
                             {% render_field form.password1 class='form-control' %}
