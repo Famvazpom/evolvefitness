@@ -301,7 +301,7 @@ class FotoNotaReporte(models.Model):
         super(FotoNotaReporte, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.pk} - {self.reporte}'
+        return f'{self.pk} - {self.gasto}'
 
 
 @receiver(models.signals.post_delete, sender=FotoReporte)
