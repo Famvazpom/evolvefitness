@@ -11,12 +11,16 @@ from .forms import *
 
 class AdministracionCheck(UserPassesTestMixin):
     def test_func(self):
-        return self.request.user.perfil.rol == Rol.objects.get(nombre='Administrador')
+        return self.request.user.perfil.rol in [
+            Rol.objects.get(nombre='Administrador'),
+            Rol.objects.get(nombre='Gerencia'),
+        ]
 
 class AdministracionRecepcionCheck(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.perfil.rol in [
             Rol.objects.get(nombre='Administrador'),
+            Rol.objects.get(nombre='Gerencia'),
             Rol.objects.get(nombre='Recepcionista'),
         ]
 
@@ -24,6 +28,7 @@ class AdministracionContadorRecepcionCheck(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.perfil.rol in [
             Rol.objects.get(nombre='Administrador'),
+            Rol.objects.get(nombre='Gerencia'),
             Rol.objects.get(nombre='Recepcionista'),
             Rol.objects.get(nombre='Contabilidad'),
         ]
