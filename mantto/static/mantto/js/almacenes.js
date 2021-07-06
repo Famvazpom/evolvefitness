@@ -1,32 +1,37 @@
 function getCards(data,container)
 {
-    jQuery.each(data.results, function(i, producto) {
-        container.append(getNode(producto));
+    end = [];
+    jQuery.each(data, function(i, producto) {
+        end.push(getRow(data[i]));
     });
+    container.rows.add(end).draw();
 }
 
-function getNode(data)
+function getRow(data)
 {
-    var out = '<div class="card product-card">';
-    if (data.producto.foto) out += '<img class="card-img-top" src="'+ data.producto.foto +'">';
-    out += '<div class="card-body">';
-    out += '<h5 class="card-title">'+data.producto.nombre+'</h5>';
-    out += '<p class="card-text">ID: '+data.producto.id+'<br>Presentación: '+data.producto.presentacion+'<br> Costo: $'+data.producto.costo+ ' <br> \
-    Gym: '+ data.gym.nombre +' <br> Existencias: '+ data.existencias +'</p>';
-    out += '</div></div>';
+    out = [
+        data.producto.id,
+        data.gym.nombre,
+        data.producto.nombre,
+        data.producto.marca,
+        data.producto.presentacion,   
+        data.producto.costo,
+        data.precio,
+        data.existencias,
+    ];
     return out;
 }
 
 function getAlmacenes(url)
 {
-    var container = $('#almacenContainer');
+    var container = $('#almacenContainer').DataTable();
     $.ajax({
         url: url,
         type: "GET", 
         dataType: "json",
 
         success: function(data) {
-            container.empty();
+            container.clear();
             getCards(data,container);
         }
     });
@@ -51,14 +56,38 @@ function addFilters()
 {
     url = $('#almacenContainer').attr('data-source');
     nombre = $( "#nombreInput" ).val();
+    marca = $( "#marcaInput" ).val();
+    presentacion = $( "#presentacionInput" ).val();
+    gym = $( "#gymSelect" ).val();
 
+
+    if(gym)
+    {
+        url = addParameters(url,'gym',gym);
+    }
     if(nombre)
     {
         url = addParameters(url,'nombre',nombre);
+    }
+    if(marca)
+    {
+        url = addParameters(url,'marca',marca);
+    }
+    if(presentacion)
+    {
+        url = addParameters(url,'presentacion',presentacion);
     }
     getAlmacenes(url);
 }
 
 $( document ).ready(function() {
+    var table = $("#almacenContainer").DataTable(
+        {
+            "searching": false
+        }
+    );
     addFilters();
 });
+
+
+

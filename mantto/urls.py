@@ -56,6 +56,9 @@ urlpatterns = [
     path('inventarios/',login_required(views.InventariosView.as_view()),name="inventarios"),
     path('inventarios/agregar/',login_required(views.InventariosCreateView.as_view()),name="inventarios-agregar"),
     path('inventarios/traspaso/',login_required(views.TraspasoView.as_view()),name="administracion-traspaso"),
+    path('inventarios/entrada/',login_required(views.EntradaProductoView.as_view()),name="administracion-entrada-producto"),
+
+    path('formularios/producto/precio/',login_required(views.ProductoPrecio.as_view()),name="formularios-producto-precio"),
 
     # [------------- API --------------] # 
     path('api/',include(router.urls))

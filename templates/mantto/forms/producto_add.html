@@ -41,6 +41,14 @@
                 </div>
                 <div class='row'>
                     <div class='col'>
+                        {{ form.marca.label_tag }}
+                        {{ form.marca.errors }}
+                        {% render_field form.marca class='form-control' %}
+                        {{ form.marca.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
                         {{ form.proveedor.label_tag }}
                         {{ form.proveedor.errors }}
                         {% render_field form.proveedor class='form-control' %}

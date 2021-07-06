@@ -335,6 +335,7 @@ class FotoNotaReporte(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
     presentacion = models.CharField(max_length=50)
+    marca = models.CharField(max_length=50)
     costo = models.FloatField()
     proveedor = models.ForeignKey(Proveedor,null = True,blank= True, on_delete=models.CASCADE)
     foto = models.ImageField(upload_to=producto_path,blank=True,null=True)
@@ -349,7 +350,7 @@ class Producto(models.Model):
 class Almacen(models.Model):
     gym = models.ForeignKey(Gimnasio,on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    precio = models.FloatField(verbose_name=("Precio de Venta"))
+    precio = models.FloatField(verbose_name=("Precio de Venta"),default=0)
     existencias = models.PositiveIntegerField(default = 0)
     
     class Meta:

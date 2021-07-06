@@ -195,3 +195,38 @@ class TraspasoForm(forms.Form):
         obj_or.save()
         obj_dst.save()
         return 
+
+class EntradaForm(forms.Form):
+    gym = forms.ModelChoiceField(queryset=Gimnasio.objects.all())
+    producto =forms.ModelChoiceField(queryset=Producto.objects.all())
+    cantidad = forms.IntegerField(required=True)
+    precio = forms.FloatField(required=False)
+    def is_valid(self) -> bool:
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        gym = self.cleaned_data['gym']
+        producto = self.cleaned_data['producto']
+        cantidad = self.cleaned_data['cantidad']
+        precio = self.cleaned_data['precio']
+        if cantidad < 0:
+            self.add_error('cantidad','No se permiten valores menores a 0 en cantidad')
+            return False
+        if precio < 0:
+            self.add_error('precio','No se permiten valores menores a 0 en precio')
+            return False
+        return True
+    
+    def save(self):
+        gym = self.cleaned_data['gym']
+        producto = self.cleaned_data['producto']
+        cantidad = self.cleaned_data['cantidad']
+        precio = self.cleaned_data['precio']
+        try:
+            gym_obj =  Almacen.objects.get(gym = gym,producto=producto)
+            gym_obj.existencias += cantidad
+            gym_obj.precio = precio
+            gym_obj.save()
+        except Almacen.DoesNotExist:
+            Almacen.objects.create(gym=gym,producto=producto,existencias=cantidad,precio=precio)
+        return 

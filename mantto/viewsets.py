@@ -128,5 +128,22 @@ class ProductoViewSet(viewsets.ReadOnlyModelViewSet):
 class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Almacen.objects.all()
     serializer_class = AlmacenSerializer
+    pagination_class = None
 
+
+    def get_queryset(self):
+        out = Almacen.objects.all()
+        gym = self.request.query_params.get('gym')
+        nombre = self.request.query_params.get('nombre')
+        marca = self.request.query_params.get('marca')
+        presentacion = self.request.query_params.get('presentacion')
+        if gym:
+            out = out.filter(gym__pk=gym)
+        if nombre:
+            out = out.filter(producto__nombre__icontains=nombre)
+        if marca:
+            out = out.filter(producto__marca__icontains=marca)
+        if presentacion:
+            out = out.filter(producto__presentacion__icontains=presentacion)
+        return out
 

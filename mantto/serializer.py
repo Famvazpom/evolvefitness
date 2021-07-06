@@ -221,6 +221,10 @@ class ProductoSerializer(serializers.ModelSerializer):
     detalles = serializers.SerializerMethodField()
     eliminar = serializers.SerializerMethodField()
     proveedor = serializers.SerializerMethodField()
+    costo = serializers.SerializerMethodField()
+    
+    def get_costo(self, obj):
+        return f'${obj.costo}'
     
     def get_proveedor(self, obj):
         return obj.proveedor.__str__() if obj.proveedor else "Pendiente"
@@ -242,6 +246,13 @@ class ProductoSerializer(serializers.ModelSerializer):
 class AlmacenSerializer(serializers.ModelSerializer):
     gym = GimnasioSerializer()
     producto = ProductoSerializer()
+    precio = serializers.SerializerMethodField()
+    
+    def get_precio(self, obj):
+        return f'${ obj.precio }'
+    
+
+        
     class Meta:
         model = Almacen
         fields = ('__all__')

@@ -11,7 +11,7 @@ function getNode(data)
     if (data.foto) out += '<img class="card-img-top" src="'+ data.foto +'">';
     out += '<div class="card-body">';
     out += '<h5 class="card-title">'+data.nombre+'</h5>';
-    out += '<p class="card-text">Presentación: '+data.presentacion+'<br> Costo: $'+data.costo+ ' <br> Proveedor: '+ data.proveedor +'</p>';
+    out += '<p class="card-text">Presentación: '+data.presentacion+'<br> Costo: $'+data.costo+ ' <br> Marca: '+data.marca+' <br> Proveedor: '+ data.proveedor +'</p>';
     out += '<a onclick="openModal(\''+data.detalles+'\')" class="btn btn-primary m-1">Detalles</a>';
     out += '<a onclick="openModal(\''+data.eliminar+'\')" class="btn btn-danger m-1">Eliminar</a>';
     out += '</div></div>';

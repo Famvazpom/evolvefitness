@@ -613,6 +613,12 @@ class ProductoDeleteView(AdministracionCheck,BaseView):
 class InventariosView(AdministracionRecepcionCheck,BaseView):
     template_name = 'mantto/inventario-list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["gyms"] = Gimnasio.objects.all()
+        return context
+    
+
 class InventariosCreateView(AdministracionRecepcionCheck,BaseView):
     template_name = 'mantto/forms/inventario-crear.html'
     form = AlmacenForm
@@ -656,4 +662,38 @@ class TraspasoView(AdministracionCheck,BaseView):
         else:
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
+
+class EntradaProductoView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/entrada_producto.html'
+    form = EntradaForm
+    action = 'administracion-entrada-producto'
+    title = 'Registrar Entrada'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form()
+        context['action'] = reverse_lazy(self.action)
+        context['title'] = self.title
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+class ProductoPrecio(AdministracionCheck,BaseView):
+    def get(self,request):
+        gym = request.GET.get('gym')
+        prod = request.GET.get('producto')
+        try:
+            precio = Almacen.objects.get(gym__id=gym,producto__id=prod).precio
+        except Almacen.DoesNotExist:
+            precio = '0.00'
+        return JsonResponse({'precio':precio})
+
+
 
