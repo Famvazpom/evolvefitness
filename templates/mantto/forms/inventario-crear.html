@@ -1,0 +1,61 @@
+{% load widget_tweaks %}
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content container">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+        </div>
+        <form id="modal_form" method='POST' enctype="multipart/form-data" action='{{action}}'>
+            <div class="modal-body">
+                
+                {% csrf_token %}
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}
+                            <div c
+                        lass="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                                    
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.gym.label_tag }}
+                        {{ form.gym.errors }}
+                        {% render_field form.gym class='form-control' %}
+                        {{ form.gym.help_text }}
+                    </div>
+                    <div class='col'>
+                        {{ form.producto.label_tag }}
+                        {{ form.producto.errors }}
+                        {% render_field form.producto class='form-control' %}
+                        {{ form.producto.help_text }}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        {{ form.precio.label_tag }}
+                        {{ form.precio.errors }}
+                        {% render_field form.precio class='form-control' %}
+                        {{ form.precio.help_text }}
+                    </div>
+                    <div class='col'>
+                        {{ form.existencias.label_tag }}
+                        {{ form.existencias.errors }}
+                        {% render_field form.existencias class='form-control' %}
+                        {{ form.existencias.help_text }}
+                    </div>
+                </div>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>        
+                <button type="submit" class="btn btn-info">Guardar Cambios</button>        
+            </div>
+        </form>
+    </div>
+</div>

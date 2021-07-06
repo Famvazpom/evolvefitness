@@ -1,0 +1,34 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% url 'home' as url %}
+    {% include './includes/nav-arrows.html' with previous=url %}
+    <div class = 'container'>
+        <div class='row'>
+            <div class='col-auto'>
+                <a class="btn btn-success btn-circle mb-5" onclick="openModal('{% url 'inventarios-agregar' %}')">
+                    <i class="fas fa-plus"></i> Agregar al Almacen
+                </a>
+            </div>
+            <div class='col-auto'>
+                <a class="btn btn-primary btn-circle mb-5" onclick="openModal('{% url 'administracion-traspaso' %}')">
+                    <i class="far fa-share-square"></i> Realizar Traspaso
+                </a>
+            </div>
+        </div>
+
+        <div class='card-columns' id='almacenContainer' data-source = '{% url "almacen-list" %}'>
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block extrajs %}
+    <script src="{% static 'mantto/js/actualizar_reporte.js' %}" crossorigin="anonymous"></script>
+    <script src="{% static 'mantto/js/almacenes.js' %}" crossorigin="anonymous"></script>
+
+
+{% endblock extrajs %}

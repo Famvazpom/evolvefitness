@@ -1,0 +1,17 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+    {% url 'mantenimiento' as url %}
+    {% include '../includes/nav-arrows.html' with previous=url %}
+    <div class='container'>
+        <div class='row'>
+            <div class='col-auto'>
+                <a class="btn btn-success btn-circle mb-5" onclick="openModal('{% url 'administracion-gastos-agregar' %}')">
+                    <i class="fas fa-plus"></i> Registrar Tag  
+                </a>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

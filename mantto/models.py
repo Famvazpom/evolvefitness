@@ -70,10 +70,39 @@ class pathandrenameArchivo(object):
         # return the whole path to the file
         return os.path.join(self.path, filename)
 
+@deconstructible
+class pathandrenameProducto(object):
+    def __init__(self, sub_path):
+        self.path = sub_path
+
+    def delete_file(self,instance):
+        if os.path.isfile(instance.foto.path):
+            os.remove(instance.foto.path)
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        filename = filename.split('.')[:-1]
+        # set filename as random string
+        if not instance.pk:
+            obj = Producto.objects.last()
+            if obj:
+                name = f'Producto - {obj.pk+1} - { filename }'
+            else:
+                name = f'Producto - {1} - { filename }'
+        else:
+            old = instance.__class__.objects.get(id=instance.id)
+            if old.foto:
+                self.delete_file(old)
+            name = f'Producto - {instance.pk} - { filename }'
+        filename = '{}.{}'.format(name, ext)
+        # return the whole path to the file
+        return os.path.join(self.path, filename)
+
 eq_path = pathandrename('images/equipos/')
 rep_path = pathandrenameReporte('images/reportes/')
 repnota_path = pathandrenameGasto('images/notas_reportes/')
 gasto_path = pathandrenameArchivo('files/gastos/')
+producto_path = pathandrenameProducto('images/productos/')
 
 class Rol(models.Model):
     nombre = models.CharField(max_length=50)
@@ -303,6 +332,34 @@ class FotoNotaReporte(models.Model):
     def __str__(self):
         return f'{self.pk} - {self.gasto}'
 
+class Producto(models.Model):
+    nombre = models.CharField(max_length=50)
+    presentacion = models.CharField(max_length=50)
+    costo = models.FloatField()
+    proveedor = models.ForeignKey(Proveedor,null = True,blank= True, on_delete=models.CASCADE)
+    foto = models.ImageField(upload_to=producto_path,blank=True,null=True)
+    
+    class Meta:
+        verbose_name = ("Producto")
+        verbose_name_plural = ("Productos")
+
+    def __str__(self):
+        return f'{self.pk} - {self.nombre} - {self.presentacion}'
+
+class Almacen(models.Model):
+    gym = models.ForeignKey(Gimnasio,on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    precio = models.FloatField(verbose_name=("Precio de Venta"))
+    existencias = models.PositiveIntegerField(default = 0)
+    
+    class Meta:
+        verbose_name = ("Almacen")
+        verbose_name_plural = ("Almacenes")
+
+    def __str__(self):
+        return f'{self.gym} - {self.producto} - ${self.precio}'
+
+
 
 @receiver(models.signals.post_delete, sender=FotoReporte)
 @receiver(models.signals.post_delete, sender=FotosEquipo)
@@ -311,6 +368,12 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.img:
         if os.path.isfile(instance.img.path):
             os.remove(instance.img.path)
+
+@receiver(models.signals.post_delete, sender=Producto)
+def auto_delete_file_on_delete_files(sender, instance, **kwargs):
+    if instance.foto:
+        if os.path.isfile(instance.foto.path):
+            os.remove(instance.foto.path)       
 
 @receiver(models.signals.post_delete, sender=GastosArchivos)
 def auto_delete_file_on_delete_files(sender, instance, **kwargs):

@@ -160,13 +160,13 @@ class GastoSerializer(serializers.ModelSerializer):
     fecha = serializers.SerializerMethodField()
     gym = serializers.SerializerMethodField()
     forma_pago = serializers.SerializerMethodField()
-    pagado = serializers.SerializerMethodField()
     proveedor = serializers.SerializerMethodField()
     importe = serializers.SerializerMethodField()
     detalles = serializers.SerializerMethodField()
     archivos =serializers.SerializerMethodField()
+    pagado = serializers.BooleanField()
     reportes = serializers.SerializerMethodField()
-        
+    eliminar = serializers.SerializerMethodField()
     class Meta:
         model = Gasto
         fields = ('__all__')
@@ -186,8 +186,7 @@ class GastoSerializer(serializers.ModelSerializer):
     def get_proveedor(self,obj):
         return obj.proveedor.__str__() if obj.proveedor else ""
 
-    def get_pagado(self,obj):
-        return "Si" if obj.pagado else "No"
+
 
     def get_importe(self, obj):
         return f'${obj.importe}' if obj.importe else "$-.--"
@@ -198,6 +197,10 @@ class GastoSerializer(serializers.ModelSerializer):
 
     def get_archivos(self,obj):
         return '<a class="btn btn-info btn-circle" > <i class="fas fa-download"></i>Descargar </a>'
+
+    def get_eliminar(self,obj):
+        url = reverse_lazy('gastos-eliminar',kwargs={'id':obj.pk})
+        return f'<a class="btn btn-danger btn-circle" onclick="openModal(\'{ url }\')" > <i class="fas fa-trash"></i>Eliminar </a>'
     
     def get_reportes(self,obj):
         end = ""
@@ -207,3 +210,41 @@ class GastoSerializer(serializers.ModelSerializer):
             
             end+=f'<a onclick="openModal(\'{url}\')" class=" m-1 btn btn-info ">{rep.pk}</a>'
         return end
+
+class ProveedorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Proveedor
+        fields = ('__all__')
+
+class ProductoSerializer(serializers.ModelSerializer):
+    foto = serializers.SerializerMethodField()
+    detalles = serializers.SerializerMethodField()
+    eliminar = serializers.SerializerMethodField()
+    proveedor = serializers.SerializerMethodField()
+    
+    def get_proveedor(self, obj):
+        return obj.proveedor.__str__() if obj.proveedor else "Pendiente"
+    
+    def get_detalles(self, obj):
+        return reverse_lazy('administracion-producto-modificar',kwargs = {'producto': obj.pk})
+
+    def get_eliminar(self, obj):
+        return reverse_lazy('administracion-producto-eliminar',kwargs = {'producto': obj.pk})
+    
+    def get_foto(self, obj):
+        return obj.foto.url if obj.foto else None
+        
+    class Meta:
+        model = Producto
+        fields = ('__all__')
+
+
+class AlmacenSerializer(serializers.ModelSerializer):
+    gym = GimnasioSerializer()
+    producto = ProductoSerializer()
+    class Meta:
+        model = Almacen
+        fields = ('__all__')
+
+
+

@@ -126,3 +126,72 @@ class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
         fields = ("__all__")
+
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ("__all__")
+
+class AlmacenForm(forms.ModelForm):
+    class Meta:
+        model = Almacen
+        fields = ("__all__")
+
+    def is_valid(self) -> bool:
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        gym = self.cleaned_data['gym']
+        producto = self.cleaned_data['producto']
+        try:
+            Almacen.objects.get(gym = gym,producto=producto)
+            self.add_error('__all__','Ya existe el Producto en el Gimnasio seleccionado')
+            return False
+        except Almacen.DoesNotExist:
+            return True
+
+class TraspasoForm(forms.Form):
+    origen = forms.ModelChoiceField(queryset=Gimnasio.objects.all())
+    destino = forms.ModelChoiceField(queryset=Gimnasio.objects.all())
+    producto =forms.ModelChoiceField(queryset=Producto.objects.all())
+    cantidad = forms.IntegerField(required=True)
+
+    def is_valid(self) -> bool:
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        origen = self.cleaned_data['origen']
+        destino = self.cleaned_data['destino']
+        producto = self.cleaned_data['producto']
+        cantidad = self.cleaned_data['cantidad']
+        if cantidad <= 0:
+            self.add_error('cantidad','No se permiten valores menores o iguales a 0')
+            return False
+        if origen == destino:
+            self.add_error('origen','No se pueden realizar traspasos a la misma sucursal')
+            return False
+        try:
+            obj_or = Almacen.objects.get(gym = origen,producto=producto)
+            obj_dst = Almacen.objects.get(gym= destino,producto=producto)
+            if obj_or.existencias < cantidad:
+                self.add_error('cantidad','No tiene existencias suficientes en el origen')
+                return False
+            return True
+        except Almacen.DoesNotExist:
+            self.add_error('__all__','El producto no esta asignado en alguna de las sucursales')
+            return False
+    
+    def save(self):
+        origen = self.cleaned_data['origen']
+        destino = self.cleaned_data['destino']
+        producto = self.cleaned_data['producto']
+        cantidad = self.cleaned_data['cantidad']
+
+        obj_or = Almacen.objects.get(gym = origen,producto=producto)
+        obj_dst = Almacen.objects.get(gym= destino,producto=producto)
+
+        obj_or.existencias -= cantidad
+        obj_dst.existencias += cantidad
+        obj_or.save()
+        obj_dst.save()
+        return 

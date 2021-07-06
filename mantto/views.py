@@ -523,5 +523,137 @@ class GastosUpdateView(AdministracionContadorRecepcionCheck,BaseView):
             errors = {f: e.get_json_data() for f, e in form.errors.items()}
             return JsonResponse(data=errors, status=400)
 
-       
+class GastosDeleteView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/gasto_eliminar_modal.html'
+    action = 'gastos-eliminar'
+
+    def get(self,request,id,*args, **kwargs):
+        context = self.get_context_data()
+        context['title'] = f'Eliminar Gasto: {id}'
+        context['action'] = reverse_lazy(self.action, kwargs={'id':id})
+        return render(request,self.template_name,context)
     
+    def post(self,request,id, *args,**kwargs):
+        reporte = Gasto.objects.get(pk=id)
+        reporte.delete()
+        return redirect(reverse('administracion-gastos'))
+
+class ProductoListView(AdministracionCheck,BaseView):
+    template_name = 'mantto/admin/producto_list.html'
+
+class ProductoAddView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/producto_add.html'
+    action = 'administracion-producto-crear'
+    title = 'Registrar Producto'
+    form = ProductoForm
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        context['action'] = reverse_lazy(self.action)
+        context['form'] = self.form()
+
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+class ProductoDetailsView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/producto_add.html'
+    action = 'administracion-producto-modificar'
+    title = 'Registrar Producto'
+    form = ProductoForm
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        return context
+
+    def get(self,request,producto,*args, **kwargs):
+        context = self.get_context_data()
+        context['action'] = reverse_lazy(self.action,kwargs = { 'producto': producto })
+        context['form'] = self.form(instance=Producto.objects.get(pk=producto))
+        return render(request,self.template_name,context)
+    
+    def post(self, request,producto, *args, **kwargs):
+        form = self.form(request.POST,request.FILES,instance=Producto.objects.get(pk=producto))
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+class ProductoDeleteView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/producto_eliminar.html'
+    action = 'administracion-producto-eliminar'
+    title = 'Eliminar Producto'
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        return context
+
+    def get(self,request,producto,*args, **kwargs):
+        context = self.get_context_data()
+        context['action'] = reverse_lazy(self.action,kwargs = { 'producto': producto })
+        return render(request,self.template_name,context)
+    
+    def post(self, request,producto, *args, **kwargs):
+        obj = Producto.objects.get(pk=producto)
+        obj.delete()
+        return redirect(reverse('administracion-productos-list'))
+
+class InventariosView(AdministracionRecepcionCheck,BaseView):
+    template_name = 'mantto/inventario-list.html'
+
+class InventariosCreateView(AdministracionRecepcionCheck,BaseView):
+    template_name = 'mantto/forms/inventario-crear.html'
+    form = AlmacenForm
+    action = 'inventarios-agregar'
+    title = 'Agregar al Almacen'
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.title 
+        context['action'] = reverse_lazy(self.action)
+        context['form'] = self.form()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+
+class TraspasoView(AdministracionCheck,BaseView):
+    template_name = 'mantto/forms/traspaso.html'
+    form = TraspasoForm
+    action = 'administracion-traspaso'
+    title = 'Traspasar Articulos'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.form()
+        context['action'] = reverse_lazy(self.action)
+        context['title'] = self.title
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'msg':'Correcto'})
+        else:
+            errors = {f: e.get_json_data() for f, e in form.errors.items()}
+            return JsonResponse(data=errors, status=400)
+

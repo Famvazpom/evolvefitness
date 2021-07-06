@@ -17,20 +17,45 @@ function createGastoRows(container,data)
    container.rows.add(end).draw();
 }
 
+function pagadoText(pagado)
+{
+    return pagado? "Si": "No"; 
+}
 function getRow(data)
 {
-    out = [
-        data.fecha,
-        data.gym,
-        data.proveedor,
-        data.descripcion,   
-        data.importe,
-        data.forma_pago,
-        data.pago,
-        data.pagado,
-        data.detalles,
-        data.reportes
-    ];
+    cont = $('#gastosTable').attr('admin');
+     if (cont)
+     {
+        out = [
+            data.fecha,
+            data.gym,
+            data.proveedor,
+            data.descripcion,   
+            data.importe,
+            data.forma_pago,
+            data.pago,
+            pagadoText(data.pagado),
+            data.detalles,
+            data.reportes,
+            data.eliminar
+        ];
+     }
+     else
+     {
+        out = [
+            data.fecha,
+            data.gym,
+            data.proveedor,
+            data.descripcion,   
+            data.importe,
+            data.forma_pago,
+            data.pago,
+            pagadoText(data.pagado),
+            data.detalles,
+            data.reportes,
+        ];
+     }
+    
     return out;
 }
 

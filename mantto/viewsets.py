@@ -18,7 +18,7 @@ class EquipoViewSet(viewsets.ReadOnlyModelViewSet):
             return self.serializer_class_normal
 
     def get_queryset(self):
-        out = self.queryset
+        out = Equipo.objects.all().order_by('pk')
         gym = self.request.query_params.get('gym')
         maquina = self.request.query_params.get('maquina')
         idmaquina = self.request.query_params.get('id-maquina')
@@ -51,7 +51,7 @@ class ReporteViewSet(viewsets.ReadOnlyModelViewSet):
             return self.serializer_class_normal
 
     def get_queryset(self):
-        out = self.queryset
+        out = Reporte.objects.all().order_by('-ultima_modificacion')
         gym = self.request.query_params.get('gym')
         asignado = self.request.query_params.get('asignado')
         maquina = self.request.query_params.get('maquina')
@@ -96,7 +96,7 @@ class GastoViewSet(viewsets.ReadOnlyModelViewSet):
 
     def extra_filter_queryset(self):
         perfil = self.request.user.perfil
-        queryset = self.queryset
+        queryset = Gasto.objects.all().order_by('-fecha')
         if perfil.rol == Rol.objects.get(nombre='Contabilidad'):
             return queryset.filter(Q(pago = perfil) | Q(forma_pago=TipoPagoReporte.objects.get(nombre='Transferencia')))
         if perfil.rol == Rol.objects.get(nombre = 'Recepcionista'):
@@ -105,3 +105,28 @@ class GastoViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         return self.extra_filter_queryset()
+
+
+class ProveedorViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Proveedor.objects.all()
+    serializer_class = ProveedorSerializer
+
+
+class ProductoViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Producto.objects.all().order_by('nombre')
+    serializer_class = ProductoSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        out = Producto.objects.all().order_by('nombre')
+        nombre = self.request.query_params.get('nombre')
+        if nombre:
+            out = out.filter(nombre__icontains=nombre)
+        return out
+    
+
+class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Almacen.objects.all()
+    serializer_class = AlmacenSerializer
+
+

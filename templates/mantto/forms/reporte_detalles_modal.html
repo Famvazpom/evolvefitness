@@ -103,7 +103,13 @@
                                 {% render_field form.tipopago class='form-control' %}
                             </div>
                         </div>
-                        
+                        <div class='row'>
+                            <div class='col'>
+                                {{ form.tags.label_tag }}
+                                {{ form.tags.errors }}
+                                {% render_field form.tags class='form-control' %}
+                            </div>
+                        </div>
                         <div class='row'>
                             <div class='col'>
                                 {{ form.fotos.label_tag }}
