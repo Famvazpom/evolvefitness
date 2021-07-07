@@ -695,5 +695,7 @@ class ProductoPrecio(AdministracionCheck,BaseView):
             precio = '0.00'
         return JsonResponse({'precio':precio})
 
+class VentaProductosView(BaseView):
+    template_name = 'mantto/venta-productos.html'
 
 

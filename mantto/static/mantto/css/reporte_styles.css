@@ -70,3 +70,27 @@
         font-size: .8rem;
     }
 }
+
+.product-venta-card
+{
+    height: 150px;
+    width: 150px;
+    background-color: #ffffff;
+}
+
+.product-venta-card > .card-body
+{
+    height: 150px;
+    width: 150px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#productoMuestra.card-columns {
+    column-count: 5;
+}
+
+.product-info
+{
+    background-color: white !important;
+}

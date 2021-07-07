@@ -5,6 +5,7 @@
 
     <div class='d-flex justify-content-center'>
         <!-- Mobile -->
+        
         <div class="col-md-auto mt-5 ml-0 d-md-none">
             <div class="row">
                 <div class="col">
@@ -22,13 +23,13 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a>
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/v_membresias_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                   <a href='{% url 'administracion_usuarios' %}'>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/crear_usuarios_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
                     </a>
                 </div>
                 <div class="col">
-                    <a>
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/v_productos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                   <a>
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_membresias_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
                     </a>
                 </div>
                 <div class="col">
@@ -40,31 +41,31 @@
             
             <div class="row">
                 <div class="col">
-                    <a href='{% url 'administracion_usuarios' %}'>
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/crear_usuarios_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
+                    <a href = '{% url "administracion-productos-lista" %}' >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_productos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
                     </a>
                 </div>
                 <div class="col">
-                    <a>
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_membresias_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
-                    </a>
+                   <a href="{% url 'home' %}">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/empty-center.svg' %}" class="side-menu-btn flex-md-wrap" >
+                    </a> 
                 </div>
                 <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/r_visitas_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
                     </a>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <a href = '{% url "administracion-productos-lista" %}' >
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/c_productos_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
+                    <a >
+                        <img src="{% static 'mantto/assets/images/icons/mobile/proveedores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
                     </a>
                 </div>
                 <div class="col">
                     <a >
-                        <img src="{% static 'mantto/assets/images/icons/mobile/admin/inventario_c.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                        <img src="{% static 'mantto/assets/images/icons/mobile/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
                     </a>
                 </div>
                 <div class="col">
@@ -74,7 +75,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-auto ml-0 d-none d-md-block">
             <div class="row">
                 <div class="col p-0">
@@ -92,13 +93,13 @@
             </div>
             <div class="row">
                 <div class="col p-0">
-                    <a>
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/v_membresias.svg' %}" class="side-menu-btn flex-md-wrap" alt="Recepcion">
+                   <a href='{% url 'administracion_usuarios' %}'>
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/crear_usuarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
                     </a>
                 </div>
                 <div class="col p-0">
-                    <a  >
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/v_productos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Administración">
+                   <a>
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/c_membresias.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
                     </a>
                 </div>
                 <div class="col p-0 ">
@@ -110,37 +111,35 @@
             
             <div class="row">
                 <div class="col p-0">
-                    <a href='{% url 'administracion_usuarios' %}'>
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/crear_usuarios.svg' %}" class="side-menu-btn flex-md-wrap" alt="Inventarios">
-                    </a>
-                </div>
-                <div class="col p-0">
-                    <a>
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/c_membresias.svg' %}" class="side-menu-btn flex-md-wrap" alt="Mantenimiento">
-                    </a>
-                </div>
-                <div class="col p-0 ">
-                    <a >
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/r_visitas.svg' %}" class="side-menu-btn flex-md-wrap" alt="Proveedores">
-                    </a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col p-0">
                     <a href = '{% url "administracion-productos-lista" %}'  >
                         <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/c_productos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Instructores">
                     </a>
                 </div>
                 <div class="col p-0">
-                    <a >
-                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/inventario.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                   <a href="{% url 'home' %}">
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/empty-center.svg' %}" class="side-menu-btn flex-md-wrap" >
                     </a>
                 </div>
-                <div class="col p-0 ">
+                <div class="col p-0 ">  
+                    <a >
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/resumen.svg' %}" class="side-menu-btn flex-md-wrap" alt="Resumen de Ventas">
+                    </a>                  
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col p-0">
+                    <a >
+                        <img class='menu-icon' src="{% static 'mantto/assets/images/icons/colaboradores.svg' %}" class="side-menu-btn flex-md-wrap" alt="Solicitudes de Empleo">
+                    </a>
+                </div>
+                <div class="col p-0">
                     <a href="{% url 'administracion-gastos' %}" >
                         <img class='menu-icon' src="{% static 'mantto/assets/images/icons/admin/v_gastos.svg' %}" class="side-menu-btn flex-md-wrap" alt="Clases">
                     </a>
+                </div>
+                <div class="col p-0 ">
+                    
                 </div>
             </div>
         </div>

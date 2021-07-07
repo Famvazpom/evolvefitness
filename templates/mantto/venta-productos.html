@@ -1,0 +1,61 @@
+{% extends './base.html' %}
+
+{% block content %}
+{% load static %}
+<div class='container'>
+    {% url 'home' as url %}
+    {% include './includes/nav-arrows.html' with previous=url %}
+</div>
+<div class='p-4'>
+    <div class='row'>
+        <div class='col-8'>
+            <h4> Productos </h4>
+            <div class='card-columns' id='productoMuestra' data-gym='{{ user.perfil.gym.pk }}'  data-src="{% url 'almacen-list' %}">
+                <button class='btn p-0' onclick='alert("data")'>
+                    <div class="card product-venta-card">
+                        <div class="card-body p-1" style='background-image: url("/media/images/productos/Producto_-_3_-_PROD9974_6182_COR.jpg");' >
+                            <span class='product-info'>
+                                <h5 class="card-title">CHIVA COLA</h5>
+                                <p class="card-text">
+                                    600ml<br>
+                                    <br> <strong>$150.00</strong>  <br>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class='col-4'>
+            <table class='table table-striped table-dark'>
+                <thead>
+                    <tr>
+                        <th> Producto</th>
+                        <th> Cantidad</th>
+                        <th> Existencias </th>
+                        <th> Precio </th>
+                        <th> Total </th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> CHIVA COLA</td>
+                        <td> 1</td>
+                        <td> 10</td>
+                        <td> $10</td>
+                        <td> $10</td>
+                        <td> <a href>X</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'mantto/js/productos-punto.js' %}?rand=1314987984"> </script>
+
+{% endblock extrajs %}

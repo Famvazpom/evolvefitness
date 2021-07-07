@@ -58,6 +58,9 @@ urlpatterns = [
     path('inventarios/traspaso/',login_required(views.TraspasoView.as_view()),name="administracion-traspaso"),
     path('inventarios/entrada/',login_required(views.EntradaProductoView.as_view()),name="administracion-entrada-producto"),
 
+    # [------------- VENTA DE PRODUCTOS --------------] # 
+    path('venta/',login_required(views.VentaProductosView.as_view()),name="venta-productos"),
+
     path('formularios/producto/precio/',login_required(views.ProductoPrecio.as_view()),name="formularios-producto-precio"),
 
     # [------------- API --------------] # 
