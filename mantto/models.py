@@ -347,6 +347,7 @@ class Producto(models.Model):
     costo = models.FloatField()
     proveedor = models.ForeignKey(Proveedor,null = True,blank= True, on_delete=models.CASCADE)
     foto = models.ImageField(upload_to=producto_path,blank=True,null=True)
+    activo = models.BooleanField(default=True,blank=True,null=True)
     
     class Meta:
         verbose_name = ("Producto")

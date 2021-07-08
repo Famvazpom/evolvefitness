@@ -232,7 +232,7 @@ class ProductoSerializer(serializers.ModelSerializer):
     proveedor = serializers.SerializerMethodField()
     costo = serializers.SerializerMethodField()
     nombre = TipoProductoSerializer()
-    
+    activo = serializers.SerializerMethodField()
     def get_costo(self, obj):
         return f'${obj.costo}'
     
@@ -247,7 +247,10 @@ class ProductoSerializer(serializers.ModelSerializer):
     
     def get_foto(self, obj):
         return obj.foto.url if obj.foto else None
-        
+    
+    def get_activo(self,obj):
+        return "Activo" if obj.activo else "Inactivo"
+
     class Meta:
         model = Producto
         fields = ('__all__')

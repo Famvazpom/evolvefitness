@@ -13,18 +13,16 @@
                 {% csrf_token %}
                 <div class='row text-center'>
 
-                    <h5>¿Esta seguro de eliminar el Producto?</h5>
+                    <h5>¿Esta seguro de desactivar/activar el Producto?</h5>
                     <p>
-                        * Esta accion es irreversible <br>
-                        * Se eliminaran todos los inventarios relacionados con el producto<br>
-                        * Se eliminaran las entradas y salidas relacionadas con el producto<br>
+                        * Dejara de aparecer en Venta<br>
                     </p>
                 </div>
 
             </div>
             <div class='modal-footer mt-3'>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>        
-                <button type="submit" class="btn btn-info">Eliminar</button>        
+                <button type="submit" class="btn btn-info">Cambiar</button>        
             </div>
         </form>
     </div>

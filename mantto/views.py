@@ -608,8 +608,9 @@ class ProductoDeleteView(AdministracionCheck,BaseView):
     
     def post(self, request,producto, *args, **kwargs):
         obj = Producto.objects.get(pk=producto)
-        obj.delete()
-        return redirect(reverse('administracion-productos-list'))
+        obj.activo = not obj.activo
+        obj.save()
+        return redirect(reverse('administracion-productos-lista'))
 
 class InventariosView(AdministracionRecepcionCheck,BaseView):
     template_name = 'mantto/inventario-list.html'
