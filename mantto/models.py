@@ -337,10 +337,11 @@ class TipoProducto(models.Model):
     nombre = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.pk}'
+        return f'{self.nombre}'
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
+    nombre_link = models.ForeignKey(TipoProducto,null=True,on_delete=CASCADE)
     presentacion = models.CharField(max_length=50)
     marca = models.CharField(max_length=50)
     costo = models.FloatField()
