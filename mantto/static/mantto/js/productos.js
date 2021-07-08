@@ -19,7 +19,7 @@ function getRow(data) {
     return [
         data.id,
         foto,
-        data.nombre,
+        data.nombre.nombre,
         data.marca,
         data.presentacion,
         data.costo,

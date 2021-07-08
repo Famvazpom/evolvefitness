@@ -12,7 +12,7 @@ function getRow(data)
     out = [
         data.producto.id,
         data.gym.nombre,
-        data.producto.nombre,
+        data.producto.nombre.nombre,
         data.producto.marca,
         data.producto.presentacion,   
         data.producto.costo,

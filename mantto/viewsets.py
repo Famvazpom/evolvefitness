@@ -123,7 +123,7 @@ class ProductoViewSet(viewsets.ReadOnlyModelViewSet):
         marca = self.request.query_params.get('marca')
         presentacion = self.request.query_params.get('presentacion')
         if nombre:
-            out = out.filter(nombre__icontains=nombre)
+            out = out.filter(nombre__nombre__icontains=nombre)
 
         if marca:
             out = out.filter(marca__icontains=marca)
@@ -152,7 +152,7 @@ class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
         if gym:
             out = out.filter(gym__pk=gym)
         if nombre:
-            out = out.filter(producto__nombre__icontains=nombre)
+            out = out.filter(producto__nombre__nombre__icontains=nombre)
         if marca:
             out = out.filter(producto__marca__icontains=marca)
         if presentacion:

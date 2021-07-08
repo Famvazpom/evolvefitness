@@ -216,12 +216,22 @@ class ProveedorSerializer(serializers.ModelSerializer):
         model = Proveedor
         fields = ('__all__')
 
+
+class TipoProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoProducto
+        fields = ('__all__')
+
+
+
+
 class ProductoSerializer(serializers.ModelSerializer):
     foto = serializers.SerializerMethodField()
     detalles = serializers.SerializerMethodField()
     eliminar = serializers.SerializerMethodField()
     proveedor = serializers.SerializerMethodField()
     costo = serializers.SerializerMethodField()
+    nombre = TipoProductoSerializer()
     
     def get_costo(self, obj):
         return f'${obj.costo}'
