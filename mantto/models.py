@@ -333,6 +333,12 @@ class FotoNotaReporte(models.Model):
     def __str__(self):
         return f'{self.pk} - {self.gasto}'
 
+class TipoProducto(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'{self.pk}'
+
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
     presentacion = models.CharField(max_length=50)
