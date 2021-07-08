@@ -341,8 +341,7 @@ class TipoProducto(models.Model):
         return f'{self.nombre}'
 
 class Producto(models.Model):
-    nombre = models.CharField(max_length=50)
-    nombre_link = models.ForeignKey(TipoProducto,null=True,on_delete=CASCADE)
+    nombre= models.ForeignKey(TipoProducto,null=True,on_delete=CASCADE)
     presentacion = models.CharField(max_length=50)
     marca = models.CharField(max_length=50)
     costo = models.FloatField()
