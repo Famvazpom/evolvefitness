@@ -120,8 +120,16 @@ class ProductoViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         out = Producto.objects.all().order_by('nombre')
         nombre = self.request.query_params.get('nombre')
+        marca = self.request.query_params.get('marca')
+        presentacion = self.request.query_params.get('presentacion')
         if nombre:
             out = out.filter(nombre__icontains=nombre)
+
+        if marca:
+            out = out.filter(marca__icontains=marca)
+
+        if presentacion:
+            out = out.filter(presentacion__icontains=presentacion)
         return out
     
 

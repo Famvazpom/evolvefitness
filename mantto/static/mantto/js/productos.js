@@ -5,6 +5,29 @@ function getCards(data,container)
     });
 }
 
+function getRow(data) {
+
+    if(data.foto)
+    {
+        foto = '<img class="product-photo" src="'+data.foto+'">';
+    }
+    else{
+        foto = null;
+    }
+    detalles = '<a onclick="openModal(\''+data.detalles+'\')" class="btn btn-primary m-1"> Detalles </a>';
+    eliminar = '<a onclick="openModal(\''+data.eliminar+'\')" class="btn btn-danger m-1"> Eliminar </a>';
+    return [
+        data.id,
+        foto,
+        data.nombre,
+        data.marca,
+        data.presentacion,
+        data.costo,
+        detalles,
+        eliminar
+    ]
+}
+
 function getNode(data)
 {
     var out = '<div class="card product-card">';
@@ -18,19 +41,31 @@ function getNode(data)
     return out;
 }
 
-function getProductos(url)
+
+function getProductosT(url)
 {
-    var container = $('#productoContainer');
+    var container = $('#productosTable').DataTable();
     $.ajax({
         url: url,
         type: "GET", 
         dataType: "json",
 
         success: function(data) {
-            container.empty();
-            getCards(data,container);
+            container.clear();
+            getRows(data,container);
         }
     });
+}
+
+
+function getRows(data,container)
+{
+    end = [];
+    jQuery.each(data, function(i, producto) {
+        end.push(getRow(data[i]));
+    });
+    container.rows.add(end).draw();
+    console.log('in',end);
 }
 
 function addParameters(url,prefix,parameter)
@@ -46,20 +81,33 @@ function addParameters(url,prefix,parameter)
     return url;
 }
 
-
-
 function addFilters()
 {
-    url = $('#productoContainer').attr('data-source');
+    url = $('#productosTable').attr('data-source');
+    console.log(url);
     nombre = $( "#nombreInput" ).val();
+    marca = $( "#marcaInput" ).val();
+    presentacion = $( "#presentacionInput" ).val();
 
     if(nombre)
     {
         url = addParameters(url,'nombre',nombre);
     }
-    getProductos(url);
+    if(marca)
+    {
+        url = addParameters(url,'marca',marca);
+    }
+    if(presentacion)
+    {
+        url = addParameters(url,'presentacion',presentacion);
+    }
+    getProductosT(url);
 }
 
+
 $( document ).ready(function() {
+    var table = $("#productosTable").DataTable({
+        "searching": false
+    });
     addFilters();
 });

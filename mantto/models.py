@@ -346,7 +346,7 @@ class Producto(models.Model):
         verbose_name_plural = ("Productos")
 
     def __str__(self):
-        return f'{self.pk} - {self.nombre} - {self.presentacion}'
+        return f'{self.pk} - {self.nombre} - {self.marca} - {self.presentacion}'
 
 class Almacen(models.Model):
     gym = models.ForeignKey(Gimnasio,on_delete=models.CASCADE)

@@ -36,16 +36,12 @@ urlpatterns = [
     path('administracion/gastos/add/',login_required(views.GastosAddView.as_view()),name="administracion-gastos-agregar"),
     path('administracion/gastos/actualizar/<int:gasto>',login_required(views.GastosUpdateView.as_view()),name="administracion-gastos-actualizar"),
     path('administracion/gastos/elminiar/<int:id>',login_required(views.GastosDeleteView.as_view()),name="gastos-eliminar"),
-
     path('administracion/productos/',login_required(views.ProductoListView.as_view()),name="administracion-productos-lista"),
     path('administracion/productos/agregar/',login_required(views.ProductoAddView.as_view()),name="administracion-producto-crear"),
     path('administracion/productos/modificar/<int:producto>',login_required(views.ProductoDetailsView.as_view()),name="administracion-producto-modificar"),
     path('administracion/productos/eliminar/<int:producto>',login_required(views.ProductoDeleteView.as_view()),name="administracion-producto-eliminar"),
-
     path('administracion/proveedor/add/',login_required(views.ProveedorAddView.as_view()),name="administracion-proveedor-agregar"),
     path('administracion/sucursales/crear/',login_required(views.SucursalCreateView.as_view()),name="administracion-sucursal-crear"),
-
-
     path('administracion/usuarios/',login_required(views.UserListView.as_view()),name="administracion_usuarios"),
     path('administracion/usuarios/crear/',login_required(views.UserCreateView.as_view()),name="administracion_usuarios_crear"),
     path('administracion/usuarios/actualizar/<slug:usr>',login_required(views.UserUpdateView.as_view()),name="administracion_usuarios_actualizar"),

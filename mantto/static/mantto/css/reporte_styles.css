@@ -102,3 +102,9 @@
     background-color: #0000004f;
     color: #fff;
 }
+
+.product-photo
+{
+    height: 50px;
+    width: 50px;
+}
