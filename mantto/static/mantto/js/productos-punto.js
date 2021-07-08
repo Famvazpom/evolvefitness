@@ -20,7 +20,7 @@ function getProduct(item) {
     out+='<div class="card product-venta-card">';
     out+='<div class="card-body p-1" style=\'background-image: url("'+item.producto.foto+'");\' >';
     out+="<span class='product-info'>";
-    out+='<h5 class="card-title">'+item.producto.nombre+'</h5>';
+    out+='<h5 class="card-title">'+item.producto.nombre.nombre+'</h5>';
     out+='<p class="card-text p-0">';
     out+=''+item.producto.marca+'<br>'+item.producto.presentacion+'';
     out+='<br> <strong>'+item.precio+'</strong>  <br> Existencias: '+item.existencias+'</p></span></div></div></button>';
@@ -40,7 +40,7 @@ function addRow(id)
         success: function(data) {
             item = data[0];
             $('#carritoTable tbody').append('<tr id="'+item.id+'">\
-            <td>'+item.producto.nombre+'</td>\
+            <td>'+item.producto.nombre.nombre+'</td>\
             <td class="text-center">'+item.existencias+'</td>\
             <td class="text-center"><input id="'+item.id+'_precio" disabled class="form-control" value="'+item.precio.replace('$','')+'" type="number"></td>\
             <td class="text-center"><input min=0 onchange="ChangeValues(\''+item.id+'\')" id="'+item.id+'_cant" class="form-control" value=1 type="number"></td>\
