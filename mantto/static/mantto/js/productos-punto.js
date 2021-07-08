@@ -170,7 +170,6 @@ function Cobrar()
         data: data,
         type: 'POST',
         success:function(json){
-            alert('Venta Exitosa');
             getData();
             UpdateTotal();
         },
