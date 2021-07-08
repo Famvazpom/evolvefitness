@@ -128,6 +128,7 @@ class ProveedorForm(forms.ModelForm):
         fields = ("__all__")
 
 class ProductoForm(forms.ModelForm):
+    nombre = forms.ChoiceField(choices=[["Agua","Agua"],['Proteina','Proteina'],['Oxido','Oxido'],['Creatina','Creatina'],['Glutamina','Glutamina'],['Quemador','Quemador'],['Aminos','Aminos'],['Fruta','Fruta'],['Leche','Leche'],['Extra','Extra']])
     class Meta:
         model = Producto
         fields = ("__all__")

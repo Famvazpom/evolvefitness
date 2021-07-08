@@ -73,21 +73,23 @@
 
 .product-venta-card
 {
-    height: 150px;
-    width: 150px;
+    height: 140px;
+    width: 140px;
     background-color: #ffffff;
 }
 
 .product-venta-card > .card-body
 {
-    height: 150px;
-    width: 150px;
+    height: 140px;
+    width: 140px;
     background-size: contain;
     background-repeat: no-repeat;
+    font-size: .9rem;
 }
 
 #productoMuestra.card-columns {
-    column-count: 5;
+    column-count: 4;
+    column-gap: 0;
 }
 
 .product-info

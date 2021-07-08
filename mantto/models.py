@@ -5,8 +5,10 @@ from django.db import models
 from django.db.models.fields.related import ForeignKey
 from django.utils.deconstruct import deconstructible
 from django.dispatch import receiver
+from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+
 from PIL import Image
 from io import BytesIO
 from pyheif_pillow_opener import register_heif_opener
@@ -276,7 +278,6 @@ class Proveedor(models.Model):
     def __str__(self):
         return f'{self.nombre}'
 
-
 class Gasto(models.Model):
     reportes = models.ManyToManyField(Reporte, verbose_name=("Reportes relacionados"),blank=True)
     importe = models.DecimalField(max_digits=10, decimal_places=2)
@@ -359,6 +360,43 @@ class Almacen(models.Model):
 
     def __str__(self):
         return f'{self.gym} - {self.producto} - ${self.precio}'
+
+class ProductosNota(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
+    precio = models.FloatField()
+    costo = models.FloatField()
+    importe = models.FloatField(blank=True)
+
+    class Meta:
+        verbose_name = ("ProductosNota")
+        verbose_name_plural = ("ProductosNotas")
+
+    def save(self,*args, **kwargs):
+        self.importe = float(self.precio) * float(self.cantidad)
+        return super(ProductosNota,self).save(*args,**kwargs)
+
+
+    def __str__(self):
+        return self.producto.__str__()
+
+class NotaVenta(models.Model):
+    #cliente
+    productos = models.ManyToManyField(ProductosNota)
+    total = models.FloatField(blank=True,default=0)
+    descuento = models.FloatField(blank=True,default=0)
+    class Meta:
+        verbose_name = ("NotaVenta")
+        verbose_name_plural = ("NotaVentas")
+
+    def __str__(self):
+        return f'{self.pk}'
+
+    def save(self,*args,**kwargs):
+        if not self._state.adding:
+            self.total = self.productos.all().aggregate(Sum('importe'))['importe__sum']
+        return super(NotaVenta,self).save(*args,**kwargs)
+
 
 
 

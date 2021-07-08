@@ -1,11 +1,12 @@
 from django.db.models import query
 from mantto.models import FotoReporte, FotosEquipo
 from django.shortcuts import render,redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from django.views.generic.base import TemplateView
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.forms.models import modelformset_factory
+import json
 from .forms import *
 
 
@@ -698,4 +699,20 @@ class ProductoPrecio(AdministracionCheck,BaseView):
 class VentaProductosView(BaseView):
     template_name = 'mantto/venta-productos.html'
 
+    def descontar_almacen(self,almacen,gym,cantidad):
+        obj = Almacen.objects.get(pk=almacen)
+        obj.existencias -= int(cantidad)
+        obj.save()
+        return obj,obj.producto
+    
+    def post(self,request,*args, **kwargs):
+        items = json.loads(request.POST.get('productos'))
+        obj = NotaVenta.objects.create(descuento = request.POST.get('descuento'))
+        for item in items:
+            alm,producto = self.descontar_almacen(item['id'],request.user.perfil.gym,item['cantidad'])
+            ob = ProductosNota.objects.create(producto=producto,cantidad=item['cantidad'],
+                precio=alm.precio,costo=producto.costo)
+            obj.productos.add(ob)
+        obj.save()
+        return JsonResponse({'msg':'ok'})
 

@@ -137,6 +137,10 @@ class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
         nombre = self.request.query_params.get('nombre')
         marca = self.request.query_params.get('marca')
         presentacion = self.request.query_params.get('presentacion')
+        almacen = self.request.query_params.get('almacen')
+        
+        if almacen:
+            out = out.filter(pk=almacen)
         if gym:
             out = out.filter(gym__pk=gym)
         if nombre:
