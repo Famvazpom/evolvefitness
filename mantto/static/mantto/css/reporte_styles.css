@@ -96,3 +96,9 @@
 {
     background-color: white !important;
 }
+
+.product-info > .card-text
+{
+    background-color: #0000004f;
+    color: #fff;
+}
