@@ -146,10 +146,10 @@ class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
         marca = self.request.query_params.get('marca')
         presentacion = self.request.query_params.get('presentacion')
         almacen = self.request.query_params.get('almacen')
-
+        
         if almacen:
             out = out.filter(pk=almacen)
-        if self.request.user.perfil.rol not in [Rol.objects.get(nombre='Administrador'),Rol.objects.get(nombre='Gerencia')] and gym:
+        if gym:
             out = out.filter(gym__pk=gym)
         if nombre:
             out = out.filter(producto__nombre__icontains=nombre)
