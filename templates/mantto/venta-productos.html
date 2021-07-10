@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% load cache %}
 <div class='container'>
     {% url 'home' as url %}
     {% include './includes/nav-arrows.html' with previous=url %}
@@ -58,6 +59,6 @@
 {% endblock content %}
 
 {% block extrajs %}
-<script src="{% static 'mantto/js/productos-punto.js' %}?rand=1314987984"> </script>
+<script src="{% static 'mantto/js/productos-punto.js' %}?rand={% cache_bust %}"> </script>
 
 {% endblock extrajs %}

@@ -60,8 +60,10 @@
     </div>
 {% endblock content %}
 
+
+{% load cache %}
 {% block extrajs %}
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="{% static 'mantto/js/gastos_table.js' %}?rand=198543217" crossorigin="anonymous"></script>
-    <script src="{% static 'mantto/js/actualizar_reporte.js' %}?rand=198543217" crossorigin="anonymous"></script>
+    <script src="{% static 'mantto/js/gastos_table.js' %}?rand={% cache_bust %}" crossorigin="anonymous"></script>
+    <script src="{% static 'mantto/js/actualizar_reporte.js' %}?rand={% cache_bust %}" crossorigin="anonymous"></script>
 {% endblock extrajs %}
