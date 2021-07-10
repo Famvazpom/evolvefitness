@@ -702,7 +702,8 @@ class VentaProductosView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["last"] = NotaVenta.objects.last().id + 1
+        obj = NotaVenta.objects.last()
+        context["last"] = obj.id if obj else 1
         return context
     
 
