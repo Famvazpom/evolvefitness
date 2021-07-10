@@ -700,7 +700,13 @@ class ProductoPrecio(AdministracionCheck,BaseView):
 class VentaProductosView(BaseView):
     template_name = 'mantto/venta-productos.html'
 
-    def descontar_almacen(self,almacen,gym,cantidad):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["last"] = NotaVenta.objects.last().id + 1
+        return context
+    
+
+    def descontar_almacen(self,almacen,cantidad):
         obj = Almacen.objects.get(pk=almacen)
         obj.existencias -= int(cantidad)
         obj.save()
@@ -708,12 +714,25 @@ class VentaProductosView(BaseView):
     
     def post(self,request,*args, **kwargs):
         items = json.loads(request.POST.get('productos'))
-        obj = NotaVenta.objects.create(descuento = request.POST.get('descuento'))
+        obj = NotaVenta.objects.create(descuento = float(request.POST.get('descuento')),gym=request.user.perfil.gym)
         for item in items:
-            alm,producto = self.descontar_almacen(item['id'],request.user.perfil.gym,item['cantidad'])
-            ob = ProductosNota.objects.create(producto=producto,cantidad=item['cantidad'],
+            alm,producto = self.descontar_almacen(item['id'],item['cantidad'])
+            ob = ProductosNota.objects.create(nota= obj,producto=producto,cantidad=item['cantidad'],
                 precio=alm.precio,costo=producto.costo)
-            obj.productos.add(ob)
         obj.save()
-        return JsonResponse({'msg':'ok'})
+        return JsonResponse({'msg':'ok','last': obj.id+1})
 
+class VentaProductoDetails(BaseView):
+    template_name = 'mantto/forms/nota-venta-details.html'
+
+    def get(self, request,folio, *args, **kwargs):
+        context = self.get_context_data()
+        obj = NotaVenta.objects.get(pk=folio)
+        productos = ProductosNota.objects.filter(nota=obj)
+        context['nota'] = obj
+        context['title'] = f"Detalles de la Nota: {obj}"
+        context['productos'] = productos
+        return render(request,self.template_name,context)
+
+class TagView(AdministracionCheck,BaseView):
+    template_name = 'mantto/reportes/tag_list.html'

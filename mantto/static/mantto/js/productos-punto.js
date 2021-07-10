@@ -85,7 +85,7 @@ function UpdateTotal()
         document.getElementById('descuento').value = 0;
 
     }
-    if(total > document.getElementById('descuento').value)
+    if(total >= document.getElementById('descuento').value)
     {
         total -= parseFloat(document.getElementById('descuento').value);
     }
@@ -150,6 +150,10 @@ function Cobrar()
     datad= [];
     data = {};
     var rows = $('#carritoTable').find('tbody').find('tr');
+    if(rows.length ==0)
+    {
+        return
+    }
     jQuery.each(rows, function(i, row) {
         var cant = document.getElementById(row.id+'_cant').value;
         var item = {
@@ -171,6 +175,8 @@ function Cobrar()
         type: 'POST',
         success:function(json){
             getData();
+            $('#notaID').val(json['last']);
+            $('#descuento').val(0);
             UpdateTotal();
         },
         error: function(data){
@@ -186,7 +192,30 @@ function Cobrar()
     })  
 }
 
+function createNotas(data,container)
+{
+    jQuery.each(data.results, function(i, nota) {
+        container.append(nota.button);
+    });
+}
+
+function get_lastNotes()
+{
+    url = $('#folioContainer').attr('data-src');
+    cnt = $('#folioContainer')
+    $.ajax({
+        url: url,
+        type: "GET", 
+        dataType: "json",
+
+        success: function(data) {
+            cnt.empty();
+            createNotas(data,cnt);
+        }
+    });  
+}
 
 $( document ).ready(function() {
     getData();
+    get_lastNotes();
 });

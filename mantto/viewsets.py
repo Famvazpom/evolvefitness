@@ -159,3 +159,12 @@ class AlmacenViewSet(viewsets.ReadOnlyModelViewSet):
             out = out.filter(producto__presentacion__icontains=presentacion)
         return out
 
+class NotaVentaViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = NotaVenta.objects.all()
+    serializer_class = NotaVentaSerializer
+
+    def get_queryset(self):
+        return NotaVenta.objects.all().order_by('-id')[:5]
+    
+
+

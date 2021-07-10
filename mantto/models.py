@@ -360,7 +360,7 @@ class Almacen(models.Model):
     gym = models.ForeignKey(Gimnasio,on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     precio = models.FloatField(verbose_name=("Precio de Venta"),default=0)
-    existencias = models.PositiveIntegerField(default = 0)
+    existencias = models.IntegerField(default = 0)
     
     class Meta:
         verbose_name = ("Almacen")
@@ -369,7 +369,30 @@ class Almacen(models.Model):
     def __str__(self):
         return f'{self.gym} - {self.producto} - ${self.precio}'
 
+
+
+class NotaVenta(models.Model):
+    #cliente
+    total = models.FloatField(default=0)
+    cobro = models.FloatField(default=0)
+    descuento = models.FloatField(default=0)
+    fecha = models.DateTimeField(auto_now_add=True)
+    gym = models.ForeignKey(Gimnasio,default=1, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = ("NotaVenta")
+        verbose_name_plural = ("NotaVentas")
+
+    def __str__(self):
+        return f'{self.pk} - {self.gym}'
+
+    def save(self,*args,**kwargs):
+        if not self._state.adding:
+            self.total = ProductosNota.objects.filter(nota=self).aggregate(Sum('importe'))['importe__sum']
+        self.cobro = self.total - self.descuento
+        return super(NotaVenta,self).save(*args,**kwargs)
+
 class ProductosNota(models.Model):
+    nota = models.ForeignKey(NotaVenta, verbose_name=("Nota a la que pertenece"), on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     precio = models.FloatField()
@@ -384,28 +407,8 @@ class ProductosNota(models.Model):
         self.importe = float(self.precio) * float(self.cantidad)
         return super(ProductosNota,self).save(*args,**kwargs)
 
-
     def __str__(self):
-        return self.producto.__str__()
-
-class NotaVenta(models.Model):
-    #cliente
-    productos = models.ManyToManyField(ProductosNota)
-    total = models.FloatField(blank=True,default=0)
-    descuento = models.FloatField(blank=True,default=0)
-    class Meta:
-        verbose_name = ("NotaVenta")
-        verbose_name_plural = ("NotaVentas")
-
-    def __str__(self):
-        return f'{self.pk}'
-
-    def save(self,*args,**kwargs):
-        if not self._state.adding:
-            self.total = self.productos.all().aggregate(Sum('importe'))['importe__sum']
-        return super(NotaVenta,self).save(*args,**kwargs)
-
-
+        return f'{self.nota} - {self.producto.__str__()}'
 
 
 @receiver(models.signals.post_delete, sender=FotoReporte)

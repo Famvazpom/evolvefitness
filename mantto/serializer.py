@@ -223,8 +223,6 @@ class TipoProductoSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 
-
-
 class ProductoSerializer(serializers.ModelSerializer):
     foto = serializers.SerializerMethodField()
     detalles = serializers.SerializerMethodField()
@@ -254,6 +252,24 @@ class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
         fields = ('__all__')
+
+
+class NotaVentaSerializer(serializers.ModelSerializer):
+    button = serializers.SerializerMethodField()
+    fecha = serializers.SerializerMethodField()
+    
+    def get_fecha(self, obj):
+        return obj.fecha.date()
+    
+    def get_button(self, obj):
+        url = reverse_lazy('venta-productos-detalles',kwargs={'folio':obj.pk})
+        return f'<a class="btn btn-info m-1" onclick="openModal(\'{url}\')">{obj.pk}</a>'
+        
+    class Meta:
+        model = NotaVenta
+        fields = ('__all__')
+
+
 
 
 class AlmacenSerializer(serializers.ModelSerializer):

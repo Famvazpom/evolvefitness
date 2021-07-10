@@ -17,6 +17,10 @@
             <table id='carritoTable' class='table table-striped table-dark'>
                 <thead>
                     <tr>
+                        <th colspan=4 class='text-right'><label>  Folio: </label> </th>
+                        <th colspan=2>  <input class='form-control text-center' id='notaID' disabled value={{last}}> </th>
+                    </tr>
+                    <tr>
                         <th> Producto</th>
                         <th class='text-center'>Existencias </th>
                         <th class='text-center'> Precio </th>
@@ -42,6 +46,11 @@
 
                 </tfoot>
             </table>
+        </div>
+    </div>
+    <div class='row text-center'>
+        <h6> Ultimos 5 Folios </h6>
+        <div id='folioContainer' data-src="{% url 'notaventa-list' %}"> 
         </div>
     </div>
 </div>

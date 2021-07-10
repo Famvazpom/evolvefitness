@@ -12,6 +12,7 @@ router.register('gastos',GastoViewSet)
 router.register('proveedores',ProveedorViewSet)
 router.register('productos',ProductoViewSet)
 router.register('almacenes',AlmacenViewSet)
+router.register('notaventa',NotaVentaViewSet)
 
 urlpatterns = [
     path('home/',login_required(views.homeView.as_view()),name='home'),
@@ -56,6 +57,7 @@ urlpatterns = [
 
     # [------------- VENTA DE PRODUCTOS --------------] # 
     path('venta/',login_required(views.VentaProductosView.as_view()),name="venta-productos"),
+    path('venta/detalles/<int:folio>',login_required(views.VentaProductoDetails.as_view()),name="venta-productos-detalles"),
 
     path('formularios/producto/precio/',login_required(views.ProductoPrecio.as_view()),name="formularios-producto-precio"),
 
